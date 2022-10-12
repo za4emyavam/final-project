@@ -1,0 +1,137 @@
+table {
+    border-collapse: collapse;
+}
+
+td.empty {
+    padding: 0;
+}
+
+th, td.content {
+    border: 1px solid black;
+}
+
+th {
+    padding: 5px 10px;
+}
+
+td.content {
+    padding: 5px 30px 5px 10px;
+}
+
+form {
+    width: 600px;
+    padding: 0 20px 20px 20px;
+}
+
+form.important {
+    background: #FC4;
+    margin-bottom: 20px;
+}
+
+form label, form input, form select {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+}
+
+form label {
+    margin-top: 32px;
+}
+
+form.important label {
+    margin-top: 10px;
+}
+
+form input[readonly] {
+    background: #CCC;
+}
+
+a.edit, a.view, a.add-button, a.edit-button, a.back, form button {
+    display: inline-block;
+    border: 0;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+    color: #333;
+    outline: 0;
+}
+
+a.add-button, a.edit-button, a.back, form button {
+    margin: 32px 5px 0 0;
+    padding: 0 5px 0 32px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+form button {
+    cursor: pointer;
+}
+
+form button[disabled] {
+    color: #888;
+    cursor: default;
+    box-shadow: none;
+}
+
+a.edit, a.view, a.add-button, a.edit-button, a.back {
+    text-decoration: none;
+}
+
+/*a.edit {
+    background: url('edit.png');
+}
+
+a.view {
+    background: url('view.png');
+}
+
+a.add-button {
+    background: #0C4 url('add.png') no-repeat;
+}
+
+a.edit-button {
+    background: #0C4 url('edit.png') no-repeat;
+}
+
+a.back {
+    background: #04C url('back.png') no-repeat;
+}
+
+form button.save {
+    background: #0C4 url('save.png') no-repeat;
+}
+
+form button.delete {
+    background: #C40 url('delete.png') no-repeat;
+}
+
+form button.reset {
+    background: #04C url('reset.png') no-repeat;
+}
+
+form button.password-reset {
+    background: #FC4 url('reset.png') no-repeat;
+}*/
+
+form button.login, form button.transfer {
+    background: #0C4;
+    padding: 0 32px 0 32px;
+}
+
+form button.login {
+    margin: 52px 5px 0 0;
+}
+
+form button.transfer {
+    margin: 20px 5px 0 0;
+}
+
+p.error {
+    width: 560px;
+    background: #C44;
+    border: 1px solid #400;
+    padding: 5px 20px;
+    margin: 0 20px;
+    color: #400;
+}
