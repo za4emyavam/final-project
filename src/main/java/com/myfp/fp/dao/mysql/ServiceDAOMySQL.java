@@ -36,25 +36,26 @@ public class ServiceDAOMySQL extends BaseDAOImpl implements ServiceDAO {
 
     @Override
     public List<Service> readAll() throws DAOException {
-        List<Service> services = new ArrayList<>();
+        /*List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM service";
         Connection con = getConnection();
         try(ResultSet rs = con.createStatement().executeQuery(sql)) {
             while(rs.next()) {
                 Service service = new Service();
                 service.setId(rs.getLong("id"));
-                service.setType(rs.getString("type"));
+                service.setServiceType(rs.getString("type"));
                 services.add(service);
             }
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-        return services;
+        return services;*/
+        return null;
     }
 
     @Override
     public Service readByType(String str) throws DAOException {
-        Service res = null;
+        /*Service res = null;
         String sql = "SELECT s.id FROM service s WHERE s.type=?";
         Connection con = getConnection();
         try(PreparedStatement preparedStatement = con.prepareStatement(sql)) {
@@ -69,7 +70,7 @@ public class ServiceDAOMySQL extends BaseDAOImpl implements ServiceDAO {
             }
         } catch (SQLException e) {
             throw new DAOException(e);
-        }
+        }*/
         return null;
     }
 }

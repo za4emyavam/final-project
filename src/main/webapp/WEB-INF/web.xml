@@ -8,6 +8,20 @@
         <servlet-class>com.myfp.fp.controller.ControllerServlet</servlet-class>
     </servlet>
 
+    <!--<servlet>
+        <servlet-name>MainServlet</servlet-name>
+        <servlet-class>com.myfp.fp.controller.MainServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MainServlet</servlet-name>
+        <url-pattern></url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+-->
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -27,4 +41,10 @@
         <filter-name>SecurityFilter</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
+    <resource-ref>
+        <description>fpsql</description>
+        <res-ref-name>jdbc/postgres</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>

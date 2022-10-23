@@ -1,13 +1,13 @@
 package com.myfp.fp.entities;
 
 public class Service extends Entity {
-    private String type;
+    private String serviceType;
 
-    public String getType() {
-        return type;
+    public String getServiceType() {
+        return serviceType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 }

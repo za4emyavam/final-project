@@ -12,7 +12,7 @@ import java.util.List;
 public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
     @Override
     public Tariff read(Long id) throws DAOException {
-        String sql = "SELECT * FROM tariff t, service s WHERE t.id=? AND t.type=s.id";
+        /*String sql = "SELECT * FROM tariff t, service s WHERE t.id=? AND t.type=s.id";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         Tariff res = null;
@@ -28,12 +28,13 @@ public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-        return res;
+        return res;*/
+        return null;
     }
 
     @Override
     public Long create(Tariff entity) throws DAOException {
-        String sql = "INSERT tariff(name, description, cost, frequency_of_payment, type) VALUES(?, ?, ?, ?, ?)";
+        /*String sql = "INSERT tariff(name, description, cost, frequency_of_payment, type) VALUES(?, ?, ?, ?, ?)";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         long resultId = -1;
@@ -65,12 +66,13 @@ public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
         } finally {
             closeStat(preparedStatement);
         }
-        return resultId ;
+        return resultId ;*/
+        return null;
     }
 
     @Override
     public void update(Tariff entity) throws DAOException {
-        String sql = "UPDATE tariff t SET t.name=?, t.description=?, t.cost=?, t.frequency_of_payment=? WHERE t.id=" + entity.getId();
+        /*String sql = "UPDATE tariff t SET t.name=?, t.description=?, t.cost=?, t.frequency_of_payment=? WHERE t.id=" + entity.getId();
         Connection con = getConnection();
         PreparedStatement preparedStatement = null;
         try {
@@ -83,28 +85,28 @@ public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(e);
-        }
+        }*/
     }
 
     @Override
     public void delete(Long id) throws DAOException {
-        String sql = "DELETE FROM tariff t WHERE t.id=?";
+        /*String sql = "DELETE FROM tariff t WHERE t.id=?";
         Connection con = getConnection();
         try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
             preparedStatement.setInt(1, Math.toIntExact(id));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(e);
-        }
+        }*/
     }
 
     @Override
     public List<Tariff> readAll() throws DAOException {
-        List<Tariff> tariffs = new ArrayList<>();
+        /*List<Tariff> tariffs = new ArrayList<>();
         String sql = "SELECT t.id, t.name, t.description, t.cost, t.frequency_of_payment, s.id, s.type " +
                 "FROM tariff t, service s WHERE t.type=s.id";
         Connection con = getConnection();
-        try(/*Connection con = getConnection();*/
+        try(*//*Connection con = getConnection();*//*
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql)) {
             while(resultSet.next()) {
@@ -113,11 +115,12 @@ public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-        return tariffs;
+        return tariffs;*/
+        return null;
     }
 
     private Tariff fillTariff(ResultSet resultSet) throws SQLException{
-        Tariff tariff = new Tariff();
+        /*Tariff tariff = new Tariff();
         tariff.setId(resultSet.getLong("id"));
         tariff.setName(resultSet.getString("name"));
         tariff.setDescription(resultSet.getString("description"));
@@ -127,6 +130,7 @@ public class TariffDAOMySQL extends BaseDAOImpl implements TariffDAO {
         service.setId(resultSet.getLong("s.id"));
         service.setType(resultSet.getString("s.type"));
         tariff.setType(service);
-        return tariff;
+        return tariff;*/
+        return null;
     }
 }

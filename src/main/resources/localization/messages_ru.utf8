@@ -6,6 +6,7 @@ application.button.password.change=Сменить пароль
 role.cashier=Кассир
 role.manager=Менеджер
 role.admin=Администратор
+role.main_admin=Main Administrator
 
 login.title=Вход в систему
 login.message.incorrect.password=Имя пользователя или пароль не опознанны

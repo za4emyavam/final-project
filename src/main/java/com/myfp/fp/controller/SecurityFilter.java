@@ -18,16 +18,21 @@ public class SecurityFilter implements Filter {
         user.addAll(Arrays.asList(Role.values()));
         Set<Role> manager = new HashSet<>();
         manager.add(Role.USER);
-        manager.add(Role.MANAGER);
+        manager.add(Role.ADMIN);
         Set<Role> admin = new HashSet<>();
-        admin.add(Role.ADMINISTRATOR);
-        /*permissions.put("/", user);
-        permissions.put("/index", user);*/
-        /*permissions.put("/login", user);
-        permissions.put("/logout", user);*/
+        admin.add(Role.USER);
+        admin.add(Role.ADMIN);
+        admin.add(Role.MAIN_ADMIN);
+        permissions.put("/cabinet", user);
+        permissions.put("/cabinet/replenish", user);
+        permissions.put("/cabinet/history", user);
         permissions.put("/tariffs/add", admin);
         permissions.put("/tariffs/update", admin);
         permissions.put("/tariffs/delete", admin);
+        permissions.put("/admin", manager);
+        permissions.put("/admin/requests", manager);
+        permissions.put("/admin/check_payment", manager);
+        permissions.put("/admin/requests/update", manager);
     }
 
     @Override
@@ -52,7 +57,7 @@ public class SecurityFilter implements Filter {
             HttpSession session = httpServletRequest.getSession(false);
             if(session != null) {
                 User user = (User) session.getAttribute("currentUser");
-                if(user != null && role.contains(user.getRole())) {
+                if(user != null && role.contains(user.getUserRole())) {
                     System.out.println("Filter: AdminPage");
                     //httpServletResponse.sendRedirect(context + url + ".html");
                     chain.doFilter(request, response);

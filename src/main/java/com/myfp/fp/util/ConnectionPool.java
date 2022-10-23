@@ -21,11 +21,14 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws SQLException{
-        Context ctx;
+        Context cxt;
         Connection c = null;
         try {
-            ctx = new InitialContext();
-            DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/mysql");
+            /*cxt = new InitialContext();
+            DataSource ds = (DataSource)cxt.lookup("java:comp/env/jdbc/mysql");
+            c = ds.getConnection();*/
+            cxt = new InitialContext();
+            DataSource ds = (DataSource) cxt.lookup( "java:/comp/env/jdbc/postgres" );
             c = ds.getConnection();
         } catch (NamingException e) {
             e.printStackTrace();
@@ -34,5 +37,6 @@ public class ConnectionPool {
             throw e;
         }
         return c;
+
     }
 }

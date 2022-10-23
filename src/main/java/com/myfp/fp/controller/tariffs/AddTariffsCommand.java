@@ -20,20 +20,22 @@ public class AddTariffsCommand extends Command {
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        String type = req.getParameter("type");
+        String type = req.getParameter("service");
         if(isGood(name) && isGood(description) && isGood(type)) {
             int cost = Integer.parseInt(req.getParameter("cost"));
             int frequencyOfPayment = Integer.parseInt(req.getParameter("frequency_of_payment"));
             try {
                 ServiceService serviceService = getServiceFactory().getServiceService();
                 Service service = serviceService.findByType(type);
-                System.out.println("service type ->" + service.getType());
+                System.out.println("service type ->" + service.getServiceType());
+
                 Tariff tariff = new Tariff();
                 tariff.setName(name);
                 tariff.setDescription(description);
                 tariff.setCost(cost);
                 tariff.setFrequencyOfPayment(frequencyOfPayment);
-                tariff.setType(service);
+                tariff.setService(service);
+
                 TariffService tariffService = getServiceFactory().getTariffService();
                 tariffService.insertTariff(tariff);
                 return new Forward("/tariffs.html");

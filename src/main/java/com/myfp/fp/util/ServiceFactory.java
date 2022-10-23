@@ -1,11 +1,7 @@
 package com.myfp.fp.util;
 
-import com.myfp.fp.dao.TariffDAO;
-import com.myfp.fp.dao.UserDAO;
-import com.myfp.fp.dao.ServiceDAO;
-import com.myfp.fp.service.ServiceService;
-import com.myfp.fp.service.TariffService;
-import com.myfp.fp.service.UserService;
+import com.myfp.fp.dao.*;
+import com.myfp.fp.service.*;
 
 import java.sql.Connection;
 
@@ -17,5 +13,12 @@ public interface ServiceFactory extends AutoCloseable {
     TariffDAO getTariffDAO() throws FactoryException;
     ServiceService getServiceService() throws FactoryException;
     ServiceDAO getServiceDAO() throws FactoryException;
+    TransactionService getTransactionService() throws FactoryException;
+    TransactionDAO getTransactionDAO() throws FactoryException;
+    ConnectionRequestService getConnectionRequestService() throws FactoryException;
+    ConnectionRequestDAO getConnectionRequestDAO() throws FactoryException;
+    UserTariffsService getUserTariffsService() throws FactoryException;
+    UserTariffsDAO getUserTariffsDAO() throws FactoryException;
+
     Connection getConnection() throws FactoryException;
 }

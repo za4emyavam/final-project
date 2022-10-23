@@ -10,7 +10,7 @@ import java.io.IOException;
 public class LogoutCommand extends Command {
     @Override
     public Forward execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false  );
+        HttpSession session = req.getSession(false);
         if(session != null) {
             session.invalidate();
         }

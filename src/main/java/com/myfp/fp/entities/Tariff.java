@@ -3,9 +3,19 @@ package com.myfp.fp.entities;
 public class Tariff extends Entity {
     private String name;
     private String description;
+    private Service service;
     private int cost;
     private int frequencyOfPayment;
-    private Service type;
+
+    public TariffStatus getTariffStatus() {
+        return tariffStatus;
+    }
+
+    public void setTariffStatus(TariffStatus tariffStatus) {
+        this.tariffStatus = tariffStatus;
+    }
+
+    private TariffStatus tariffStatus;
 
     public String getName() {
         return name;
@@ -39,11 +49,11 @@ public class Tariff extends Entity {
         this.frequencyOfPayment = frequencyOfPayment;
     }
 
-    public Service getType() {
-        return type;
+    public Service getService() {
+        return service;
     }
 
-    public void setType(Service type) {
-        this.type = type;
+    public void setService(Service service) {
+        this.service = service;
     }
 }

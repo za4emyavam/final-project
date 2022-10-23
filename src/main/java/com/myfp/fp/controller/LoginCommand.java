@@ -21,6 +21,7 @@ public class LoginCommand extends Command {
                 User user = userService.findByLoginAndPassword(login, password);
                 if(user != null) {
                     req.getSession().setAttribute("currentUser", user);
+                    //return new Forward("/index.html");
                     return new Forward("/index.html");
                 } else {
                     return new Forward("/login.html?message=login.message.incorrect.password");

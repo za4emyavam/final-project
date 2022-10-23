@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDAOMySQL extends BaseDAOImpl implements UserDAO {
     @Override
     public User read(Long id) throws DAOException {
-        String sql = "SELECT * FROM 'user' WHERE 'id' = ?";
+        /*String sql = "SELECT * FROM 'user' WHERE 'id' = ?";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -41,7 +41,8 @@ public class UserDAOMySQL extends BaseDAOImpl implements UserDAO {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }
+        }*/
+        return null;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UserDAOMySQL extends BaseDAOImpl implements UserDAO {
 
     @Override
     public User readByLoginAndPassword(String login, String password) throws DAOException {
-        System.out.println("readByLoginAndPassword from DB");
+        /*System.out.println("readByLoginAndPassword from DB");
         String sql = "SELECT u.id, u.email, u.role FROM user u WHERE u.login = ? AND u.password = (?)";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -97,12 +98,13 @@ public class UserDAOMySQL extends BaseDAOImpl implements UserDAO {
             closeStat(resultSet);
             closeStat(statement);
 
-        }
+        }*/
+        return null;
     }
 
     @Override
     public void addNewUser(String email, String login, String password) throws DAOException {
-        System.out.println("addNewUser");
+       /* System.out.println("addNewUser");
         String sql = "INSERT user(email, login, password, role) values(?, ?, ?, ?)";
         Connection con = null;
         PreparedStatement preparedStatement = null;
@@ -120,14 +122,14 @@ public class UserDAOMySQL extends BaseDAOImpl implements UserDAO {
             rollback(con);
             throw new DAOException(e);
         } finally {
-            closeStat(preparedStatement);
+            closeStat(preparedStatement);*/
             /*try {
                 System.out.println("Returning con to the pool");
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Returning con to the pool");
                 throw new DAOException();
-            }*/
-        }
+            }
+        }*/
     }
 }
