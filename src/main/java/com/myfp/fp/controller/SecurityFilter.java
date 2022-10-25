@@ -6,26 +6,28 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
 
 public class SecurityFilter implements Filter {
+    private static final Logger LOG4J = LogManager.getLogger(SecurityFilter.class);
     private static final Map<String, Set<Role>> permissions = new HashMap<>();
 
     static {
         Set<Role> user = new HashSet<>();
         user.addAll(Arrays.asList(Role.values()));
         Set<Role> manager = new HashSet<>();
-        manager.add(Role.USER);
         manager.add(Role.ADMIN);
+        manager.add(Role.MAIN_ADMIN);
         Set<Role> admin = new HashSet<>();
-        admin.add(Role.USER);
-        admin.add(Role.ADMIN);
         admin.add(Role.MAIN_ADMIN);
         permissions.put("/cabinet", user);
         permissions.put("/cabinet/replenish", user);
         permissions.put("/cabinet/history", user);
+        permissions.put("/tariffs/request", user);
         permissions.put("/tariffs/add", admin);
         permissions.put("/tariffs/update", admin);
         permissions.put("/tariffs/delete", admin);
@@ -41,36 +43,28 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("SecurityFilter");
+        LOG4J.info("SecurityFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String url = httpServletRequest.getRequestURI();
-        String context = httpServletRequest.getContextPath();
-        int postfixIndex = url.lastIndexOf(".html");
-        if(postfixIndex != -1) {
-            url = url.substring(context.length(), postfixIndex);
-        } else {
-            url = url.substring(context.length());
-        }
         Set<Role> role = permissions.get(url);
         if (role != null) {
             HttpSession session = httpServletRequest.getSession(false);
             if(session != null) {
                 User user = (User) session.getAttribute("currentUser");
                 if(user != null && role.contains(user.getUserRole())) {
-                    System.out.println("Filter: AdminPage");
-                    //httpServletResponse.sendRedirect(context + url + ".html");
+                    LOG4J.info("SecurityFilter: has permission to AdminPage");
                     chain.doFilter(request, response);
                     return;
                 }
             }
         } else {
-            System.out.println("Filter: didn't find command");
+            LOG4J.info("SecurityFilter: has permission");
             chain.doFilter(request, response);
             return;
         }
-        System.out.println("Filter: to index.html");
-        httpServletResponse.sendRedirect(context + "/index.html");
+        LOG4J.info("SecurityFilter: user has no permission");
+        httpServletResponse.sendRedirect("/index");
     }
 
     @Override

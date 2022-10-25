@@ -33,7 +33,7 @@ CREATE TABLE fp_schema.user
     registration_date date             NOT NULL,
     user_role         role_type DEFAULT ('user'),
     user_status       user_status_type NULL,
-    user_balance      INTEGER   DEFAULT 0,
+    user_balance      DECIMAL(8, 2)   DEFAULT 0,
     firstname         varchar(30)      NOT NULL,
     middle_name       varchar(30)      NOT NULL,
     surname           varchar(30)      NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE transaction
     transaction_id     SERIAL PRIMARY KEY,
     balance_id         INTEGER,
     type               transaction_type,
-    transaction_amount INTEGER,
+    transaction_amount DECIMAL(8, 2),
     transaction_date   DATE DEFAULT CURRENT_DATE,
     transaction_status transaction_status_type NULL,
     FOREIGN KEY (balance_id) REFERENCES fp_schema.user (user_id) ON DELETE CASCADE
@@ -79,14 +79,14 @@ CREATE TABLE transaction
     FOREIGN KEY (transaction_id) REFERENCES transaction (transaction_id) ON DELETE CASCADE
 );*/
 
-CREATE OR REPLACE FUNCTION add(integer, integer) RETURNS integer
+CREATE OR REPLACE FUNCTION add(DECIMAL, DECIMAL) RETURNS DECIMAL
 AS
 'select $1 + $2;'
     LANGUAGE SQL
     IMMUTABLE
     RETURNS NULL ON NULL INPUT;
 
-CREATE OR REPLACE FUNCTION subtract(integer, integer) RETURNS integer
+CREATE OR REPLACE FUNCTION subtract(DECIMAL, DECIMAL) RETURNS DECIMAL
 AS
 'select $1 - $2;'
     LANGUAGE SQL
@@ -97,7 +97,7 @@ CREATE OR REPLACE FUNCTION f_t_transaction()
     RETURNS trigger AS
 $BODY$
 DECLARE
-    temp_user_balance integer;
+    temp_user_balance DECIMAL;
 BEGIN
     SELECT INTO temp_user_balance user_balance FROM "user" WHERE NEW.balance_id = user_id;
     IF (NEW.type = 'refill') THEN
@@ -140,7 +140,7 @@ CREATE TABLE tariff
     name                 VARCHAR(40) NOT NULL UNIQUE,
     description          text        NOT NULL,
     service              INTEGER,
-    cost                 INTEGER     NOT NULL,
+    cost                 DECIMAL(8, 2)     NOT NULL,
     frequency_of_payment INTEGER     NOT NULL,
     status               tariff_status_type DEFAULT 'active',
     FOREIGN KEY (service) REFERENCES service (service_id) ON DELETE CASCADE
@@ -164,7 +164,7 @@ CREATE TABLE additional_service
     additional_service_id SERIAL PRIMARY KEY,
     name                  VARCHAR(40) NOT NULL UNIQUE,
     description           TEXT        NOT NULL,
-    cost                  INTEGER     NOT NULL
+    cost                  DECIMAL(8, 2)     NOT NULL
 );
 
 CREATE TABLE connection_request
@@ -185,8 +185,7 @@ CREATE OR REPLACE FUNCTION f_t_update_request_status() RETURNS trigger
 
 $$
 DECLARE
-    temp_user_balance integer;
-    temp_tariff_cost  integer;
+    temp_tariff_cost  DECIMAL;
     temp_user_status  user_status_type;
 BEGIN
 
@@ -239,16 +238,16 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION f_check_payment(integer) RETURNS INTEGER
+CREATE OR REPLACE FUNCTION f_check_payment_by_user_id(integer) RETURNS INTEGER
     LANGUAGE plpgsql AS
 $$
 DECLARE
     temp_tariffs              integer[];
     temp_date_of_last_payment date;
     temp_frequency_of_payment integer;
-    temp_tariff_cost          integer;
-    temp_id integer;
-    temp_status transaction_status_type;
+    temp_tariff_cost          DECIMAL;
+    temp_id                   integer;
+    temp_status               transaction_status_type;
 BEGIN
     temp_tariffs := ARRAY(
             SELECT tariff_id FROM user_tariffs ut WHERE user_id = $1
@@ -262,20 +261,43 @@ BEGIN
             FROM tariff t
             WHERE tariff_id = temp_tariffs[var];
             SELECT INTO temp_date_of_last_payment date_of_last_payment
-            FROM user_tariffs ut WHERE user_id=$1 AND tariff_id=temp_tariffs[var];
-            IF (temp_date_of_last_payment IS NULL OR datediff('day', temp_date_of_last_payment, NOW()::DATE) > temp_frequency_of_payment) THEN
+            FROM user_tariffs ut
+            WHERE user_id = $1
+              AND tariff_id = temp_tariffs[var];
+            IF (temp_date_of_last_payment IS NULL OR
+                datediff('day', temp_date_of_last_payment, NOW()::DATE) > temp_frequency_of_payment) THEN
                 SELECT INTO temp_tariff_cost cost
                 FROM tariff t
                 WHERE tariff_id = temp_tariffs[var];
                 INSERT INTO transaction(balance_id, type, transaction_amount, transaction_date, transaction_status)
-                VALUES ($1, 'debit', temp_tariff_cost, CURRENT_DATE, NULL) RETURNING transaction_id INTO temp_id;
-                SELECT INTO temp_status transaction_status FROM transaction t WHERE transaction_id=temp_id;
-                IF(temp_status='successful') THEN
-                    UPDATE user_tariffs ut SET date_of_last_payment=CURRENT_DATE WHERE user_id=$1 AND tariff_id=temp_tariffs[var];
+                VALUES ($1, 'debit', temp_tariff_cost, CURRENT_DATE, NULL)
+                RETURNING transaction_id INTO temp_id;
+                SELECT INTO temp_status transaction_status FROM transaction t WHERE transaction_id = temp_id;
+                IF (temp_status = 'successful') THEN
+                    UPDATE user_tariffs ut
+                    SET date_of_last_payment=CURRENT_DATE
+                    WHERE user_id = $1 AND tariff_id = temp_tariffs[var];
                 end if;
             end if;
         end loop;
     RETURN -1;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION f_check_payment() RETURNS VOID
+    LANGUAGE plpgsql AS
+$$
+DECLARE
+    temp_users_id integer[];
+BEGIN
+    temp_users_id := ARRAY (
+            SELECT DISTINCT  user_id FROM user_tariffs
+        );
+    FOR var in array_lower(temp_users_id, 1)..array_upper(temp_users_id, 1)
+        loop
+            PERFORM f_check_payment_by_user_id(temp_users_id[var]);
+        end loop;
+    RETURN;
 END;
 $$;
 
@@ -289,11 +311,15 @@ VALUES ('IP-TV1', 'best ip-tv', 1, 120, 28),
        ('Super Internet', 'best internet', 2, 180, 28);
 
 
-INSERT INTO fp_schema.user (email, pass, user_description, registration_date, user_role, user_balance, firstname, middle_name,
+INSERT INTO fp_schema.user (email, pass, user_description, registration_date, user_role, user_balance, firstname,
+                            middle_name,
                             surname, telephone_number)
 VALUES ('example@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin', '+380634325657'),
-       ('manager@gmail.com', 12345, 1, CURRENT_DATE, 'admin', DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin', '+380634325657'),
-       ('admin@gmail.com', 12345, 2, CURRENT_DATE, 'main_admin', DEFAULT, 'Ivan', 'Kulebovich', 'Antonov', '+380764325621');
+       ('manager@gmail.com', 12345, 1, CURRENT_DATE, 'admin', DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
+        '+380634325657'),
+       ('admin@gmail.com', 12345, 2, CURRENT_DATE, 'main_admin', DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
+        '+380764325621');
+
 
 INSERT INTO additional_service (name, description, cost)
 VALUES ('Podkluchenie', 'viezd i ustanovka oborudovaniya', 200),

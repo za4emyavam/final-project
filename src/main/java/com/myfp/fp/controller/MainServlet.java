@@ -11,10 +11,10 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("are we here?");
         request.getRequestDispatcher("index.jsp").forward(request, response);
-    }
+    }/*
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    }
+    }*/
 }

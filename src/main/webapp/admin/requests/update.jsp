@@ -21,7 +21,7 @@
     <p>Email: ${requestScope.connectionRequest.subscriber.email}</p>
     <p>User
         FIO: ${requestScope.connectionRequest.subscriber.firstname} ${requestScope.connectionRequest.subscriber.middleName} ${requestScope.connectionRequest.subscriber.surname}</p>
-    <p>User status: ${requestScope.connectionRequest.subscriber.userStatus.value}</p>
+    <p>User status: ${requestScope.connectionRequest.subscriber.userStatus.name}</p>
     <p>User balance: ${requestScope.connectionRequest.subscriber.userBalance}</p>
     <p>User telephone number: ${requestScope.connectionRequest.subscriber.telephoneNumber}</p>
     <p>User registration date: <fmt:formatDate

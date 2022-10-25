@@ -3,10 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
-    <servlet>
+    <!--<servlet>
         <servlet-name>ControllerServlet</servlet-name>
         <servlet-class>com.myfp.fp.controller.ControllerServlet</servlet-class>
-    </servlet>
+    </servlet>-->
 
     <!--<servlet>
         <servlet-name>MainServlet</servlet-name>
@@ -22,10 +22,10 @@
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
 -->
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>*.html</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
     <context-param>
         <param-name>jakarta.servlet.jsp.jstl.fmt.localizationContext</param-name>
@@ -39,7 +39,7 @@
 
     <filter-mapping>
         <filter-name>SecurityFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <resource-ref>
         <description>fpsql</description>
