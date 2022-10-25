@@ -28,6 +28,9 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+            closeStat(preparedStatement);
         }
         return res;
     }
@@ -58,6 +61,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
         return resultId;
@@ -71,6 +75,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
         Connection con = getConnection();
         PreparedStatement preparedStatement = null;
         try {
+            con.setAutoCommit(false);
             preparedStatement = con.prepareStatement(sql);
             int k = 1;
             preparedStatement.setString(k++, entity.getName());
@@ -80,9 +85,12 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             preparedStatement.setInt(k++, entity.getFrequencyOfPayment());
             preparedStatement.setObject(k, entity.getTariffStatus().getName());
             preparedStatement.executeUpdate();
+            con.commit();
         } catch (SQLException e) {
+            rollback(con);
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
     }
@@ -96,6 +104,8 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
     }
 
@@ -112,6 +122,8 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
         return tariffs;
     }

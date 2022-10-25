@@ -38,7 +38,8 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
     public List<UserTariffs> readAllByUser(Long id) throws DAOException {
         List<UserTariffs> list = new ArrayList<>();
         String sql = "SELECT * FROM user_tariffs ut, \"user\" u, tariff t, service s " +
-                "WHERE u.user_id=(?) AND t.tariff_id=ut.user_id AND s.service_id=t.service";
+                "WHERE u.user_id=(?) AND ut.user_id=u.user_id AND u.user_id=ut.user_id\n" +
+                "           AND t.tariff_id=ut.tariff_id AND s.service_id=t.service";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         try{
@@ -52,6 +53,9 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+            closeStat(preparedStatement);
         }
         return list;
     }
@@ -68,6 +72,8 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
         return list;
     }
@@ -81,6 +87,8 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
 
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
     }
 

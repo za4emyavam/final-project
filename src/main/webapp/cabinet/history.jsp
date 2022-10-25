@@ -16,7 +16,7 @@
 <fmt:message var="title" key="cabinet.history.title"/>
 <u:html title="${title}">
     <h2>${title}</h2>
-    <table>
+    <table class="w3-table w3-bordered">
         <tr>
             <th>id</th>
             <th>type</th>
@@ -25,10 +25,10 @@
         </tr>
         <c:forEach items="${requestScope.transactions}" var="t">
             <tr>
-                <th><c:out value="${t.id}"/></th>
-                <th><c:out value="${t.type.value}"/></th>
-                <th><c:out value="${t.transactionAmount}"/></th>
-                <th><c:out value="${t.transactionDate.toString}"/></th>
+                <td><c:out value="${t.id}"/></td>
+                <td><c:out value="${t.type.value}"/></td>
+                <td><c:out value="${t.transactionAmount}"/></td>
+                <td><fmt:formatDate value="${t.transactionDate}"/></td>
             </tr>
 
         </c:forEach>

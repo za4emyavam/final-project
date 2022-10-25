@@ -35,7 +35,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() throws ServiceException {
-        return null;
+        try {
+            return userDAO.readAll();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

@@ -46,6 +46,8 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
         return services;
     }
@@ -67,6 +69,8 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
         return null;
     }

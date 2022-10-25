@@ -32,7 +32,7 @@ CREATE TABLE fp_schema.user
     user_description  INTEGER          NULL,
     registration_date date             NOT NULL,
     user_role         role_type DEFAULT ('user'),
-    user_status       user_status_type NULL,
+    user_status       user_status_type DEFAULT('subscribed'),
     user_balance      DECIMAL(8, 2)   DEFAULT 0,
     firstname         varchar(30)      NOT NULL,
     middle_name       varchar(30)      NOT NULL,
@@ -308,7 +308,10 @@ VALUES ('IP-TV'),
 
 INSERT INTO tariff (name, description, service, cost, frequency_of_payment)
 VALUES ('IP-TV1', 'best ip-tv', 1, 120, 28),
-       ('Super Internet', 'best internet', 2, 180, 28);
+       ('Internet', 'internet', 2, 150, 28),
+       ('Super Internet', 'best internet', 2, 180, 28),
+       ('Telephone', 'telephone', 3, 50, 28),
+       ('Super Telephone', 'super telephone', 3, 80, 28);
 
 
 INSERT INTO fp_schema.user (email, pass, user_description, registration_date, user_role, user_balance, firstname,
@@ -318,7 +321,10 @@ VALUES ('example@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, 500, 'Vasya', 'Iva
        ('manager@gmail.com', 12345, 1, CURRENT_DATE, 'admin', DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
         '+380634325657'),
        ('admin@gmail.com', 12345, 2, CURRENT_DATE, 'main_admin', DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
-        '+380764325621');
+        '+380764325621'),
+       ('example2@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin', '+380634978657'),
+       ('example3@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin', '+380634343657'),
+       ('example4@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT,  DEFAULT, 'John', 'Ivanovich', 'Pupkin', '+380634325617');
 
 
 INSERT INTO additional_service (name, description, cost)
