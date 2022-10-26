@@ -29,13 +29,14 @@
       <th>user status</th>
     </tr>
     <c:forEach items="${requestScope.users}" var="u">
-      <tr>
+      <tr onclick="location.href='/admin/users/user_info?id=${u.id}'">
         <td>${u.id}</td>
         <td>${u.email}</td>
         <td>${u.firstname}</td>
         <td>${u.surname}</td>
         <td>${u.userRole.name}</td>
         <td><fmt:formatDate pattern="dd MM yyyy" value="${u.registrationDate}"/></td>
+        <td>${u.userStatus}</td>
       </tr>
     </c:forEach>
   </table>
