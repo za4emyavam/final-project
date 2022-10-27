@@ -26,20 +26,22 @@
     <link href="${urlCss}" rel="stylesheet">
 </head>
 <body>
-<div class="w3-container w3-teal">
-    <h1><a class="w3-hover-none w3-hover-text-white" href="/index"><fmt:message key="application.title"/></a></h1>
-    <c:if test="${not empty currentUser}">
-        <c:url var="urlLogout" value="/logout"/>
-        <%--<c:url var="urlPasswordEdit" value="/password/edit.html"/>--%>
-        <p>
-            <fmt:message key="application.welcome"/> ${currentUser.firstname}
-            (<fmt:message key="role.${currentUser.userRole.name}"/>).
-            <a href="${urlLogout}"><fmt:message key="application.button.logout"/></a>.
-            <%--<a href="${urlPasswordEdit}"><fmt:message key="application.button.password.change"/></a>.--%>
-        </p>
-    </c:if>
-    <button onclick="location.href='?cookieLocale=ua'">UA</button>
-    <button onclick="location.href='?cookieLocale=en'">EN</button>
+<div class="w3-container w3-teal" >
+    <div class="w3-container" style="display: inline-block">
+        <h1><a class="w3-hover-none w3-hover-text-white" href="/index"><fmt:message key="application.title"/></a></h1>
+        <c:if test="${not empty currentUser}">
+            <c:url var="urlLogout" value="/logout"/>
+            <p>
+                <fmt:message key="application.welcome"/> ${currentUser.firstname}
+                (<fmt:message key="role.${currentUser.userRole.name}"/>).
+                <a href="${urlLogout}"><fmt:message key="application.button.logout"/></a>.
+            </p>
+        </c:if>
+    </div>
+    <div class="w3-container" style="display: inline-block; position: fixed; right: 0">
+        <button class="w3-button" onclick="location.href='?cookieLocale=ua'">UA</button>
+        <button class="w3-button" onclick="location.href='?cookieLocale=en'">EN</button>
+    </div>
 </div>
 
 <jsp:doBody/>

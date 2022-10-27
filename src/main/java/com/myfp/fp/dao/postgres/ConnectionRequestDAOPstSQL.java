@@ -3,6 +3,7 @@ package com.myfp.fp.dao.postgres;
 import com.myfp.fp.dao.ConnectionRequestDAO;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.entities.*;
+import com.myfp.fp.util.ConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
         return connectionRequest;
@@ -61,6 +63,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
         return resId;
@@ -69,17 +72,25 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
     @Override
     public void update(ConnectionRequest entity) throws DAOException {
         String sql = "UPDATE connection_request cr SET status=?::request_status_type WHERE cr.connection_request_id=" + entity.getId();
+        //Connection con = getConnection();
         Connection con = null;
         PreparedStatement preparedStatement = null;
         try{
             con = getConnection();
+            con.setAutoCommit(false);
             preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, entity.getStatus().getValue());
             preparedStatement.executeUpdate();
-
+            con.commit();
         } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                throw new DAOException(ex);
+            }
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
     }
@@ -102,6 +113,8 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             }
         } catch (SQLException e) {
             throw new DAOException(e);
+        } finally {
+            closeConnection(con);
         }
         return requests;
     }

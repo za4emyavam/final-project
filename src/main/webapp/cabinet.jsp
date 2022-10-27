@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib tagdir="/WEB-INF/tags" prefix="u"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <c:choose>
     <c:when test="${not empty cookie['lang'].value}">
@@ -16,17 +17,15 @@
 <fmt:message var="title" key="cabinet.title"/>
 <u:html title="${title}">
     <h2>${title}</h2>
-    <p>Hello, ${sessionScope.currentUser.firstname}!</p>
-    <p>Bank: ${sessionScope.currentUser.userBalance}</p>
-    <p>Your user status: ${sessionScope.currentUser.userStatus.name}</p>
-    <button onclick="location.href='/cabinet/replenish'">REPLENISH BALANCE</button>
-    <button onclick="location.href='/cabinet/change_password'">TODO: CHANGE PASSWORD</button>
-    <button onclick="location.href='/cabinet/history'">CHECK BALANCE HISTORY</button>
+    <p class="w3-text-brown">Hello, ${sessionScope.currentUser.firstname}!</p>
+    <p class="w3-text-brown">Bank: ${sessionScope.currentUser.userBalance}</p>
+    <p class="w3-text-brown">Your user status: ${sessionScope.currentUser.userStatus.name}</p>
+    <button class="w3-button w3-round" onclick="location.href='/cabinet/replenish'">REPLENISH BALANCE</button>
+    <%--<button class="w3-button w3-round" onclick="location.href='/cabinet/change_password'">TODO: CHANGE PASSWORD</button>--%>
+    <button class="w3-button w3-round" onclick="location.href='/cabinet/history'">CHECK BALANCE HISTORY</button>
     <c:if test="${requestScope.userTariffs != null}">
         <p>Your tariffs:</p>
-        <table>
-
-
+        <table class="w3-table w3-bordered">
             <tr>
                 <th>tariff name</th>
                 <th>tariff service</th>

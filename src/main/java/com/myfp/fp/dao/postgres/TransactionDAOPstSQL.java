@@ -39,6 +39,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
         return resultId;
@@ -71,12 +72,14 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
                     transaction.setBalanceId(rs.getInt("balance_id"));
                     transaction.setType(TransactionType.fromString(rs.getString("type")));
                     transaction.setTransactionAmount(rs.getInt("transaction_amount"));
+                    transaction.setTransactionDate(rs.getDate("transaction_date"));
                     transactions.add(transaction);
                 }
             }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(preparedStatement);
         }
         return transactions;

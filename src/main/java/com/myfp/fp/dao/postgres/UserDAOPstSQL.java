@@ -4,10 +4,8 @@ import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.UserDAO;
 import com.myfp.fp.entities.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
@@ -15,10 +13,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     public User read(Long id) throws DAOException {
         System.out.println("read by id from DB");
         String sql = "SELECT * FROM \"user\" u WHERE u.user_id=(?)";
+        Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = getConnection().prepareStatement(sql);
+            con = getConnection();
+            preparedStatement = con.prepareStatement(sql);
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             User user = null;
@@ -29,6 +29,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
         }
@@ -51,7 +52,20 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     @Override
     public List<User> readAll() throws DAOException {
-        return null;
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM \"user\" u";
+        Connection con = getConnection();
+        try(Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)) {
+            while(resultSet.next()) {
+                users.add(fillUser(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return users;
     }
 
     @Override
@@ -63,10 +77,13 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     public User readByLoginAndPassword(String login, String password) throws DAOException {
         System.out.println("readByLoginAndPassword from DB");
         String sql = "SELECT * FROM \"user\" u WHERE u.email = (?) AND u.pass=(?)";
+        Connection con = null;  //sadasdasd
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = getConnection().prepareStatement(sql);
+            con = getConnection();
+            preparedStatement = con.prepareStatement(sql);
+            /*preparedStatement = getConnection().prepareStatement(sql);*/
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
@@ -78,6 +95,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            /*try {
+                con.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }*/
+            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
         }

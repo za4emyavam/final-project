@@ -107,14 +107,20 @@ public class MainServiceFactoryImpl implements ServiceFactory {
 
     @Override
     public Connection getConnection() throws FactoryException {
-        if (connection == null) {
+        /*if (connection == null) {
             try {
                 connection = ConnectionPool.getInstance().getConnection();
             } catch (SQLException e) {
                 throw new FactoryException(e);
             }
         }
-        return connection;
+
+        return connection;*/
+        try {
+            return ConnectionPool.getInstance().getConnection();
+        } catch (SQLException e) {
+            throw new FactoryException(e);
+        }
     }
 
     @Override

@@ -14,11 +14,12 @@
 
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="admin.title"/>
-<u:html title="title">
+<u:html title="${title}">
     <h2>${title}</h2>
-    <button onclick="location.href='/admin/requests'">CHECK REQUESTS</button>
+    <button class="w3-button w3-round" onclick="location.href='/admin/requests'">CHECK REQUESTS</button>
+    <button class="w3-button w3-round" onclick="location.href='/admin/users'">All Users</button>
     <form action="/admin/check_payment" method="post">
-        <button type="submit">CHECK PAYMENT</button>
+        <button class="w3-button w3-round" type="submit">CHECK PAYMENT</button>
     </form>
 
 </u:html>
