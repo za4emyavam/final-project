@@ -1,8 +1,6 @@
 package com.myfp.fp.controller.admin;
 
-import com.myfp.fp.entities.Tariff;
-import com.myfp.fp.entities.User;
-import com.myfp.fp.entities.UserTariffs;
+import com.myfp.fp.entities.*;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.UserService;
 import com.myfp.fp.service.UserTariffsService;
@@ -15,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "UserInfoServlet", value = "/admin/users/user_info")
 public class UserInfoServlet extends HttpServlet {
@@ -41,6 +41,60 @@ public class UserInfoServlet extends HttpServlet {
             throw new ServletException(e);
         }
         req.getRequestDispatcher("user_info.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = getId(req, resp);
+        if (id == -1)
+            resp.sendRedirect("/index");
+        String command = req.getParameter("command");
+        switch(command) {
+            case "change_status":
+                String value = req.getParameter("status");
+                if (Arrays.stream(UserStatus.values()).anyMatch(v -> v.getName().equals(value))) {
+                    try {
+                        UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
+                        User user = userService.findById((long) id);
+                        user.setUserStatus(UserStatus.fromString(value));
+                        userService.update(user);
+                        resp.sendRedirect("/admin/users/user_info?id=" + id);
+                    } catch (FactoryException | ServiceException e) {
+                        throw new ServletException(e);
+                    }
+                }
+                break;
+            case "change_role":
+                String role = req.getParameter("role");
+                if (Arrays.stream(Role.values()).anyMatch(v -> v.getName().equals(role))) {
+                    try {
+                        UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
+                        User user = userService.findById((long) id);
+                        user.setUserRole(Role.fromString(role));
+                        userService.update(user);
+                        resp.sendRedirect("/admin/users/user_info?id=" + id);
+                    } catch (FactoryException | ServiceException e) {
+                        throw new ServletException(e);
+                    }
+                }
+                break;
+            case "unsubscribe":
+                int tariffId = Integer.parseInt(req.getParameter("tariff_id"));
+                try{
+                    UserTariffsService userTariffsService = MainServiceFactoryImpl.getInstance().
+                            getUserTariffsService();
+                    userTariffsService.deleteByUserIdTariffId((long) id, (long) tariffId);
+                    resp.sendRedirect("/admin/users/user_info?id=" + id);
+                } catch (FactoryException | ServiceException e) {
+                    throw new ServletException(e);
+                }
+                break;
+            default:
+                resp.sendRedirect("/admin/users/user_info?id=" + id);
+                break;
+        }
+
+        /*resp.sendRedirect("/admin/users/user_info?id=" + id);*/
     }
 
     private int getId(HttpServletRequest request, HttpServletResponse response) {

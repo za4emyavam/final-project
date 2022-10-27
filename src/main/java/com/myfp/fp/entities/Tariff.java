@@ -6,17 +6,6 @@ public class Tariff extends Entity {
     private Service service;
     private int cost;
     private int frequencyOfPayment;
-
-    public TariffStatus getTariffStatus() {
-        return tariffStatus;
-    }
-
-    public void setTariffStatus(TariffStatus tariffStatus) {
-        this.tariffStatus = tariffStatus;
-    }
-
-    private TariffStatus tariffStatus;
-
     public String getName() {
         return name;
     }

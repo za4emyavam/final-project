@@ -16,7 +16,7 @@
 <fmt:message var="title" key="admin.requests.title"/>
 <u:html title="title">
     <h2>${title}</h2>
-<table>
+<table class="w3-table w3-bordered">
     <tr>
         <th>id</th>
         <th>subscriber_id</th>
@@ -26,11 +26,11 @@
     </tr>
     <c:forEach items="${requestScope.requests}" var="r">
         <tr onclick="location.href='/admin/requests/update?id=${r.id}'">
-            <th><c:out value="${r.id}"/></th>
-            <th><c:out value="${r.subscriber.id}"/></th>
-            <th><c:out value="${r.tariff.name}"/></th>
-            <th><fmt:formatDate pattern="dd MM yyyy" value="${r.dateOfChange}"/></th>
-            <th><c:out value="${r.status.value}"/></th>
+            <td><c:out value="${r.id}"/></td>
+            <td><c:out value="${r.subscriber.id}"/></td>
+            <td><c:out value="${r.tariff.name}"/></td>
+            <td><fmt:formatDate pattern="dd MM yyyy" value="${r.dateOfChange}"/></td>
+            <td><c:out value="${r.status.value}"/></td>
         </tr>
 
     </c:forEach>

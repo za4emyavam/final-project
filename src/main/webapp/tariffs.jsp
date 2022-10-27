@@ -19,7 +19,7 @@
 <u:html title="${title}">
     <h2>${title}</h2>
     <c:if test="${sessionScope.currentUser.userRole == 'MAIN_ADMIN'}">
-        <button onclick="location.href='/tariffs/add'">Add new tariff</button>
+        <button class="w3-btn w3-teal" onclick="location.href='/tariffs/add'">Add new tariff</button>
     </c:if>
     <table class="w3-table w3-bordered">
         <tr>
@@ -46,10 +46,10 @@
                 <td><c:out value="${t.service.serviceType}"/></td>
                 <c:if test="${sessionScope.currentUser.userRole == 'MAIN_ADMIN'}">
                     <td>
-                        <button onclick="location.href='/tariffs/update?id=${t.id}'">Change data</button>
+                        <button class="w3-btn w3-teal" onclick="location.href='/tariffs/update?id=${t.id}'">Change data</button>
                     </td>
                     <td>
-                        <button onclick="location.href='/tariffs/delete?id=${t.id}'">Delete</button>
+                        <button class="w3-btn w3-teal" onclick="location.href='/tariffs/delete?id=${t.id}'">Delete</button>
                     </td>
                 </c:if>
             </tr>

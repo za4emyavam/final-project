@@ -35,7 +35,7 @@
         <td>${u.firstname}</td>
         <td>${u.surname}</td>
         <td>${u.userRole.name}</td>
-        <td><fmt:formatDate pattern="dd MM yyyy" value="${u.registrationDate}"/></td>
+        <td><fmt:formatDate pattern="dd.MM.yyyy" value="${u.registrationDate}"/></td>
         <td>${u.userStatus}</td>
       </tr>
     </c:forEach>

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UserService {
     User findById(Long id) throws ServiceException;
+    void update(User entity) throws ServiceException;
     User findByLoginAndPassword(String login, String password) throws ServiceException;
     List<User> findAll() throws ServiceException;
 

@@ -16,6 +16,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void update(User entity) throws ServiceException {
+        try {
+            userDAO.update(entity);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public User findById(Long id) throws ServiceException {
         try {
             return userDAO.read(id);

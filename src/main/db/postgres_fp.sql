@@ -19,7 +19,7 @@ CREATE SCHEMA if not exists fp_schema;
 
 CREATE TYPE role_type AS ENUM ('user', 'admin', 'main_admin');
 CREATE TYPE user_status_type AS ENUM ('subscribed', 'blocked');
-CREATE TYPE tariff_status_type AS ENUM ('disabled', 'active');
+/*CREATE TYPE tariff_status_type AS ENUM ('disabled', 'active');*/
 CREATE TYPE request_status_type AS ENUM ('in processing', 'rejected', 'approved');
 CREATE TYPE transaction_type AS ENUM ('debit', 'refill');
 CREATE TYPE transaction_status_type AS ENUM ('successful', 'denied');
@@ -29,7 +29,6 @@ CREATE TABLE fp_schema.user
     user_id           SERIAL PRIMARY KEY,
     email             varchar(320)     NOT NULL UNIQUE,
     pass              varchar(64)      NOT NULL,
-    user_description  INTEGER          NULL,
     registration_date date             NOT NULL,
     user_role         role_type DEFAULT ('user'),
     user_status       user_status_type DEFAULT('subscribed'),
@@ -142,7 +141,7 @@ CREATE TABLE tariff
     service              INTEGER,
     cost                 DECIMAL(8, 2)     NOT NULL,
     frequency_of_payment INTEGER     NOT NULL,
-    status               tariff_status_type DEFAULT 'active',
+    /*status               tariff_status_type DEFAULT 'active',*/
     FOREIGN KEY (service) REFERENCES service (service_id) ON DELETE CASCADE
 );
 
@@ -314,17 +313,17 @@ VALUES ('IP-TV1', 'best ip-tv', 1, 120, 28),
        ('Super Telephone', 'super telephone', 3, 80, 28);
 
 
-INSERT INTO fp_schema.user (email, pass, user_description, registration_date, user_role, user_status, user_balance, firstname,
+INSERT INTO fp_schema.user (email, pass, registration_date, user_role, user_status, user_balance, firstname,
                             middle_name,
                             surname, telephone_number)
-VALUES ('example@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin', '+380634325657'),
-       ('manager@gmail.com', 12345, 1, CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
+VALUES ('example@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin', '+380634325657'),
+       ('manager@gmail.com', 12345, CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
         '+380634325657'),
-       ('admin@gmail.com', 12345, 2, CURRENT_DATE, 'main_admin',DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
+       ('admin@gmail.com', 12345, CURRENT_DATE, 'main_admin',DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
         '+380764325621'),
-       ('example2@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin', '+380634978657'),
-       ('example3@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin', '+380634343657'),
-       ('example4@gmail.com', 12345, 1, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin', '+380634325617');
+       ('example2@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin', '+380634978657'),
+       ('example3@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin', '+380634343657'),
+       ('example4@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin', '+380634325617');
 
 
 INSERT INTO additional_service (name, description, cost)

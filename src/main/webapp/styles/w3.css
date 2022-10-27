@@ -1747,3 +1747,29 @@ a {
 .w3-border-pale-blue, .w3-hover-border-pale-blue:hover {
     border-color: #e7ffff !important
 }
+
+.w3-inline-input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+}
+.w3-inline-input-group .w3-input {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+.w3-inline-input-group .w3-input:focus {
+    z-index: 3;
+}
+.w3-input-group-addon,
+.w3-inline-input-group .w3-input {
+    display: table-cell;
+}
+.w3-input-group-addon
+{
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}

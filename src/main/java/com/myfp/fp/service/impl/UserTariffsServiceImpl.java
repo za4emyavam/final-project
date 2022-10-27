@@ -42,4 +42,13 @@ public class UserTariffsServiceImpl implements UserTariffsService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void deleteByUserIdTariffId(Long userId, Long tariffId) throws ServiceException {
+        try {
+            userTariffsDAO.deleteByUserIdTariffId(userId, tariffId);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

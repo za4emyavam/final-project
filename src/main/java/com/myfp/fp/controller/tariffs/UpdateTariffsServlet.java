@@ -69,8 +69,6 @@ public class UpdateTariffsServlet extends HttpServlet {
             newTariff.setFrequencyOfPayment(frequencyOfPayment);
             newTariff.setService(service);
             System.out.println(status);
-            newTariff.setTariffStatus(TariffStatus.fromString(status));
-            System.out.println(newTariff.getTariffStatus().getName());
             tariffService.update(newTariff);
             response.sendRedirect("/tariffs");
         } catch (FactoryException | ServiceException e) {

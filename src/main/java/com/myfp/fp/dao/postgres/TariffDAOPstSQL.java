@@ -37,7 +37,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
 
     @Override
     public Long create(Tariff entity) throws DAOException {
-        String sql = "INSERT INTO tariff(name, description, service, cost, frequency_of_payment, status) VALUES(?, ?, ?, ?, ?, DEFAULT)";
+        String sql = "INSERT INTO tariff(name, description, service, cost, frequency_of_payment) VALUES(?, ?, ?, ?, ?)";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         long resultId = -1;
@@ -82,8 +82,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             preparedStatement.setString(k++, entity.getDescription());
             preparedStatement.setInt(k++, Math.toIntExact(entity.getService().getId()));
             preparedStatement.setInt(k++, entity.getCost());
-            preparedStatement.setInt(k++, entity.getFrequencyOfPayment());
-            preparedStatement.setObject(k, entity.getTariffStatus().getName());
+            preparedStatement.setInt(k, entity.getFrequencyOfPayment());
             preparedStatement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
@@ -136,7 +135,6 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             tariff.setDescription(rs.getString("description"));
             tariff.setCost(rs.getInt("cost"));
             tariff.setFrequencyOfPayment(rs.getInt("frequency_of_payment"));
-            tariff.setTariffStatus(TariffStatus.fromString(rs.getString("status")));
 
             Service service = new Service();
             service.setId(rs.getLong("service_id"));

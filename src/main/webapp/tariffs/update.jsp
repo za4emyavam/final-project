@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
 <c:choose>
@@ -18,20 +18,32 @@
     <h2>${title}</h2>
 
     <form action="/tariffs/update?id=${requestScope.id}" method="post">
-        <input id="name" name="name" value="${requestScope.currentTariff.name}">
-        <input id="description" name="description" value="${requestScope.currentTariff.description}">
-        <input id="cost" name="cost" value="${requestScope.currentTariff.cost}">
-        <input id="frequency_of_payment" name="frequency_of_payment"
-               value="${requestScope.currentTariff.frequencyOfPayment}">
-        <select id="service" name="service">
-            <c:forEach items="${requestScope.services}" var="s">
-                <option value="${s.serviceType}">${s.serviceType}</option>
-            </c:forEach>
-        </select>
-        <select id="status" name="status">
-            <option value="disabled">disabled</option>
-            <option value="active">active</option>
-        </select>
-        <button class="add-button">Change tariff.</button>
+        <div class="w3-inline-input-group">
+            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 150px" id="name"
+                   name="name"
+                   value="${requestScope.currentTariff.name}">
+            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="description"
+                   name="description"
+                   value="${requestScope.currentTariff.description}">
+            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 150px" id="cost"
+                   name="cost"
+                   value="${requestScope.currentTariff.cost}">
+            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 150px"
+                   id="frequency_of_payment" name="frequency_of_payment"
+                   value="${requestScope.currentTariff.frequencyOfPayment}">
+            <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:150px" id="service"
+                    name="service">
+                <option value="" disabled selected>Was: ${requestScope.currentTariff.service.serviceType}</option>
+                <c:forEach items="${requestScope.services}" var="s">
+                    <option value="${s.serviceType}">${s.serviceType}</option>
+                </c:forEach>
+            </select>
+                <%--<select class="w3-select w3-border w3-input-group-addon" id="status" name="status">
+                    <option value="" disabled selected>Was: ${requestScope.currentTariff.tariffStatus.name} </option>
+                    <option value="disabled">disabled</option>
+                    <option value="active">active</option>
+                </select>--%>
+            <button class="w3-btn w3-teal w3-input-group-addon" style="width:150px" type="submit">Change tariff.</button>
+        </div>
     </form>
 </u:html>

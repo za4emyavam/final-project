@@ -147,7 +147,6 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             tariff.setDescription(rs.getString("description"));
             tariff.setCost(rs.getInt("cost"));
             tariff.setFrequencyOfPayment(rs.getInt("frequency_of_payment"));
-            tariff.setTariffStatus(TariffStatus.fromString(rs.getString("status")));
 
             Service service = new Service();
             service.setId(rs.getLong("service_id"));

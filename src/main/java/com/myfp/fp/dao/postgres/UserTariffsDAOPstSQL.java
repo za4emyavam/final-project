@@ -79,6 +79,21 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
     }
 
     @Override
+    public void deleteByUserIdTariffId(Long userId, Long tariffId) throws DAOException {
+        String sql = "DELETE FROM user_tariffs ut WHERE user_id=? AND tariff_id=?";
+        Connection con = getConnection();
+        try (PreparedStatement preparedStatement = con.prepareStatement(sql)) {
+            preparedStatement.setInt(1, Math.toIntExact(userId));
+            preparedStatement.setInt(2, Math.toIntExact(tariffId));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+    }
+
+    @Override
     public void checkPaymentOfAllUsers() throws DAOException {
         String sql = "SELECT f_check_payment()";
         Connection con = getConnection();
@@ -117,7 +132,6 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             tariff.setDescription(rs.getString("description"));
             tariff.setCost(rs.getInt("cost"));
             tariff.setFrequencyOfPayment(rs.getInt("frequency_of_payment"));
-            tariff.setTariffStatus(TariffStatus.fromString(rs.getString("status")));
 
             Service service = new Service();
             service.setId(rs.getLong("service_id"));

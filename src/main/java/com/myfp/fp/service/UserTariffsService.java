@@ -9,4 +9,5 @@ public interface UserTariffsService {
     List<UserTariffs> readAllByUserId(Long id) throws ServiceException;
     List<Integer> getAllId() throws ServiceException;
     void checkPaymentOfAllUsers() throws ServiceException;
+    public void deleteByUserIdTariffId(Long userId, Long tariffId) throws ServiceException;
 }

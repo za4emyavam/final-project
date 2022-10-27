@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserTariffsDAO extends DAO<UserTariffs> {
     List<UserTariffs> readAll() throws DAOException;
     List<UserTariffs> readAllByUser(Long id) throws DAOException;
-
     List<Integer> getAllId() throws DAOException;
+    void deleteByUserIdTariffId(Long userId, Long tariffId) throws DAOException;
     void checkPaymentOfAllUsers() throws DAOException;
 }

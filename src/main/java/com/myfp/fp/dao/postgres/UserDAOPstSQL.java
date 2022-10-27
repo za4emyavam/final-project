@@ -42,7 +42,34 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     @Override
     public void update(User entity) throws DAOException {
-
+        String sql = "UPDATE \"user\" u SET email=?, registration_date=?," +
+                " user_role=?::role_type, user_status=?::user_status_type," +
+                "user_balance=?, firstname=?, middle_name=?, surname=?, telephone_number=?" +
+                " WHERE user_id=" + entity.getId();
+        Connection con = getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            con.setAutoCommit(false);
+            preparedStatement = con.prepareStatement(sql);
+            int k = 1;
+            preparedStatement.setString(k++, entity.getEmail());
+            preparedStatement.setDate(k++, entity.getRegistrationDate());
+            preparedStatement.setString(k++, entity.getUserRole().getName());
+            preparedStatement.setString(k++, entity.getUserStatus().getName());
+            preparedStatement.setInt(k++, entity.getUserBalance());
+            preparedStatement.setString(k++, entity.getFirstname());
+            preparedStatement.setString(k++, entity.getMiddleName());
+            preparedStatement.setString(k++, entity.getSurname());
+            preparedStatement.setString(k, entity.getTelephoneNumber());
+            preparedStatement.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            rollback(con);
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+            closeStat(preparedStatement);
+        }
     }
 
     @Override

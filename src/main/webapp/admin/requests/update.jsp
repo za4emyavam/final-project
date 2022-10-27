@@ -32,11 +32,13 @@
     <p>Date of request change: <fmt:formatDate value="${requestScope.connectionRequest.dateOfChange}"/></p>
     <p>Request status: ${requestScope.connectionRequest.status.value}</p>
     <form name="/admin/requests/update?${requestScope.id}" method="post">
-        <select id="status" name="status">
-            <option value="approved">approved</option>
-            <option value="reject">reject</option>
-        </select>
-        <button type="submit">verdict</button>
+        <div class="w3-container w3-inline-input-group">
+            <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:150px" id="status" name="status">
+                <option value="approved">approved</option>
+                <option value="reject">reject</option>
+            </select>
+            <button class="w3-btn w3-teal w3-input-group-addon" type="submit">verdict</button>
+        </div>
     </form><%--
     <button onclick="location.href='/admin/requests/update?id=${requestScope.id}&status=approved'">APPROVE</button>
     <button onclick="location.href='/admin/requests/update?id=${requestScope.id}&status=reject'">REJECT</button>--%>
