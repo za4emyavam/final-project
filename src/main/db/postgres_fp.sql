@@ -29,7 +29,7 @@ CREATE TABLE fp_schema.user
     user_id           SERIAL PRIMARY KEY,
     email             varchar(320)     NOT NULL UNIQUE,
     pass              varchar(64)      NOT NULL,
-    registration_date date             NOT NULL,
+    registration_date date             NOT NULL DEFAULT(CURRENT_DATE),
     user_role         role_type DEFAULT ('user'),
     user_status       user_status_type DEFAULT('subscribed'),
     user_balance      DECIMAL(8, 2)   DEFAULT 0,

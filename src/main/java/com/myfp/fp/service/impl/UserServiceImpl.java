@@ -34,6 +34,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Long create(User entity) throws ServiceException {
+        try {
+            return userDAO.create(entity);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public User findByLoginAndPassword(String login, String password) throws ServiceException {
         try {
             return userDAO.readByLoginAndPassword(login, password);

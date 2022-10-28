@@ -37,6 +37,7 @@ public class SecurityFilter implements Filter {
         permissions.put("/admin/requests/update", manager);
         permissions.put("/admin/users", manager);
         permissions.put("/admin/users/user_info", manager);
+        permissions.put("/admin/registration", manager);
     }
 
     @Override

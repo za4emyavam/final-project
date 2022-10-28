@@ -37,7 +37,32 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     @Override
     public Long create(User entity) throws DAOException {
-        return null;
+        String sql = "INSERT INTO \"user\"(email, pass, firstname, middle_name, surname, telephone_number) " +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+        Connection con = getConnection();
+        long resId = -1;
+        try (PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            int k = 1;
+            preparedStatement.setString(k++, entity.getEmail());
+            preparedStatement.setString(k++, entity.getPass());
+            preparedStatement.setString(k++, entity.getFirstname());
+            preparedStatement.setString(k++, entity.getMiddleName());
+            preparedStatement.setString(k++, entity.getSurname());
+            preparedStatement.setString(k, entity.getTelephoneNumber());
+            int count = preparedStatement.executeUpdate();
+            if (count > 0) {
+                try(ResultSet set = preparedStatement.getGeneratedKeys()) {
+                    if(set.next()) {
+                        entity.setId(resId = set.getInt(1));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return resId;
     }
 
     @Override

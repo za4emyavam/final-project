@@ -90,7 +90,7 @@ public class User extends Entity {
         return pass;
     }
 
-    public void setPass(String password) {
+    public void setPass(String pass) {
         this.pass = pass;
     }
 

@@ -18,8 +18,9 @@
     <h2>${title}</h2>
     <button class="w3-button w3-round" onclick="location.href='/admin/requests'">CHECK REQUESTS</button>
     <button class="w3-button w3-round" onclick="location.href='/admin/users'">All Users</button>
+    <button class="w3-button w3-round" onclick="location.href='/admin/registration'">Registre User</button>
     <form action="/admin/check_payment" method="post">
-        <button class="w3-button w3-round" type="submit">CHECK PAYMENT</button>
+        <button class="w3-btn w3-teal" type="submit">CHECK PAYMENT</button>
     </form>
 
 </u:html>
