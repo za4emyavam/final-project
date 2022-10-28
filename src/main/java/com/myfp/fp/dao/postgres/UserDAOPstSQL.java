@@ -121,6 +121,27 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     }
 
     @Override
+    public List<User> readAll(int limit, int offset) throws DAOException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM \"user\" u LIMIT ? OFFSET ?";
+        Connection con = getConnection();
+        try (PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    users.add(fillUser(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return users;
+    }
+
+    @Override
     public User readByLogin(String login) throws DAOException {
         return null;
     }
@@ -135,7 +156,6 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         try {
             con = getConnection();
             preparedStatement = con.prepareStatement(sql);
-            /*preparedStatement = getConnection().prepareStatement(sql);*/
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
@@ -147,11 +167,6 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            /*try {
-                con.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }*/
             closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
@@ -187,6 +202,23 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 throw new DAOException();
             }
         }*/
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws DAOException {
+        String sql = "SELECT count(*) AS count FROM \"user\" ";
+        Connection con = getConnection();
+        int res = -1;
+        try (Statement statement = con.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while (rs.next())
+                res = rs.getInt(1);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return res;
     }
 
     private User fillUser(ResultSet rs) throws SQLException {

@@ -29,9 +29,11 @@
                    name="surname" placeholder="Surname">
             <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 200px" id="telephone_number"
                    name="telephone_number" placeholder="Telephone number">
-            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 200px" id="password" name="password" type="password">
+            <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 200px" id="password"
+                   name="password" type="password" placeholder="Password">
                 <%--<input id="submit" name="submit" type="submit" value="Submit">--%>
-            <button class="w3-btn w3-teal w3-input-group-addon w3-col" style="width: 150px" type="submit">Registr</button>
+            <button class="w3-btn w3-teal w3-input-group-addon w3-col" style="width: 150px" type="submit">Registr
+            </button>
         </div>
             <%--<button class="registration">Registr</button>--%>
     </form>

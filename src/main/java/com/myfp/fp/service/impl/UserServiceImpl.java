@@ -61,9 +61,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAll(int limit, int offset) throws ServiceException {
+        try {
+            return userDAO.readAll(limit, offset);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void addNewUser(String email, String login, String password) throws ServiceException {
         try {
             userDAO.addNewUser(email, login, password);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws ServiceException {
+        try {
+            return userDAO.getNoOfRecords();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

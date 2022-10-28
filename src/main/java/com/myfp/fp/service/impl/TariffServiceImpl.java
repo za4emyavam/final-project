@@ -25,6 +25,15 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
+    public List<Tariff> findAll(int limit, int offset) throws ServiceException {
+        try {
+            return tariffDAO.readAll(limit, offset);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public Long insertTariff(Tariff t) throws ServiceException {
         try {
             return tariffDAO.create(t);
@@ -55,6 +64,15 @@ public class TariffServiceImpl implements TariffService {
     public Tariff findById(Long id) throws ServiceException {
         try {
             return tariffDAO.read(id);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws ServiceException {
+        try {
+            return tariffDAO.getNoOfRecords();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

@@ -52,8 +52,8 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             preparedStatement.setInt(k, entity.getFrequencyOfPayment());
             int count = preparedStatement.executeUpdate();
             if (count > 0) {
-                try(ResultSet set = preparedStatement.getGeneratedKeys()) {
-                    if(set.next()) {
+                try (ResultSet set = preparedStatement.getGeneratedKeys()) {
+                    if (set.next()) {
                         entity.setId(resultId = set.getInt(1));
                     }
                 }
@@ -70,7 +70,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
     @Override
     public void update(Tariff entity) throws DAOException {
         String sql = "UPDATE tariff t " +
-                "SET name=?, description=?, service=?, cost=?, frequency_of_payment=?, status=?::tariff_status_type " +
+                "SET name=?, description=?, service=?, cost=?, frequency_of_payment=?, " +
                 "WHERE t.tariff_id=" + entity.getId();
         Connection con = getConnection();
         PreparedStatement preparedStatement = null;
@@ -111,12 +111,11 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
     @Override
     public List<Tariff> readAll() throws DAOException {
         List<Tariff> tariffs = new ArrayList<>();
-        String sql = "SELECT /*t.id, t.name, t.description, t.cost, t.frequency_of_payment, s.id, s.type*/* " +
-                "FROM tariff t, service s WHERE t.service=s.service_id";
+        String sql = "SELECT * FROM tariff t, service s WHERE t.service=s.service_id";
         Connection con = getConnection();
-        try(Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)) {
-            while(resultSet.next()) {
+        try (Statement statement = con.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
                 tariffs.add(fillTariff(resultSet));
             }
         } catch (SQLException e) {
@@ -125,6 +124,44 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             closeConnection(con);
         }
         return tariffs;
+    }
+
+    @Override
+    public List<Tariff> readAll(int limit, int offset) throws DAOException {
+        List<Tariff> tariffs = new ArrayList<>();
+        String sql = "SELECT * FROM tariff t, service s WHERE t.service=s.service_id LIMIT ? OFFSET ?";
+        Connection con = getConnection();
+        try (PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    tariffs.add(fillTariff(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return tariffs;
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws DAOException {
+        String sql = "SELECT count(*) AS count FROM tariff";
+        Connection con = getConnection();
+        int res = -1;
+        try (Statement statement = con.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while (rs.next())
+                res = rs.getInt(1);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return res;
     }
 
     private Tariff fillTariff(ResultSet rs) throws SQLException {
