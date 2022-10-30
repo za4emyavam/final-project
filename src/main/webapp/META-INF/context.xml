@@ -12,7 +12,7 @@
      maxActive="10"
      maxIdle="4"/>-->
 
-    <Resource name="jdbc/mysql"
+    <!--<Resource name="jdbc/mysql"
               auth="Container"
               type="javax.sql.DataSource"
               username="root"
@@ -21,7 +21,7 @@
               url="jdbc:mysql://localhost:3306/new_project?autoReconnect=true"
               validationQuery="select 1"
               maxActive="10"
-              maxIdle="4"/>
+              maxIdle="4"/>-->
 
     <Resource name="jdbc/postgres"
               auth="Container"
@@ -32,8 +32,10 @@
               password="admin"
               maxTotal="20"
               maxIdle="10"
-              maxWaitMillis="-1"/>
-
+              maxWaitMillis="-1"
+              removeAbandonedTimeout="10"/>
+    <!--removeAbandonedOnBorrow="true"
+    removeAbandonedOnMaintenance="true"-->
     <!--<Resource name="jdbc/mysql"
               auth="Container"
               type="javax.sql.DataSource"/>

@@ -7,19 +7,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 abstract public class BaseDAOImpl {
-    private Connection connection;
 
     public Connection getConnection() throws DAOException {
         //return connection;
         try {
-            return ConnectionPool.getInstance().getConnection();
+            return ConnectionPool.getConnection();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
     }
 
     public void closeConnection(Connection con) throws DAOException {
@@ -30,7 +25,6 @@ abstract public class BaseDAOImpl {
                 throw new DAOException(e);
             }
         }
-        connection = null;
     }
 
     protected void rollback(Connection con) throws DAOException {

@@ -29,9 +29,9 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -92,8 +92,8 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             rollback(con);
             throw new DAOException(e);
         } finally {
-            closeConnection(con);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -125,6 +125,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM \"user\" u LIMIT ? OFFSET ?";
         Connection con = getConnection();
+
         try (PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setInt(1, limit);
             statement.setInt(2, offset);
@@ -150,7 +151,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     public User readByLoginAndPassword(String login, String password) throws DAOException {
         System.out.println("readByLoginAndPassword from DB");
         String sql = "SELECT * FROM \"user\" u WHERE u.email = (?) AND u.pass=(?)";
-        Connection con = null;  //sadasdasd
+        Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -167,9 +168,9 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -207,8 +208,8 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     @Override
     public Integer getNoOfRecords() throws DAOException {
         String sql = "SELECT count(*) AS count FROM \"user\" ";
-        Connection con = getConnection();
         int res = -1;
+        Connection con = getConnection();
         try (Statement statement = con.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
             while (rs.next())
@@ -223,7 +224,6 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     private User fillUser(ResultSet rs) throws SQLException {
         User user = new User();
-        try {
             user.setId(rs.getLong("user_id"));
             user.setEmail(rs.getString("email"));
             user.setPass(rs.getString("pass"));
@@ -237,17 +237,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             user.setRegistrationDate(rs.getDate("registration_date"));
             //user.setRole(Enum.valueOf(Role.class, rs.getString("user_role").toUpperCase()));
             user.setUserRole(Role.fromString(rs.getString("user_role")));
-            String status = rs.getString("user_status");
+            /*String status = rs.getString("user_status");*/
             /*if (status != null)
                 user.setUserStatus(Enum.valueOf(UserStatus.class, status.toUpperCase()));
             else
                 user.setUserStatus(null);*/
             user.setUserStatus(UserStatus.fromString(rs.getString("user_status")));
-
-
-        } catch (SQLException e) {
-            throw e;
-        }
         return user;
     }
 }

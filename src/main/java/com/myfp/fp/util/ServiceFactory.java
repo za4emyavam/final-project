@@ -3,9 +3,7 @@ package com.myfp.fp.util;
 import com.myfp.fp.dao.*;
 import com.myfp.fp.service.*;
 
-import java.sql.Connection;
-
-public interface ServiceFactory extends AutoCloseable {
+public interface ServiceFactory {
     UserService getUserService() throws FactoryException;
 
     UserDAO getUserDAO() throws FactoryException;
@@ -19,6 +17,4 @@ public interface ServiceFactory extends AutoCloseable {
     ConnectionRequestDAO getConnectionRequestDAO() throws FactoryException;
     UserTariffsService getUserTariffsService() throws FactoryException;
     UserTariffsDAO getUserTariffsDAO() throws FactoryException;
-
-    Connection getConnection() throws FactoryException;
 }
