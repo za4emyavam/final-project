@@ -4,12 +4,15 @@ import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.TransactionDAO;
 import com.myfp.fp.entities.Transaction;
 import com.myfp.fp.entities.TransactionType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO {
+    private static final Logger LOG4J = LogManager.getLogger(TransactionDAOPstSQL.class);
     @Override
     public Transaction read(Long id) throws DAOException {
         return null;
@@ -37,6 +40,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -77,6 +81,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);

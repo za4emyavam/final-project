@@ -15,6 +15,9 @@ login.form.login=Имя пользователя
 login.form.password=Пароль
 login.button.login=Войти
 
+cabinet.title=Кабінет
+cabinet.history.title=Історія балансу
+
 password.change.title=Смена пароля
 password.change.form.old.password=Старый пароль
 password.change.form.new.password=Новый пароль

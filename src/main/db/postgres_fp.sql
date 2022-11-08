@@ -36,26 +36,10 @@ CREATE TABLE fp_schema.user
     firstname         varchar(30)      NOT NULL,
     middle_name       varchar(30)      NOT NULL,
     surname           varchar(30)      NOT NULL,
-    telephone_number  varchar(30)      NOT NULL
+    telephone_number  varchar(30)      NOT NULL,
+    CONSTRAINT proper_email CHECK ( email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$' ),
+    CONSTRAINT proper_telephone_number CHECK (telephone_number ~ '^\+38[0-9\-\+]{9,15}$' )
 );
-
-/*CREATE OR REPLACE FUNCTION f_t_user()
-    RETURNS trigger AS
-$BODY$
-BEGIN
-    if (NEW.balance is NULL) then
-        INSERT INTO user_balance DEFAULT VALUES RETURNING user_balance_id INTO NEW.balance;
-    end if;
-    RETURN NEW;
-END;
-$BODY$
-    LANGUAGE plpgsql VOLATILE;
-
-CREATE TRIGGER t_user
-    BEFORE INSERT
-    ON fp_schema.user
-    FOR EACH ROW
-EXECUTE PROCEDURE f_t_user();*/
 
 CREATE TABLE transaction
 (
@@ -306,7 +290,8 @@ VALUES ('IP-TV'),
        ('Telephone');
 
 INSERT INTO tariff (name, description, service, cost, frequency_of_payment)
-VALUES ('IP-TV1', 'best ip-tv', 1, 120, 28),
+VALUES ('IP-TV1', 'default ip-tv', 1, 120, 28),
+       ('Best IP-TV', 'best ip-tv', 1, 150, 28),
        ('Internet', 'internet', 2, 150, 28),
        ('Super Internet', 'best internet', 2, 180, 28),
        ('Telephone', 'telephone', 3, 50, 28),

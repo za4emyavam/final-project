@@ -37,7 +37,7 @@
                 <option value="approved">approved</option>
                 <option value="reject">reject</option>
             </select>
-            <button class="w3-btn w3-teal w3-input-group-addon" type="submit">verdict</button>
+            <button class="w3-btn w3-teal w3-input-group-addon" style="width:150px" type="submit">verdict</button>
         </div>
     </form><%--
     <button onclick="location.href='/admin/requests/update?id=${requestScope.id}&status=approved'">APPROVE</button>

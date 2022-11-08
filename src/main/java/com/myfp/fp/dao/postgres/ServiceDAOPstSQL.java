@@ -1,8 +1,11 @@
 package com.myfp.fp.dao.postgres;
 
+import com.myfp.fp.controller.CookieLocaleFilter;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.ServiceDAO;
 import com.myfp.fp.entities.Service;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
+    private static final Logger LOG4J = LogManager.getLogger(ServiceDAOPstSQL.class);
     @Override
     public Service read(Long id) throws DAOException {
         return null;
@@ -45,6 +49,7 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
                 services.add(service);
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -68,6 +73,7 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);

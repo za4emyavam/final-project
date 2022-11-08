@@ -15,9 +15,9 @@
 </c:choose>
 
 <%--<fmt:setBundle basename="localization.messages.utf8" var="lang"/>--%>
-<fmt:setBundle basename="messages"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <!DOCTYPE html>
-<html lang="">
+<html lang="cookie['lang'].value">
 <head>
     <%--<c:out value="${cookie['lang'].value}"/>--%>
     <meta charset="UTF-8">

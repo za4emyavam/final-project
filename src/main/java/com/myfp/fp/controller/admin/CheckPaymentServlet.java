@@ -15,7 +15,6 @@ import java.io.IOException;
 public class CheckPaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Is here?");
         try {
             UserTariffsService userTariffsService = MainServiceFactoryImpl.getInstance().getUserTariffsService();
             userTariffsService.checkPaymentOfAllUsers();

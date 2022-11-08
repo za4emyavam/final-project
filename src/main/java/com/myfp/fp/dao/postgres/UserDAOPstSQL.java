@@ -3,12 +3,15 @@ package com.myfp.fp.dao.postgres;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.UserDAO;
 import com.myfp.fp.entities.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
+    private static final Logger LOG4J = LogManager.getLogger(UserDAOPstSQL.class);
     @Override
     public User read(Long id) throws DAOException {
         System.out.println("read by id from DB");
@@ -27,6 +30,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             }
             return user;
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeStat(resultSet);
@@ -58,6 +62,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -89,6 +94,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             preparedStatement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             rollback(con);
             throw new DAOException(e);
         } finally {
@@ -113,6 +119,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 users.add(fillUser(resultSet));
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -135,6 +142,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -166,6 +174,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             }
             return user;
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeStat(resultSet);
@@ -215,6 +224,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             while (rs.next())
                 res = rs.getInt(1);
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);

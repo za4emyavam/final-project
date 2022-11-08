@@ -33,7 +33,6 @@
             </c:if>
         </c:if>
         <c:if test="${sessionScope.currentUser == null}">
-            <button class="w3-button w3-round" onclick="location.href='registration.html'">REGISTER</button>
             <button class="w3-button w3-round" onclick="location.href='login'">LOGIN</button>
         </c:if>
         <button class="w3-button w3-round" onclick="location.href='tariffs'">TARIFFS</button>
