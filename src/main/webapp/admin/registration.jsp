@@ -11,7 +11,7 @@
 <u:html title="title">
     <div class="w3-container">
     <h2>${title}</h2>
-    <form action="/admin/registration" method="post">
+    <form action="/admin/registration" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
         <div class="w3-container w3-inline-input-group">
             <fmt:message key="admin.registration.email" var="email"/>
             <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="email" name="email"
