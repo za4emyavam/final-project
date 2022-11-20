@@ -1,38 +1,46 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="u"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<c:choose>
-    <c:when test="${not empty cookie['lang'].value}">
-        <fmt:setLocale value="${cookie['lang'].value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="admin.requests.title"/>
 <u:html title="title">
-    <h2>${title}</h2>
-<table class="w3-table w3-bordered">
-    <tr>
-        <th>id</th>
-        <th>subscriber_id</th>
-        <th>tariff</th>
-        <th>date of change</th>
-        <th>status</th>
-    </tr>
-    <c:forEach items="${requestScope.requests}" var="r">
-        <tr onclick="location.href='/admin/requests/update?id=${r.id}'">
-            <td><c:out value="${r.id}"/></td>
-            <td><c:out value="${r.subscriber.id}"/></td>
-            <td><c:out value="${r.tariff.name}"/></td>
-            <td><fmt:formatDate pattern="dd MM yyyy" value="${r.dateOfChange}"/></td>
-            <td><c:out value="${r.status.value}"/></td>
-        </tr>
-
-    </c:forEach>
-</table>
+    <div class="w3-container">
+        <h2>${title}</h2>
+        <table class="w3-table w3-bordered">
+            <tr>
+                <th><fmt:message key="admin.requests.id"/></th>
+                <th><fmt:message key="admin.requests.subscriberid"/></th>
+                <th><fmt:message key="admin.requests.tariff"/></th>
+                <th><fmt:message key="admin.requests.date"/></th>
+                <th><fmt:message key="admin.requests.status"/></th>
+            </tr>
+            <c:forEach items="${requestScope.requests}" var="r">
+                <tr onclick="location.href='/admin/requests/update?id=${r.id}'">
+                    <td><c:out value="${r.id}"/></td>
+                    <td><c:out value="${r.subscriber.id}"/></td>
+                    <td><c:out value="${r.tariff.name}"/></td>
+                    <td><fmt:formatDate pattern="dd MM yyyy" value="${r.dateOfChange}"/></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${r.status.value == 'in processing'}">
+                                <fmt:message key="requeststatus.type.inprocessing"/>
+                            </c:when>
+                            <c:when test="${r.status.value == 'rejected'}">
+                                <fmt:message key="requeststatus.type.rejected"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="requeststatus.type.approved"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
 </u:html>

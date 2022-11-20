@@ -3,14 +3,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<c:choose>
-    <c:when test="${not empty cookie['lang'].value}">
-        <fmt:setLocale value="${cookie['lang'].value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}" scope="session" />
+<fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="tariffs.add.title"/>
