@@ -1,26 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="u"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<c:choose>
-    <c:when test="${not empty cookie['lang'].value}">
-        <fmt:setLocale value="${cookie['lang'].value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="admin.title"/>
 <u:html title="${title}">
-    <h2>${title}</h2>
-    <button class="w3-button w3-round" onclick="location.href='/admin/requests'">CHECK REQUESTS</button>
-    <button class="w3-button w3-round" onclick="location.href='/admin/users'">All Users</button>
-    <button class="w3-button w3-round" onclick="location.href='/admin/registration'">Registre User</button>
-    <form action="/admin/check_payment" method="post">
-        <button class="w3-btn w3-teal" type="submit">CHECK PAYMENT</button>
-    </form>
+    <div class="w3-container">
+        <h2>${title}</h2>
+        <button class="w3-button w3-round" onclick="location.href='/admin/requests'"><fmt:message key="admin.button.checkrequests"/></button>
+        <button class="w3-button w3-round" onclick="location.href='/admin/users'"><fmt:message key="admin.button.allusers"/></button>
+        <button class="w3-button w3-round" onclick="location.href='/admin/registration'"><fmt:message key="admin.button.registeruser"/></button>
+        <form action="/admin/check_payment" method="post">
+            <button class="w3-btn w3-teal" type="submit"><fmt:message key="admin.button.checkpayment"/></button>
+        </form>
+    </div>
 
 </u:html>

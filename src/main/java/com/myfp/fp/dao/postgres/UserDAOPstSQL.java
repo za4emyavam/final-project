@@ -3,12 +3,15 @@ package com.myfp.fp.dao.postgres;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.UserDAO;
 import com.myfp.fp.entities.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
+    private static final Logger LOG4J = LogManager.getLogger(UserDAOPstSQL.class);
     @Override
     public User read(Long id) throws DAOException {
         System.out.println("read by id from DB");
@@ -27,11 +30,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             }
             return user;
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
-            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -58,6 +62,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -89,11 +94,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             preparedStatement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             rollback(con);
             throw new DAOException(e);
         } finally {
-            closeConnection(con);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -113,6 +119,30 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
                 users.add(fillUser(resultSet));
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> readAll(int limit, int offset) throws DAOException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM \"user\" u LIMIT ? OFFSET ?";
+        Connection con = getConnection();
+
+        try (PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    users.add(fillUser(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -129,13 +159,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     public User readByLoginAndPassword(String login, String password) throws DAOException {
         System.out.println("readByLoginAndPassword from DB");
         String sql = "SELECT * FROM \"user\" u WHERE u.email = (?) AND u.pass=(?)";
-        Connection con = null;  //sadasdasd
+        Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             con = getConnection();
             preparedStatement = con.prepareStatement(sql);
-            /*preparedStatement = getConnection().prepareStatement(sql);*/
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
@@ -145,16 +174,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             }
             return user;
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
-            /*try {
-                con.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }*/
-            closeConnection(con);
             closeStat(resultSet);
             closeStat(preparedStatement);
+            closeConnection(con);
         }
     }
 
@@ -189,9 +214,26 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         }*/
     }
 
+    @Override
+    public Integer getNoOfRecords() throws DAOException {
+        String sql = "SELECT count(*) AS count FROM \"user\" ";
+        int res = -1;
+        Connection con = getConnection();
+        try (Statement statement = con.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while (rs.next())
+                res = rs.getInt(1);
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return res;
+    }
+
     private User fillUser(ResultSet rs) throws SQLException {
         User user = new User();
-        try {
             user.setId(rs.getLong("user_id"));
             user.setEmail(rs.getString("email"));
             user.setPass(rs.getString("pass"));
@@ -205,17 +247,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             user.setRegistrationDate(rs.getDate("registration_date"));
             //user.setRole(Enum.valueOf(Role.class, rs.getString("user_role").toUpperCase()));
             user.setUserRole(Role.fromString(rs.getString("user_role")));
-            String status = rs.getString("user_status");
+            /*String status = rs.getString("user_status");*/
             /*if (status != null)
                 user.setUserStatus(Enum.valueOf(UserStatus.class, status.toUpperCase()));
             else
                 user.setUserStatus(null);*/
             user.setUserStatus(UserStatus.fromString(rs.getString("user_status")));
-
-
-        } catch (SQLException e) {
-            throw e;
-        }
         return user;
     }
 }

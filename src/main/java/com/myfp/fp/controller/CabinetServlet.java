@@ -31,9 +31,4 @@ public class CabinetServlet extends HttpServlet {
         }
         request.getRequestDispatcher("cabinet.jsp").forward(request, response);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 }

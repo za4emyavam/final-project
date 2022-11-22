@@ -20,7 +20,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException{
         Context cxt;
         Connection c = null;
         try {

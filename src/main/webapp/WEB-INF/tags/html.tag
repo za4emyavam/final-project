@@ -5,28 +5,22 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<c:choose>
-    <c:when test="${not empty cookie['lang'].value}">
-        <fmt:setLocale value="${cookie['lang'].value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
 
-<%--<fmt:setBundle basename="localization.messages.utf8" var="lang"/>--%>
-<fmt:setBundle basename="messages"/>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}" scope="session" />
+<fmt:setLocale value="${language}"/>
+
+
+<fmt:setBundle basename="messages" var="lang"/>
 <!DOCTYPE html>
-<html lang="">
+<html lang="${language}">
 <head>
-    <%--<c:out value="${cookie['lang'].value}"/>--%>
     <meta charset="UTF-8">
     <title>${title}</title>
     <c:url var="urlCss" value="/styles/w3.css"/>
     <link href="${urlCss}" rel="stylesheet">
 </head>
 <body>
-<div class="w3-container w3-teal" >
+<div class="w3-container w3-teal">
     <div class="w3-container" style="display: inline-block">
         <h1><a class="w3-hover-none w3-hover-text-white" href="/index"><fmt:message key="application.title"/></a></h1>
         <c:if test="${not empty currentUser}">
@@ -38,10 +32,18 @@
             </p>
         </c:if>
     </div>
-    <div class="w3-container" style="display: inline-block; position: fixed; right: 0">
-        <button class="w3-button" onclick="location.href='?cookieLocale=ua'">UA</button>
-        <button class="w3-button" onclick="location.href='?cookieLocale=en'">EN</button>
-    </div>
+    <%--<div class="w3-container" style="display: inline-block; position: fixed; right: 0">
+        <button class="w3-button" onclick="location.href='?language=ua'">UA</button>
+        <button class="w3-button" onclick="location.href='?language=en'">EN</button>
+    </div>--%>
+    <span class="w3-container" style="display: inline-block; position: fixed; right: 0; top: 20px">
+        <form action="${pageContext.request.requestURL}?${pageContext.request.queryString}" method="get">
+            <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:50px" name="language" onchange="submit()">
+                <option value="en" ${language == 'en' ? 'selected' : ''}>EN</option>
+                <option value="ua" ${language == 'ua' ? 'selected' : ''}>UA</option>
+            </select>
+        </form>
+    </span>
 </div>
 
 <jsp:doBody/>

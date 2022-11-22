@@ -18,9 +18,18 @@ import java.util.List;
 public class UserListsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int page = 1;
+        int recordsPerPage = 5;
+        if(req.getParameter("page") != null)
+            page = Integer.parseInt(req.getParameter("page"));
         try {
             UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
-            List<User> users = userService.findAll();
+            List<User> users = userService.findAll(recordsPerPage, (page-1) * recordsPerPage);
+            int noOfRecords = userService.getNoOfRecords();
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+
+            req.setAttribute("noOfPages", noOfPages);
+            req.setAttribute("currentPage", page);
             req.setAttribute("users", users);
             req.getRequestDispatcher("users.jsp").forward(req, resp);
         } catch (FactoryException | ServiceException e) {

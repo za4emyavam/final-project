@@ -1,5 +1,6 @@
 package com.myfp.fp.service;
 
+import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.entities.User;
 
 import java.util.List;
@@ -10,7 +11,9 @@ public interface UserService {
     void update(User entity) throws ServiceException;
     User findByLoginAndPassword(String login, String password) throws ServiceException;
     List<User> findAll() throws ServiceException;
+    List<User> findAll(int limit, int offset) throws ServiceException;
 
     void addNewUser(String email, String login, String password) throws ServiceException;
+    Integer getNoOfRecords() throws ServiceException;
 
 }

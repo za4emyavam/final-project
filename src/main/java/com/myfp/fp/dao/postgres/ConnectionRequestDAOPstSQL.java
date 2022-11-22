@@ -1,16 +1,19 @@
 package com.myfp.fp.dao.postgres;
 
+import com.myfp.fp.controller.CookieLocaleFilter;
 import com.myfp.fp.dao.ConnectionRequestDAO;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.entities.*;
 import com.myfp.fp.util.ConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements ConnectionRequestDAO {
-
+    private static final Logger LOG4J = LogManager.getLogger(CookieLocaleFilter.class);
     @Override
     public ConnectionRequest read(Long id) throws DAOException {
         ConnectionRequest connectionRequest = null;
@@ -29,6 +32,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -61,6 +65,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -83,6 +88,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             preparedStatement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             try {
                 con.rollback();
             } catch (SQLException ex) {
@@ -112,6 +118,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
                 requests.add(fillConnectionRequest(resultSet));
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -157,6 +164,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             connectionRequest.setDateOfChange(rs.getDate("date_of_change"));
             connectionRequest.setStatus(RequestStatus.fromString(rs.getString("status")));
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         }
         return connectionRequest;

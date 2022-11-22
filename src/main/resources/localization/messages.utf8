@@ -15,6 +15,9 @@ login.form.login=Username
 login.form.password=Password
 login.button.login=Log in
 
+cabinet.title=Cabinet
+cabinet.history.title=Balance history
+
 password.change.title=Changing password
 password.change.form.old.password=Old password
 password.change.form.new.password=New password

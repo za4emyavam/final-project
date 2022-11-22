@@ -3,12 +3,15 @@ package com.myfp.fp.dao.postgres;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.UserTariffsDAO;
 import com.myfp.fp.entities.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO {
+    private static final Logger LOG4J = LogManager.getLogger(UserTariffsDAOPstSQL.class);
     @Override
     public UserTariffs read(Long id) throws DAOException {
         return null;
@@ -52,6 +55,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
                 }
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -71,6 +75,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
                 list.add(resultSet.getInt("user_tariffs_id"));
             }
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -87,6 +92,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             preparedStatement.setInt(2, Math.toIntExact(tariffId));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -101,6 +107,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             ResultSet rs = statement.executeQuery(sql)) {
 
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
@@ -142,6 +149,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             userTariff.setDateOfStart(rs.getDate("date_of_start"));
             userTariff.setDateOfLastPayment(rs.getDate("date_of_last_payment"));
         } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         }
         return userTariff;

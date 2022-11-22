@@ -3,34 +3,40 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<c:choose>
-    <c:when test="${not empty cookie['lang'].value}">
-        <fmt:setLocale value="${cookie['lang'].value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="cabinet.history.title"/>
 <u:html title="${title}">
-    <h2>${title}</h2>
-    <table class="w3-table w3-bordered">
-        <tr>
-            <th>id</th>
-            <th>type</th>
-            <th>amount</th>
-            <th>date</th>
-        </tr>
-        <c:forEach items="${requestScope.transactions}" var="t">
+    <div class="w3-container">
+        <h2>${title}</h2>
+        <table class="w3-table w3-bordered">
             <tr>
-                <td><c:out value="${t.id}"/></td>
-                <td><c:out value="${t.type.value}"/></td>
-                <td><c:out value="${t.transactionAmount}"/></td>
-                <td><fmt:formatDate value="${t.transactionDate}"/></td>
+                <th><fmt:message key="cabinet.history.id" bundle="${lang}"/></th>
+                <th><fmt:message key="cabinet.history.type" bundle="${lang}"/></th>
+                <th><fmt:message key="cabinet.history.amount" bundle="${lang}"/></th>
+                <th><fmt:message key="cabinet.history.date" bundle="${lang}"/></th>
             </tr>
+            <c:forEach items="${requestScope.transactions}" var="t">
+                <tr>
+                    <td><c:out value="${t.id}"/></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${t.type.value == 'refill'}">
+                                <fmt:message key="transaction.type.refill" bundle="${lang}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="transaction.type.debit" bundle="${lang}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td><c:out value="${t.transactionAmount}"/></td>
+                    <td><fmt:formatDate value="${t.transactionDate}"/></td>
+                </tr>
 
-        </c:forEach>
-    </table>
+            </c:forEach>
+        </table>
+    </div>
 </u:html>
