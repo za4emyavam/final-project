@@ -22,9 +22,18 @@
             </tr>
             <c:forEach items="${requestScope.requests}" var="r">
                 <tr onclick="location.href='/admin/requests/update?id=${r.id}'">
-                    <td><c:out value="${r.id}"/></td>
-                    <td><c:out value="${r.subscriber.id}"/></td>
-                    <td><c:out value="${r.tariff.name}"/></td>
+                    <td>${r.id}</td>
+                    <td>${r.subscriber.id}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${language eq 'en'}">
+                                ${r.tariff.name[1]}
+                            </c:when>
+                            <c:when test="${language eq 'ua'}">
+                                ${r.tariff.name[0]}
+                            </c:when>
+                        </c:choose>
+                    </td>
                     <td><fmt:formatDate pattern="dd MM yyyy" value="${r.dateOfChange}"/></td>
                     <td>
                         <c:choose>

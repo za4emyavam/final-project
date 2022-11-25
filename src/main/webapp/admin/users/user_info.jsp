@@ -87,8 +87,17 @@
                 </tr>
                 <c:forEach items="${requestScope.userTariffs}" var="ut">
                     <tr>
-                        <td><c:out value="${ut.tariff.name}"/></td>
-                        <td><c:out value="${ut.tariff.service.serviceType}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${language eq 'en'}">
+                                    ${ut.tariff.name[1]}
+                                </c:when>
+                                <c:when test="${language eq 'ua'}">
+                                    ${ut.tariff.name[0]}
+                                </c:when>
+                            </c:choose>
+                        </td>
+                        <td>${ut.tariff.service.serviceType}</td>
                         <td>${ut.tariff.cost}</td>
                         <td>${ut.tariff.frequencyOfPayment}</td>
                         <td><fmt:formatDate value="${ut.dateOfStart}"/></td>

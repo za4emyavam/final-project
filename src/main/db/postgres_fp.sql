@@ -27,16 +27,16 @@ CREATE TYPE transaction_status_type AS ENUM ('successful', 'denied');
 CREATE TABLE fp_schema.user
 (
     user_id           SERIAL PRIMARY KEY,
-    email             varchar(320)     NOT NULL UNIQUE,
-    pass              varchar(64)      NOT NULL,
-    registration_date date             NOT NULL DEFAULT(CURRENT_DATE),
-    user_role         role_type DEFAULT ('user'),
-    user_status       user_status_type DEFAULT('subscribed'),
-    user_balance      DECIMAL(8, 2)   DEFAULT 0,
-    firstname         varchar(30)      NOT NULL,
-    middle_name       varchar(30)      NOT NULL,
-    surname           varchar(30)      NOT NULL,
-    telephone_number  varchar(30)      NOT NULL,
+    email             varchar(320) NOT NULL UNIQUE,
+    pass              varchar(64)  NOT NULL,
+    registration_date date         NOT NULL DEFAULT (CURRENT_DATE),
+    user_role         role_type             DEFAULT ('user'),
+    user_status       user_status_type      DEFAULT ('subscribed'),
+    user_balance      DECIMAL(8, 2)         DEFAULT 0,
+    firstname         varchar(30)  NOT NULL,
+    middle_name       varchar(30)  NOT NULL,
+    surname           varchar(30)  NOT NULL,
+    telephone_number  varchar(30)  NOT NULL,
     CONSTRAINT proper_email CHECK ( email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$' ),
     CONSTRAINT proper_telephone_number CHECK (telephone_number ~ '^\+38[0-9\-\+]{9,15}$' )
 );
@@ -120,11 +120,11 @@ CREATE TABLE service
 CREATE TABLE tariff
 (
     tariff_id            SERIAL PRIMARY KEY,
-    name                 VARCHAR(40) NOT NULL UNIQUE,
-    description          text        NOT NULL,
+    name                 VARCHAR(60) array[2] NOT NULL UNIQUE,
+    description          text array[2]        NOT NULL UNIQUE,
     service              INTEGER,
-    cost                 DECIMAL(8, 2)     NOT NULL,
-    frequency_of_payment INTEGER     NOT NULL,
+    cost                 DECIMAL(8, 2)        NOT NULL,
+    frequency_of_payment INTEGER              NOT NULL,
     /*status               tariff_status_type DEFAULT 'active',*/
     FOREIGN KEY (service) REFERENCES service (service_id) ON DELETE CASCADE
 );
@@ -145,9 +145,9 @@ CREATE TABLE user_tariffs
 CREATE TABLE additional_service
 (
     additional_service_id SERIAL PRIMARY KEY,
-    name                  VARCHAR(40) NOT NULL UNIQUE,
-    description           TEXT        NOT NULL,
-    cost                  DECIMAL(8, 2)     NOT NULL
+    name                  VARCHAR(40)   NOT NULL UNIQUE,
+    description           TEXT          NOT NULL,
+    cost                  DECIMAL(8, 2) NOT NULL
 );
 
 CREATE TABLE connection_request
@@ -168,8 +168,8 @@ CREATE OR REPLACE FUNCTION f_t_update_request_status() RETURNS trigger
 
 $$
 DECLARE
-    temp_tariff_cost  DECIMAL;
-    temp_user_status  user_status_type;
+    temp_tariff_cost DECIMAL;
+    temp_user_status user_status_type;
 BEGIN
 
 
@@ -259,7 +259,8 @@ BEGIN
                 IF (temp_status = 'successful') THEN
                     UPDATE user_tariffs ut
                     SET date_of_last_payment=CURRENT_DATE
-                    WHERE user_id = $1 AND tariff_id = temp_tariffs[var];
+                    WHERE user_id = $1
+                      AND tariff_id = temp_tariffs[var];
                 end if;
             end if;
         end loop;
@@ -273,8 +274,8 @@ $$
 DECLARE
     temp_users_id integer[];
 BEGIN
-    temp_users_id := ARRAY (
-            SELECT DISTINCT  user_id FROM user_tariffs
+    temp_users_id := ARRAY(
+            SELECT DISTINCT user_id FROM user_tariffs
         );
     FOR var in array_lower(temp_users_id, 1)..array_upper(temp_users_id, 1)
         loop
@@ -290,25 +291,29 @@ VALUES ('IP-TV'),
        ('Telephone');
 
 INSERT INTO tariff (name, description, service, cost, frequency_of_payment)
-VALUES ('IP-TV1', 'default ip-tv', 1, 120, 28),
-       ('Best IP-TV', 'best ip-tv', 1, 150, 28),
-       ('Internet', 'internet', 2, 150, 28),
-       ('Super Internet', 'best internet', 2, 180, 28),
-       ('Telephone', 'telephone', 3, 50, 28),
-       ('Super Telephone', 'super telephone', 3, 80, 28);
+VALUES (ARRAY ['Простий IP-TV', 'Basic IP-TV'], ARRAY ['звичайний ip-tv', 'default ip-tv'], 1, 120, 28),
+       (ARRAY ['IP-TV Плюс', 'IP-TV Plus'], ARRAY ['ip-tv плюс', 'ip-tv plus'], 1, 150, 28),
+       (ARRAY ['Простий Internet', 'Basic Internet'], ARRAY ['iнтернет', 'internet'], 2, 150, 28),
+       (ARRAY ['Супер Internet','Super Internet'], ARRAY ['кращий iнтернет', 'best internet'], 2, 180, 28),
+       (ARRAY ['Простий Telephone', 'Basic Telephone'], ARRAY ['простий телефон','basic telephone'], 3, 50, 28),
+       (ARRAY ['Супер Телефон','Super Telephone'], ARRAY ['супер телефон','super telephone'], 3, 80, 28);
 
 
 INSERT INTO fp_schema.user (email, pass, registration_date, user_role, user_status, user_balance, firstname,
                             middle_name,
                             surname, telephone_number)
-VALUES ('example@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin', '+380634325657'),
+VALUES ('example@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin',
+        '+380634325657'),
        ('manager@gmail.com', 12345, CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
         '+380634325657'),
-       ('admin@gmail.com', 12345, CURRENT_DATE, 'main_admin',DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
+       ('admin@gmail.com', 12345, CURRENT_DATE, 'main_admin', DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
         '+380764325621'),
-       ('example2@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin', '+380634978657'),
-       ('example3@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin', '+380634343657'),
-       ('example4@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin', '+380634325617');
+       ('example2@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin',
+        '+380634978657'),
+       ('example3@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin',
+        '+380634343657'),
+       ('example4@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin',
+        '+380634325617');
 
 
 INSERT INTO additional_service (name, description, cost)

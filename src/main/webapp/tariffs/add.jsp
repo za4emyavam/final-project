@@ -14,13 +14,21 @@
         <h2>${title}</h2>
         <form action="/tariffs/add" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
             <div class="w3-inline-input-group">
-                <fmt:message key="tariffs.add.name" var="name"/>
-                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="name" name="name"
-                       placeholder="${name}">
+                <fmt:message key="tariffs.add.name.ua" var="nameUA"/>
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="nameUA" name="nameUA"
+                       placeholder="${nameUA}">
                 <br><br>
-                <fmt:message key="tariffs.add.description" var="description"/>
-                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="description"
-                       name="description" placeholder="${description}">
+                <fmt:message key="tariffs.add.name.en" var="nameEN"/>
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="nameEN" name="nameEN"
+                       placeholder="${nameEN}">
+                <br><br>
+                <fmt:message key="tariffs.add.description.ua" var="descriptionUA"/>
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="descriptionUA"
+                       name="descriptionUA" placeholder="${descriptionUA}">
+                <br><br>
+                <fmt:message key="tariffs.add.description.en" var="descriptionEN"/>
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="descriptionEN"
+                       name="descriptionEN" placeholder="${descriptionEN}">
                 <br><br>
                 <fmt:message key="tariffs.add.cost" var="cost"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="cost" name="cost"

@@ -33,19 +33,18 @@ public class AddTariffsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
+        String[] names = new String[]{request.getParameter("nameUA"), request.getParameter("nameEN")};
+        String[] descriptions = new String[]{request.getParameter("descriptionUA"), request.getParameter("descriptionEN")};
         String type = request.getParameter("service");
         int cost = Integer.parseInt(request.getParameter("cost"));
         int frequencyOfPayment = Integer.parseInt(request.getParameter("frequency_of_payment"));
         try {
             ServiceService serviceService = MainServiceFactoryImpl.getInstance().getServiceService();
             Service service = serviceService.findByType(type);
-            System.out.println("service type ->" + service.getServiceType());
 
             Tariff tariff = new Tariff();
-            tariff.setName(name);
-            tariff.setDescription(description);
+            tariff.setName(names);
+            tariff.setDescription(descriptions);
             tariff.setCost(cost);
             tariff.setFrequencyOfPayment(frequencyOfPayment);
             tariff.setService(service);

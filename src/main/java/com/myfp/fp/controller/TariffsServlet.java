@@ -16,6 +16,7 @@ import java.util.List;
 public class TariffsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         int page = 1;
         int recordsPerPage = 5;
         if (request.getParameter("page") != null)
@@ -59,5 +60,14 @@ public class TariffsServlet extends HttpServlet {
             return "asc";
         else
             return "desc";
+    }
+
+    private int getSessionLanguage(HttpServletRequest request) {
+        switch(request.getSession(false).getAttribute("language").toString()){
+            case "en":
+                return 1;
+            default:
+                return 0;
+        }
     }
 }

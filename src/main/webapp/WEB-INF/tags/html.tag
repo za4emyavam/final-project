@@ -32,18 +32,19 @@
             </p>
         </c:if>
     </div>
-    <%--<div class="w3-container" style="display: inline-block; position: fixed; right: 0">
-        <button class="w3-button" onclick="location.href='?language=ua'">UA</button>
-        <button class="w3-button" onclick="location.href='?language=en'">EN</button>
-    </div>--%>
-    <span class="w3-container" style="display: inline-block; position: fixed; right: 0; top: 20px">
-        <form action="${pageContext.request.requestURL}?${pageContext.request.queryString}" method="get">
+    <div class="w3-container" style="display: inline-block; position: fixed; right: 0">
+        <button class="w3-button" onclick="location.href='?language=ua&${pageContext.request.queryString}'">UA</button>
+        <button class="w3-button" onclick="location.href='?language=en&${pageContext.request.queryString}'">EN</button>
+    </div>
+    <%--<span class="w3-container" style="display: inline-block; position: fixed; right: 0; top: 20px">
+        <form action="&lt;%&ndash;${pageContext.request.requestURL}&ndash;%&gt;?" method="get">
+            <input type="hidden" id="params" name="params" value="${pageContext.request.queryString}">
             <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:50px" name="language" onchange="submit()">
                 <option value="en" ${language == 'en' ? 'selected' : ''}>EN</option>
                 <option value="ua" ${language == 'ua' ? 'selected' : ''}>UA</option>
             </select>
         </form>
-    </span>
+    </span>--%>
 </div>
 
 <jsp:doBody/>

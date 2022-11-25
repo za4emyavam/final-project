@@ -4,7 +4,6 @@ import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.TariffDAO;
 import com.myfp.fp.entities.Service;
 import com.myfp.fp.entities.Tariff;
-import com.myfp.fp.entities.TariffStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,8 +48,8 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
             con = getConnection();
             preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             int k = 1;
-            preparedStatement.setString(k++, entity.getName());
-            preparedStatement.setString(k++, entity.getDescription());
+            preparedStatement.setArray(k++, con.createArrayOf("varchar", entity.getName()));
+            preparedStatement.setArray(k++, con.createArrayOf("text", entity.getDescription()));
             preparedStatement.setInt(k++, Math.toIntExact(entity.getService().getId()));
             preparedStatement.setInt(k++, entity.getCost());
             preparedStatement.setInt(k, entity.getFrequencyOfPayment());
@@ -75,15 +74,15 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
     @Override
     public void update(Tariff entity) throws DAOException {
         String sql = "UPDATE tariff t " +
-                "SET name=?, description=?, service=?, cost=?, frequency_of_payment=?, " +
+                "SET name=?, description=?, service=?, cost=?, frequency_of_payment=? " +
                 "WHERE t.tariff_id=" + entity.getId();
         Connection con = getConnection();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = con.prepareStatement(sql);
             int k = 1;
-            preparedStatement.setString(k++, entity.getName());
-            preparedStatement.setString(k++, entity.getDescription());
+            preparedStatement.setArray(k++, con.createArrayOf("varchar", entity.getName()));
+            preparedStatement.setArray(k++, con.createArrayOf("text", entity.getDescription()));
             preparedStatement.setInt(k++, Math.toIntExact(entity.getService().getId()));
             preparedStatement.setInt(k++, entity.getCost());
             preparedStatement.setInt(k, entity.getFrequencyOfPayment());
@@ -219,8 +218,8 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
         Tariff tariff = new Tariff();
         try {
             tariff.setId(rs.getLong("tariff_id"));
-            tariff.setName(rs.getString("name"));
-            tariff.setDescription(rs.getString("description"));
+            tariff.setName((String[]) rs.getArray("name").getArray());
+            tariff.setDescription((String[]) rs.getArray("description").getArray());
             tariff.setCost(rs.getInt("cost"));
             tariff.setFrequencyOfPayment(rs.getInt("frequency_of_payment"));
 

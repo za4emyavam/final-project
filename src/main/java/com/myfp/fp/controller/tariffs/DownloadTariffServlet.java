@@ -23,6 +23,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -42,10 +44,10 @@ public class DownloadTariffServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
-
+        int language = getLanguage(req);
         Document document = new Document();
-        File file = new File("C:\\PRJ\\FinalProject\\final-project\\tariffs.pdf");
-        file.createNewFile();
+        /*File file = new File("C:\\PRJ\\FinalProject\\final-project\\tariffs.pdf");
+        file.createNewFile();*/
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition", "attachment; filename=tariffs.pdf");
         try {
@@ -53,7 +55,16 @@ public class DownloadTariffServlet extends HttpServlet {
             BaseFont bf=BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             fontF = new Font(bf,16, Font.NORMAL, BaseColor.BLACK);
             document.open();
-            Chunk chunk = new Chunk("List of tariffs\n\n", fontF);
+            String title;
+            switch (language) {
+                case 1:
+                    title = "List of tariffs";
+                    break;
+                default:
+                    title = "Перелік тарифів";
+                    break;
+            }
+            Chunk chunk = new Chunk(title + "\n\n", fontF);
 
             Paragraph paragraph = new Paragraph(chunk);
             paragraph.setAlignment(Element.ALIGN_CENTER);
@@ -63,8 +74,8 @@ public class DownloadTariffServlet extends HttpServlet {
             document.add(new Paragraph("\n"));
 
             PdfPTable tariffTable = new PdfPTable(6);
-            addTableHeader(tariffTable);
-            addRows(tariffTable, tariffList);
+            addTableHeader(tariffTable, language);
+            addRows(tariffTable, tariffList, language);
             document.add(tariffTable);
             document.close();
 
@@ -74,26 +85,46 @@ public class DownloadTariffServlet extends HttpServlet {
         resp.sendRedirect("/tariffs");
     }
 
-    private void addTableHeader(PdfPTable table) {
-        Stream.of("ID", "Name", "Description", "Cost", "Frequency of payment (days)", "Service")
+    private void addTableHeader(PdfPTable table, int language) {
+        List<String> list;
+        switch (language) {
+            case 1:
+                list = Arrays.asList("ID", "Name", "Description", "Cost", "Frequency of payment (days)", "Service");
+                break;
+            default:
+                list = Arrays.asList("ID", "Назва", "Опис", "Вартість", "Періодичність виплат (днів)", "Сервіс");
+                break;
+        }
+        list.stream()
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     header.setBorderWidth(2);
-                    header.setPhrase(new Phrase(columnTitle));
+                    header.setPhrase(new Phrase(columnTitle, fontF));
                     table.addCell(header);
                 });
     }
 
-    private void addRows(PdfPTable table, List<Tariff> tariffList) {
+    private void addRows(PdfPTable table, List<Tariff> tariffList, int language) {
         for (Tariff t :
                 tariffList) {
             table.addCell(new PdfPCell(new Phrase(t.getId().toString(), fontF)));
-            table.addCell(new PdfPCell(new Phrase(t.getName(), fontF)));
-            table.addCell(new PdfPCell(new Phrase(t.getDescription(), fontF)));
+            table.addCell(new PdfPCell(new Phrase(t.getName()[language], fontF)));
+            table.addCell(new PdfPCell(new Phrase(t.getDescription()[language], fontF)));
             table.addCell(new PdfPCell(new Phrase("" + t.getCost(), fontF)));
             table.addCell(new PdfPCell(new Phrase("" + t.getFrequencyOfPayment(), fontF)));
             table.addCell(new PdfPCell(new Phrase(t.getService().getServiceType(), fontF)));
+        }
+    }
+
+    private int getLanguage(HttpServletRequest request) {
+        if (request.getSession(false).getAttribute("language") == null)
+            return 0;
+        switch(request.getSession(false).getAttribute("language").toString()) {
+            case "en":
+                return 1;
+            default:
+                return 0;
         }
     }
 }

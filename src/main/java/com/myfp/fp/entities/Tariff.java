@@ -1,24 +1,26 @@
 package com.myfp.fp.entities;
 
+import java.util.List;
+
 public class Tariff extends Entity {
-    private String name;
-    private String description;
+    private String[] name;
+    private String[] description;
     private Service service;
     private int cost;
     private int frequencyOfPayment;
-    public String getName() {
+    public String[] getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String[] name) {
         this.name = name;
     }
 
-    public String getDescription() {
+    public String[] getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String[] description) {
         this.description = description;
     }
 

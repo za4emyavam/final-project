@@ -1,9 +1,7 @@
 package com.myfp.fp.controller.tariffs;
 
-import com.myfp.fp.controller.Forward;
 import com.myfp.fp.entities.Service;
 import com.myfp.fp.entities.Tariff;
-import com.myfp.fp.entities.TariffStatus;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.ServiceService;
 import com.myfp.fp.service.TariffService;
@@ -18,6 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "UpdateTariffsServlet", value = "/tariffs/update")
 public class UpdateTariffsServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = getId(request, response);
@@ -47,10 +46,9 @@ public class UpdateTariffsServlet extends HttpServlet {
         int id = getId(request, response);
         if (id == -1)
             response.sendRedirect("/index");
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
+        String[] names = new String[]{request.getParameter("nameUA"), request.getParameter("nameEN")};
+        String[] descriptions = new String[]{request.getParameter("descriptionUA"), request.getParameter("descriptionEN")};
         String type = request.getParameter("service");
-        String status = request.getParameter("status");
         int cost = Integer.parseInt(request.getParameter("cost"));
         int frequencyOfPayment = Integer.parseInt(request.getParameter("frequency_of_payment"));
 
@@ -63,12 +61,11 @@ public class UpdateTariffsServlet extends HttpServlet {
             Tariff oldTariff = tariffService.findById((long) id);
             Tariff newTariff = new Tariff();
             newTariff.setId(oldTariff.getId());
-            newTariff.setName(name);
-            newTariff.setDescription(description);
+            newTariff.setName(names);
+            newTariff.setDescription(descriptions);
             newTariff.setCost(cost);
             newTariff.setFrequencyOfPayment(frequencyOfPayment);
             newTariff.setService(service);
-            System.out.println(status);
             tariffService.update(newTariff);
             response.sendRedirect("/tariffs");
         } catch (FactoryException | ServiceException e) {
@@ -78,6 +75,7 @@ public class UpdateTariffsServlet extends HttpServlet {
 
     private int getId(HttpServletRequest request, HttpServletResponse response) {
         String sId = request.getParameter("id");
+        System.out.println(sId);
         int id = -1;
         if (sId != null && !sId.equals("")) {
             id = Integer.parseInt(sId);

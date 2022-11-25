@@ -41,7 +41,16 @@
                     value="${requestScope.connectionRequest.subscriber.registrationDate}"/></p>
             <p><fmt:message key="admin.requests.update.city"/>: ${requestScope.connectionRequest.city}</p>
             <p><fmt:message key="admin.requests.update.address"/>: ${requestScope.connectionRequest.address}</p>
-            <p><fmt:message key="admin.requests.update.tariff"/>: ${requestScope.connectionRequest.tariff.name}</p>
+            <p><fmt:message key="admin.requests.update.tariff"/>:
+                <c:choose>
+                    <c:when test="${language eq 'en'}">
+                        ${requestScope.connectionRequest.tariff.name[1]}
+                    </c:when>
+                    <c:when test="${language eq 'ua'}">
+                        ${requestScope.connectionRequest.tariff.name[0]}
+                    </c:when>
+                </c:choose>
+            </p>
             <p><fmt:message key="admin.requests.update.reqdate"/>: <fmt:formatDate
                     value="${requestScope.connectionRequest.dateOfChange}"/></p>
             <p><fmt:message key="admin.requests.update.reqstatus"/>:

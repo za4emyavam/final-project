@@ -7,6 +7,21 @@
 
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}"
        scope="session"/>
+<%--<c:choose>
+    <c:when test="${not empty param.language}">
+        <c:choose>
+            <c:when test="${param.language eq 'en'}">
+                <c:set var="language" value="en" scope="session"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="language" value="ua" scope="session"/>
+            </c:otherwise>
+        </c:choose>
+    </c:when>
+    <c:otherwise>
+        <c:set var="language" value="ua" scope="session"/>
+    </c:otherwise>
+</c:choose>--%>
 <fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
@@ -112,8 +127,28 @@
             <c:forEach items="${requestScope.tariffs}" var="t">
                 <tr>
                     <td><c:out value="${t.id}"/></td>
-                    <td><a href="tariffs/request?id=${t.id}"><c:out value="${t.name}"/></a></td>
-                    <td><c:out value="${t.description}"/></td>
+                    <td>
+                        <a href="tariffs/request?id=${t.id}">
+                            <c:choose>
+                                <c:when test="${language eq 'en'}">
+                                    <c:out value="${t.name[1]}"/>
+                                </c:when>
+                                <c:when test="${language eq 'ua'}">
+                                    <c:out value="${t.name[0]}"/>
+                                </c:when>
+                            </c:choose>
+                        </a>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${language eq 'en'}">
+                                ${t.description[1]}
+                            </c:when>
+                            <c:when test="${language eq 'ua'}">
+                                ${t.description[0]}
+                            </c:when>
+                        </c:choose>
+                    </td>
                     <td><c:out value="${t.cost}"/></td>
                     <td><c:out value="${t.frequencyOfPayment}"/></td>
                     <td><c:out value="${t.service.serviceType}"/></td>
