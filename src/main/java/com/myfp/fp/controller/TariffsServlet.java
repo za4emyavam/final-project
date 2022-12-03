@@ -16,7 +16,6 @@ import java.util.List;
 public class TariffsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         int page = 1;
         int recordsPerPage = 5;
         if (request.getParameter("page") != null)

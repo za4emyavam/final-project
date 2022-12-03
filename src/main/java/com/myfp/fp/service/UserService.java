@@ -12,8 +12,6 @@ public interface UserService {
     User findByLoginAndPassword(String login, String password) throws ServiceException;
     List<User> findAll() throws ServiceException;
     List<User> findAll(int limit, int offset) throws ServiceException;
-
-    void addNewUser(String email, String login, String password) throws ServiceException;
     Integer getNoOfRecords() throws ServiceException;
 
 }

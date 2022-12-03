@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements ConnectionRequestDAO {
     private static final Logger LOG4J = LogManager.getLogger(CookieLocaleFilter.class);
+
     @Override
     public ConnectionRequest read(Long id) throws DAOException {
         ConnectionRequest connectionRequest = null;
@@ -58,8 +59,8 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             preparedStatement.setInt(k, Math.toIntExact(entity.getTariff().getId()));
             int count = preparedStatement.executeUpdate();
             if (count > 0) {
-                try(ResultSet set = preparedStatement.getGeneratedKeys()) {
-                    if(set.next()) {
+                try (ResultSet set = preparedStatement.getGeneratedKeys()) {
+                    if (set.next()) {
                         entity.setId(resId = set.getInt(1));
                     }
                 }
@@ -80,7 +81,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         //Connection con = getConnection();
         Connection con = null;
         PreparedStatement preparedStatement = null;
-        try{
+        try {
             con = getConnection();
             con.setAutoCommit(false);
             preparedStatement = con.prepareStatement(sql);
@@ -112,9 +113,9 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         String sql = "SELECT * FROM connection_request cr, \"user\" u, tariff t, service s " +
                 "WHERE u.user_id=cr.subscriber AND t.tariff_id=cr.tariff AND t.service=s.service_id";
         Connection con = getConnection();
-        try(Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)) {
-            while(resultSet.next()) {
+        try (Statement statement = con.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
                 requests.add(fillConnectionRequest(resultSet));
             }
         } catch (SQLException e) {
@@ -124,6 +125,47 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             closeConnection(con);
         }
         return requests;
+    }
+
+    @Override
+    public List<ConnectionRequest> readAll(int limit, int offset) throws DAOException {
+        List<ConnectionRequest> requests = new ArrayList<>();
+        String sql = "SELECT * FROM connection_request cr, \"user\" u, tariff t, service s " +
+                "WHERE u.user_id=cr.subscriber AND t.tariff_id=cr.tariff AND t.service=s.service_id LIMIT ? OFFSET ?";
+        Connection con = getConnection();
+        try (PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    requests.add(fillConnectionRequest(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return requests;
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws DAOException {
+        int res = -1;
+        String sql = "SELECT count(*) FROM connection_request";
+        Connection con = getConnection();
+        try (Statement statement = con.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while(rs.next())
+                res = rs.getInt(1);
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
+        } finally {
+            closeConnection(con);
+        }
+        return res;
     }
 
     private ConnectionRequest fillConnectionRequest(ResultSet rs) throws DAOException {
@@ -151,7 +193,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
             Tariff tariff = new Tariff();
             tariff.setId(rs.getLong("tariff_id"));
             tariff.setName((String[]) rs.getArray("name").getArray());
-            tariff.setDescription((String[])  rs.getArray("description").getArray());
+            tariff.setDescription((String[]) rs.getArray("description").getArray());
             tariff.setCost(rs.getInt("cost"));
             tariff.setFrequencyOfPayment(rs.getInt("frequency_of_payment"));
 

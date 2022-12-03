@@ -169,7 +169,7 @@
         </table>
         <div class="w3-bar">
             <c:forEach begin="1" end="${noOfPages}" var="i">
-                <a href="/tariffs?page=${i}&orderBy=${requestScope.orderBy}&order=${requestScope.order}"
+                <a href="${pageContext.request.contextPath}/tariffs?page=${i}&orderBy=${requestScope.orderBy}&order=${requestScope.order}"
                    class="w3-button">${i}</a>
             </c:forEach>
         </div>

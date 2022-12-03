@@ -16,22 +16,23 @@ import java.util.List;
 public class RequestsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int page = 1;
+        int recordsPerPage = 5;
+        if (request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page"));
         List<ConnectionRequest> requests = null;
         try {
             ConnectionRequestService connectionRequestService = MainServiceFactoryImpl.getInstance().getConnectionRequestService();
-            requests = connectionRequestService.readAll();
-            if (requests != null) {
-                System.out.println("requests set attribute");
-                request.setAttribute("requests", requests);
-            }
+            requests = connectionRequestService.readAll(recordsPerPage,(page - 1) * recordsPerPage);
+            int noOfRecords = connectionRequestService.getNoOfRecords();
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+
+            request.setAttribute("requests", requests);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
         } catch (FactoryException | ServiceException e) {
             throw new ServletException(e);
         }
         request.getRequestDispatcher("requests.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

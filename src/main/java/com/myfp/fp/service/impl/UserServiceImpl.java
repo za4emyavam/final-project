@@ -6,6 +6,7 @@ import com.myfp.fp.entities.User;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.UserService;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -64,15 +65,6 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll(int limit, int offset) throws ServiceException {
         try {
             return userDAO.readAll(limit, offset);
-        } catch (DAOException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public void addNewUser(String email, String login, String password) throws ServiceException {
-        try {
-            userDAO.addNewUser(email, login, password);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

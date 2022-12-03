@@ -2,45 +2,51 @@ package com.myfp.fp.dao.postgres;
 
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.util.ConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 abstract public class BaseDAOImpl {
+    private static final Logger LOG4J = LogManager.getLogger(BaseDAOImpl.class);
 
     public Connection getConnection() throws DAOException {
-        //return connection;
+        Connection con = null;
         try {
-            return ConnectionPool.getConnection();
+            con = ConnectionPool.getConnection();
         } catch (SQLException e) {
-            throw new DAOException(e);
+            LOG4J.error(e.getMessage(), e);
         }
+        return con;
     }
 
-    public void closeConnection(Connection con) throws DAOException {
+    void closeConnection(Connection con) throws DAOException {
         if (con != null) {
             try {
                 con.close();
             } catch (SQLException e) {
+                LOG4J.error(e.getMessage(), e);
                 throw new DAOException(e);
             }
         }
     }
 
-    protected void rollback(Connection con) throws DAOException {
+    void rollback(Connection con) throws DAOException {
         try {
             con.rollback();
-        } catch (SQLException ex) {
-            System.out.println("Exception in rollback");
-            throw new DAOException(ex);
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
         }
     }
 
-    protected void closeStat(AutoCloseable con) throws DAOException {
+    void closeStat(AutoCloseable con) throws DAOException {
         try {
             if (con != null)
                 con.close();
         } catch (Exception e) {
+            LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         }
     }

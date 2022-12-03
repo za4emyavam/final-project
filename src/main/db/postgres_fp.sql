@@ -7,15 +7,13 @@ DROP TABLE if exists transaction;
 DROP TABLE if exists user_info;
 DROP TABLE if exists service;
 DROP TABLE if exists additional_service;
-DROP TABLE if exists fp_schema.user;
+DROP TABLE if exists "user";
 DROP TYPE if exists role_type;
 DROP TYPE if exists user_status_type;
 DROP TYPE if exists tariff_status_type;
 DROP TYPE if exists request_status_type;
 DROP TYPE if exists transaction_type;
 DROP TYPE if exists transaction_status_type;
-
-CREATE SCHEMA if not exists fp_schema;
 
 CREATE TYPE role_type AS ENUM ('user', 'admin', 'main_admin');
 CREATE TYPE user_status_type AS ENUM ('subscribed', 'blocked');
@@ -24,7 +22,7 @@ CREATE TYPE request_status_type AS ENUM ('in processing', 'rejected', 'approved'
 CREATE TYPE transaction_type AS ENUM ('debit', 'refill');
 CREATE TYPE transaction_status_type AS ENUM ('successful', 'denied');
 
-CREATE TABLE fp_schema.user
+CREATE TABLE "user"
 (
     user_id           SERIAL PRIMARY KEY,
     email             varchar(320) NOT NULL UNIQUE,
@@ -49,7 +47,7 @@ CREATE TABLE transaction
     transaction_amount DECIMAL(8, 2),
     transaction_date   DATE DEFAULT CURRENT_DATE,
     transaction_status transaction_status_type NULL,
-    FOREIGN KEY (balance_id) REFERENCES fp_schema.user (user_id) ON DELETE CASCADE
+    FOREIGN KEY (balance_id) REFERENCES "user" (user_id) ON DELETE CASCADE
 );
 
 /*CREATE TABLE balance_transactions
@@ -84,24 +82,24 @@ DECLARE
 BEGIN
     SELECT INTO temp_user_balance user_balance FROM "user" WHERE NEW.balance_id = user_id;
     IF (NEW.type = 'refill') THEN
-        UPDATE fp_schema."user" u
+        UPDATE "user" u
         SET user_balance=add(temp_user_balance, NEW.transaction_amount)
         WHERE NEW.balance_id = user_id;
         UPDATE transaction t SET transaction_status='successful' WHERE t.transaction_id = New.transaction_id;
     ELSE
         IF (temp_user_balance >= NEW.transaction_amount) THEN
-            UPDATE fp_schema."user" u
+            UPDATE "user" u
             SET user_balance=subtract(user_balance, NEW.transaction_amount)
             WHERE NEW.balance_id = user_id;
             UPDATE transaction t SET transaction_status='successful' WHERE t.transaction_id = New.transaction_id;
-            UPDATE fp_schema.user u SET user_status='subscribed' WHERE u.user_id = NEW.balance_id;
+            UPDATE "user" u SET user_status='subscribed' WHERE u.user_id = NEW.balance_id;
         ELSE
-            UPDATE fp_schema.user u SET user_status='blocked' WHERE u.user_id = NEW.balance_id;
+            UPDATE "user" u SET user_status='blocked' WHERE u.user_id = NEW.balance_id;
             UPDATE transaction t SET transaction_status='denied' WHERE t.transaction_id = New.transaction_id;
         END IF;
     END IF;
     RETURN NEW;
-END;
+END
 $BODY$
     LANGUAGE plpgsql VOLATILE;
 
@@ -136,7 +134,7 @@ CREATE TABLE user_tariffs
     tariff_id            INTEGER NOT NULL,
     date_of_start        DATE DEFAULT CURRENT_DATE,
     date_of_last_payment DATE    NULL,
-    FOREIGN KEY (user_id) REFERENCES fp_schema.user (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES "user" (user_id) ON DELETE CASCADE,
     FOREIGN KEY (tariff_id) REFERENCES tariff (tariff_id) ON DELETE CASCADE
 );
 
@@ -159,7 +157,7 @@ CREATE TABLE connection_request
     tariff                INTEGER NOT NULL,
     date_of_change        date                DEFAULT CURRENT_DATE,
     status                request_status_type DEFAULT 'in processing',
-    FOREIGN KEY (subscriber) REFERENCES fp_schema.user (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (subscriber) REFERENCES "user" (user_id) ON DELETE CASCADE,
     FOREIGN KEY (tariff) REFERENCES tariff (tariff_id) ON DELETE CASCADE
 );
 
@@ -299,9 +297,9 @@ VALUES (ARRAY ['Простий IP-TV', 'Basic IP-TV'], ARRAY ['звичайни�
        (ARRAY ['Супер Телефон','Super Telephone'], ARRAY ['супер телефон','super telephone'], 3, 80, 28);
 
 
-INSERT INTO fp_schema.user (email, pass, registration_date, user_role, user_status, user_balance, firstname,
-                            middle_name,
-                            surname, telephone_number)
+INSERT INTO "user" (email, pass, registration_date, user_role, user_status, user_balance, firstname,
+                    middle_name,
+                    surname, telephone_number)
 VALUES ('example@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin',
         '+380634325657'),
        ('manager@gmail.com', 12345, CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',

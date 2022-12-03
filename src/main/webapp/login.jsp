@@ -14,20 +14,27 @@
 <u:html title="${title}">
     <div class="w3-container">
         <h2>${title}</h2>
-        <c:if test="${not empty param.message}">
-            <p class="error"><fmt:message key="${param.message}"/></p>
-        </c:if>
-        <form action="/login" <%--action="/login.html"--%> method="post">
-            <input id="login" name="login">
-            <input id="password" name="password" type="password">
-            <button class="w3-btn w3-hover-light-blue w3-round-large"><fmt:message key="login.button.login"
-                                                                                   bundle="${lang}"/></button>
-        </form>
-            <%--<form action="controller" method="post">
-              <input name="command" value="login" type="hidden">
-              <input name="login"><br>
-              <input name="password" type="password"><br>
-              <input value="Login" type="submit">
-            </form>--%>
+        <div class="w3-center">
+            <c:if test="${not empty param.message}">
+                <p class="error"><fmt:message key="${param.message}"/></p>
+            </c:if>
+            <form action="/login" <%--action="/login.html"--%> method="post"
+                  style="margin-left: auto; margin-right: auto; width: 300px">
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="login"
+                       name="login">
+                <br><br>
+                <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="password"
+                       name="password" type="password">
+                <br><br>
+                <button class="w3-btn w3-teal w3-input-group-addon" style="width:300px"><fmt:message key="login.button.login"
+                                                                                       bundle="${lang}"/></button>
+            </form>
+                <%--<form action="controller" method="post">
+                  <input name="command" value="login" type="hidden">
+                  <input name="login"><br>
+                  <input name="password" type="password"><br>
+                  <input value="Login" type="submit">
+                </form>--%>
+        </div>
     </div>
 </u:html>

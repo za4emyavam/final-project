@@ -33,6 +33,15 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService {
     }
 
     @Override
+    public List<ConnectionRequest> readAll(int limit, int offset) throws ServiceException {
+        try {
+            return connectionRequestDAO.readAll(limit, offset);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public ConnectionRequest read(Long id) throws ServiceException {
         try {
             return connectionRequestDAO.read(id);
@@ -45,6 +54,15 @@ public class ConnectionRequestServiceImpl implements ConnectionRequestService {
     public void update(ConnectionRequest entity) throws ServiceException {
         try {
             connectionRequestDAO.update(entity);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Integer getNoOfRecords() throws ServiceException {
+        try {
+            return connectionRequestDAO.getNoOfRecords();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

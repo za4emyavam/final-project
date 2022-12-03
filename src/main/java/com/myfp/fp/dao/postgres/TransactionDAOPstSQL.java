@@ -13,6 +13,7 @@ import java.util.List;
 
 public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO {
     private static final Logger LOG4J = LogManager.getLogger(TransactionDAOPstSQL.class);
+
     @Override
     public Transaction read(Long id) throws DAOException {
         return null;
@@ -20,7 +21,9 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
 
     @Override
     public Long create(Transaction entity) throws DAOException {
-        String sql = "INSERT INTO transaction(balance_id, type, transaction_amount, transaction_date) VALUES (?, ?::transaction_type, ?, DEFAULT);";
+        String sql = "INSERT INTO transaction" +
+                "(balance_id, type, transaction_amount, transaction_date) " +
+                "VALUES (?, ?::transaction_type, ?, DEFAULT);";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         long resultId = -1;
@@ -69,8 +72,8 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
             con = getConnection();
             preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, Math.toIntExact(id));
-            try(ResultSet rs = preparedStatement.executeQuery()) {
-                while(rs.next()) {
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
                     Transaction transaction = new Transaction();
                     transaction.setId(rs.getLong("transaction_id"));
                     transaction.setBalanceId(rs.getInt("balance_id"));

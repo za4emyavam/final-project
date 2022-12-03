@@ -22,7 +22,7 @@
 <body>
 <div class="w3-container w3-teal">
     <div class="w3-container" style="display: inline-block">
-        <h1><a class="w3-hover-none w3-hover-text-white" href="/index"><fmt:message key="application.title"/></a></h1>
+        <h1><a class="w3-hover-none w3-hover-text-white" href="/"><fmt:message key="application.title"/></a></h1>
         <c:if test="${not empty currentUser}">
             <c:url var="urlLogout" value="/logout"/>
             <p>

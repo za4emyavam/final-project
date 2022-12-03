@@ -2,6 +2,7 @@ package com.myfp.fp.dao;
 
 import com.myfp.fp.entities.User;
 
+import java.sql.Connection;
 import java.util.List;
 
 public interface UserDAO extends DAO<User> {
@@ -12,6 +13,5 @@ public interface UserDAO extends DAO<User> {
 
     User readByLoginAndPassword(String login, String password) throws DAOException;
 
-    void addNewUser(String email, String login, String password) throws DAOException;
     Integer getNoOfRecords() throws DAOException;
 }

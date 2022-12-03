@@ -51,5 +51,11 @@
                 </tr>
             </c:forEach>
         </table>
+        <div class="w3-bar">
+            <c:forEach begin="1" end="${noOfPages}" var="i">
+                <a href="${pageContext.request.contextPath}/admin/requests?page=${i}"
+                   class="w3-button">${i}</a>
+            </c:forEach>
+        </div>
     </div>
 </u:html>

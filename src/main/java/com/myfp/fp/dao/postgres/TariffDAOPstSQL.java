@@ -22,7 +22,7 @@ public class TariffDAOPstSQL extends BaseDAOImpl implements TariffDAO {
         try {
             con = getConnection();
             preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, Math.toIntExact(id));
+            preparedStatement.setLong(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     res = fillTariff(resultSet);
