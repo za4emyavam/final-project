@@ -1,6 +1,5 @@
 package com.myfp.fp.controller.cabinet;
 
-import com.myfp.fp.controller.Forward;
 import com.myfp.fp.entities.Transaction;
 import com.myfp.fp.entities.TransactionType;
 import com.myfp.fp.entities.User;
@@ -8,6 +7,7 @@ import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.TransactionService;
 import com.myfp.fp.service.UserService;
 import com.myfp.fp.util.FactoryException;
+import com.myfp.fp.util.MailReport;
 import com.myfp.fp.util.MainServiceFactoryImpl;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -37,16 +37,22 @@ public class ReplenishServlet extends HttpServlet {
 
                 long id = transactionService.insertTransaction(transaction);
                 if (id != 0) {
-
+                    sendEmail(request);
                     UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
                     request.getSession().setAttribute("currentUser", userService.findById(user.getId()));
                     response.sendRedirect("/cabinet");
                 }
-            } catch (FactoryException e) {
-                throw new ServletException(e);
-            } catch (ServiceException e) {
+            } catch (FactoryException | ServiceException e) {
                 throw new ServletException(e);
             }
         }
+    }
+
+    private void sendEmail(HttpServletRequest request) {
+        User currentUser = (User) request.getSession(false).getAttribute("currentUser");
+        String email = currentUser.getEmail();
+        String firstname = currentUser.getFirstname();
+        String amount = request.getParameter("amount");
+        MailReport.replenishMail(email, firstname, amount);
     }
 }

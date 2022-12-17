@@ -6,7 +6,6 @@ import com.myfp.fp.entities.User;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.UserService;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -74,6 +73,15 @@ public class UserServiceImpl implements UserService {
     public Integer getNoOfRecords() throws ServiceException {
         try {
             return userDAO.getNoOfRecords();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int isUserExist(String login) throws ServiceException {
+        try {
+            return userDAO.isUserExist(login);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

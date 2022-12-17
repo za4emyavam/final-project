@@ -1,10 +1,8 @@
 package com.myfp.fp.dao.postgres;
 
-import com.myfp.fp.controller.CookieLocaleFilter;
 import com.myfp.fp.dao.ConnectionRequestDAO;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.entities.*;
-import com.myfp.fp.util.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements ConnectionRequestDAO {
-    private static final Logger LOG4J = LogManager.getLogger(CookieLocaleFilter.class);
+    private static final Logger LOG4J = LogManager.getLogger(ConnectionRequestDAOPstSQL.class);
 
     @Override
     public ConnectionRequest read(Long id) throws DAOException {

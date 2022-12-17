@@ -1,10 +1,10 @@
 package com.myfp.fp.controller.admin;
 
-import com.myfp.fp.controller.Forward;
 import com.myfp.fp.entities.User;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.UserService;
 import com.myfp.fp.util.FactoryException;
+import com.myfp.fp.util.MailReport;
 import com.myfp.fp.util.MainServiceFactoryImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,9 +26,14 @@ public class RegistrationUserServlet extends HttpServlet {
         User user = fillUser(req);
         try {
             UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
-            //userService.isUserExist(email, login) -> true --> new Forward("/registration.html?message=user with this email/login exist");
-            userService.create(user);
-            resp.sendRedirect("/admin/users");
+            //check is email already in use
+            if (userService.isUserExist(req.getParameter("email")) == 0) {
+                userService.create(user);
+                sendEmail(req);
+                resp.sendRedirect("/admin/users");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/admin/registration?message=admin.registration.incorrect.email");
+            }
         } catch (FactoryException | ServiceException e) {
             throw new ServletException(e);
         }
@@ -45,7 +50,10 @@ public class RegistrationUserServlet extends HttpServlet {
         return user;
     }
 
-    private boolean isGood(String s) {
-        return s != null && !s.equals("");
+    private void sendEmail(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        String firstname = request.getParameter("firstname");
+        String pass = request.getParameter("password");
+        MailReport.registrationMail(email, firstname, pass);
     }
 }

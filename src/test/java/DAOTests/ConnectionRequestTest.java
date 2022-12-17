@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 import static org.mockito.Mockito.*;
 
@@ -83,6 +80,40 @@ public class ConnectionRequestTest {
                             "service", "cost", "frequency_of_payment")
                             .matches(actual.getTariff())
             );
+        }
+    }
+
+    @Test
+    public void createTest() throws Exception {
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.next())
+                .thenReturn(true)
+                .thenReturn(false);
+
+        when(rs.getInt(1)).thenReturn(5);
+
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(statement.executeUpdate()).thenReturn(1);
+        when(statement.getGeneratedKeys()).thenReturn(rs);
+
+        Connection con = mock(Connection.class);
+        when(con.prepareStatement(
+                "INSERT INTO connection_request(subscriber, city, address, tariff, date_of_change, status)" +
+                        " VALUES(?, ?, ?, ?, DEFAULT, DEFAULT)",
+                Statement.RETURN_GENERATED_KEYS
+        )).thenReturn(statement);
+
+       try(MockedStatic<ConnectionPool> conPool = mockStatic(ConnectionPool.class)) {
+                conPool.when(ConnectionPool::getConnection).thenReturn(con);
+
+                ConnectionRequest request = fillExample();
+
+                long expected = 5L;
+
+                ConnectionRequestService service = MainServiceFactoryImpl.getInstance().getConnectionRequestService();
+                long actual = service.insertRequest(request);
+
+                Assertions.assertEquals(expected, actual);
         }
     }
 

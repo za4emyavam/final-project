@@ -17,7 +17,6 @@ DROP TYPE if exists transaction_status_type;
 
 CREATE TYPE role_type AS ENUM ('user', 'admin', 'main_admin');
 CREATE TYPE user_status_type AS ENUM ('subscribed', 'blocked');
-/*CREATE TYPE tariff_status_type AS ENUM ('disabled', 'active');*/
 CREATE TYPE request_status_type AS ENUM ('in processing', 'rejected', 'approved');
 CREATE TYPE transaction_type AS ENUM ('debit', 'refill');
 CREATE TYPE transaction_status_type AS ENUM ('successful', 'denied');
@@ -30,7 +29,7 @@ CREATE TABLE "user"
     registration_date date         NOT NULL DEFAULT (CURRENT_DATE),
     user_role         role_type             DEFAULT ('user'),
     user_status       user_status_type      DEFAULT ('subscribed'),
-    user_balance      DECIMAL(8, 2)         DEFAULT 0,
+    user_balance      DECIMAL(8, 2)         DEFAULT 0 CHECK ( user_balance >= 0 ),
     firstname         varchar(30)  NOT NULL,
     middle_name       varchar(30)  NOT NULL,
     surname           varchar(30)  NOT NULL,
@@ -318,8 +317,6 @@ INSERT INTO additional_service (name, description, cost)
 VALUES ('Podkluchenie', 'viezd i ustanovka oborudovaniya', 200),
        ('Router', 'router', 100);
 
-/*INSERT INTO connection_request (subscriber, city, address, tariff, date_of_change)
-VALUES (1, 'Odessa', 'Bocharova 45 214', 2, '2022-09-19'::DATE);*/
 INSERT INTO connection_request (subscriber, city, address, tariff)
 VALUES (1, 'Odessa', 'Bocharova 45 214', 2);
 

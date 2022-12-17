@@ -18,11 +18,12 @@
     <title>${title}</title>
     <c:url var="urlCss" value="/styles/w3.css"/>
     <link href="${urlCss}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/icon.png"/>
 </head>
 <body>
 <div class="w3-container w3-teal">
     <div class="w3-container" style="display: inline-block">
-        <h1><a class="w3-hover-none w3-hover-text-white" href="/"><fmt:message key="application.title"/></a></h1>
+        <h1><a class="w3-hover-none w3-hover-text-white" href="${pageContext.request.contextPath}/"><fmt:message key="application.title"/></a></h1>
         <c:if test="${not empty currentUser}">
             <c:url var="urlLogout" value="/logout"/>
             <p>

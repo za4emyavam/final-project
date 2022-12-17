@@ -11,7 +11,10 @@
 <u:html title="title">
     <div class="w3-container">
     <h2>${title}</h2>
-    <form action="/admin/registration" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
+    <form action="${pageContext.request.contextPath}/admin/registration" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
+        <c:if test="${not empty param.message}">
+            <p class="error"><fmt:message key="${param.message}"/></p>
+        </c:if>
         <div class="w3-container w3-inline-input-group">
             <fmt:message key="admin.registration.email" var="email"/>
             <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="email" name="email"
@@ -36,7 +39,7 @@
             <fmt:message key="admin.registration.password" var="password"/>
             <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="password" minlength="5" maxlength="32"
                    type="password"
-                   name="password" type="password" placeholder="${password}" required="required">
+                   name="password" placeholder="${password}" required="required">
             <br><br>
             <button class="w3-btn w3-teal w3-input-group-addon w3-col" style="width: 300px" type="submit"><fmt:message key="admin.registration.button.register"/>
             </button>

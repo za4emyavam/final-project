@@ -13,11 +13,11 @@
     <div class="w3-container">
         <h2>${title}</h2>
         <div class="w3-center">
-            <form action="/tariffs/update?id=${requestScope.id}" method="post"
+            <form action="${pageContext.request.contextPath}/tariffs/update?id=${requestScope.id}" method="post"
                   style="margin-left: auto; margin-right: auto; width: 300px">
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="nameUA"
                        name="nameUA"
-                       value="${requestScope.currentTariff.name[0]}">
+                       value="${requestScope.currentTariff.name[0]}" required>
                 <br><br>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="nameEN"
                        name="nameEN"
@@ -40,7 +40,7 @@
                        value="${requestScope.currentTariff.frequencyOfPayment}">
                 <br><br>
                 <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:300px" id="service"
-                        name="service">
+                        name="service" required>
                     <option value="" disabled selected>
                         <fmt:message key="tariffs.update.was"/>: ${requestScope.currentTariff.service.serviceType}
                     </option>

@@ -1,6 +1,5 @@
 package com.myfp.fp.controller.admin;
 
-import com.myfp.fp.controller.Forward;
 import com.myfp.fp.entities.ConnectionRequest;
 import com.myfp.fp.entities.RequestStatus;
 import com.myfp.fp.service.ConnectionRequestService;
@@ -17,7 +16,7 @@ import java.io.IOException;
 public class UpdateRequestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = getId(request, response);
+        int id = getId(request);
         if (id == -1)
             response.sendRedirect("/index");
         try {
@@ -36,8 +35,7 @@ public class UpdateRequestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("UpdateRequestCommand");
-        int id = getId(request, response);
+        int id = getId(request);
         if (id == -1)
             response.sendRedirect("/index");
         try {
@@ -45,7 +43,6 @@ public class UpdateRequestServlet extends HttpServlet {
             ConnectionRequest connectionRequest = connectionRequestService.read((long) id);
             String status = request.getParameter("status");
             if (status != null && !status.equals("")) {
-                System.out.println("is here?");
                 switch (status) {
                     case "approved":
                         System.out.println(status);
@@ -68,7 +65,7 @@ public class UpdateRequestServlet extends HttpServlet {
         }
     }
 
-    private int getId(HttpServletRequest request, HttpServletResponse response) {
+    private int getId(HttpServletRequest request) {
         String sId = request.getParameter("id");
         int id = -1;
         if (sId != null && !sId.equals("")) {

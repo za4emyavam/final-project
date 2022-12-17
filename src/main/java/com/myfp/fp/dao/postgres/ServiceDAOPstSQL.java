@@ -1,6 +1,5 @@
 package com.myfp.fp.dao.postgres;
 
-import com.myfp.fp.controller.CookieLocaleFilter;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.ServiceDAO;
 import com.myfp.fp.entities.Service;
@@ -59,7 +58,6 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
 
     @Override
     public Service readByType(String str) throws DAOException {
-        Service res = null;
         String sql = "SELECT s.service_id FROM service s WHERE s.service_type=?";
         Connection con = getConnection();
         try(PreparedStatement preparedStatement = con.prepareStatement(sql)) {

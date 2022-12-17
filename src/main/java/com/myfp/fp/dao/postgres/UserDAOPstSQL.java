@@ -152,8 +152,29 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     }
 
     @Override
-    public User readByLogin(String login) throws DAOException {
-        return null;
+    public int isUserExist(String login) throws DAOException {
+        String sql = "SELECT count(*) FROM \"user\" WHERE email=(?)";
+        Connection con = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, login);
+            rs = preparedStatement.executeQuery();
+            int res = 0;
+            if (rs.next()) {
+                res = rs.getInt(1);
+            }
+            return res;
+        } catch (SQLException e) {
+            LOG4J.error(e.getMessage(), e);
+            throw new DAOException(e);
+        } finally {
+            closeStat(rs);
+            closeStat(preparedStatement);
+            closeConnection(con);
+        }
     }
 
     @Override
