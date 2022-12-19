@@ -20,7 +20,13 @@ public class ConnectionPool {
         return instance;
     }
 
-    public static Connection getConnection() throws SQLException{
+    /**
+     * Returns an available connection from the pool using Apache Tomcat Pool
+     *
+     * @return a connection to the database
+     * @throws SQLException if there is an error establishing the connection
+     */
+    public static Connection getConnection() throws SQLException {
         Context cxt;
         Connection c = null;
         try {

@@ -14,6 +14,7 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
 import java.sql.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -124,6 +125,26 @@ public class UserDAOTest {
         }
     }
 
+    @Test
+    public void testGetNoOfRecords() throws Exception {
+        ResultSet resultSet = mock(ResultSet.class);
+        when(resultSet.getInt(1)).thenReturn(5);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+
+        Statement statement = mock(Statement.class);
+        when(statement.executeQuery("SELECT count(*) AS count FROM \"user\" ")).thenReturn(resultSet);
+
+        Connection connection = mock(Connection.class);
+        when(connection.createStatement()).thenReturn(statement);
+
+        try (MockedStatic<ConnectionPool> conPool = Mockito.mockStatic(ConnectionPool.class)) {
+            conPool.when(ConnectionPool::getConnection).thenReturn(connection);
+            UserService userService = MainServiceFactoryImpl.getInstance().getUserService();
+
+            assertEquals(new Integer(5), userService.getNoOfRecords());
+        }
+    }
+
     private User fillExample() {
         User example = new User();
         example.setId(13L);
@@ -135,4 +156,5 @@ public class UserDAOTest {
         example.setTelephoneNumber("380636278404");
         return example;
     }
+
 }

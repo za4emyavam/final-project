@@ -11,9 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Class for interaction User entity with postgresql database
+ */
 public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     private static final Logger LOG4J = LogManager.getLogger(UserDAOPstSQL.class);
 
+    /**
+
+     Reads the information for a specific user from the database.
+     @param id The ID of user to be read.
+     @return The user object from the database.
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public User read(Long id) throws DAOException {
         String sql = "SELECT * FROM \"user\" u WHERE u.user_id=(?)";
@@ -40,6 +50,13 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         }
     }
 
+    /**
+
+     Creates a new user in the database.
+     @param entity The user object to be created.
+     @return The ID of the newly created user.
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public Long create(User entity) throws DAOException {
         String sql = "INSERT INTO \"user\"(email, pass, firstname, middle_name, surname, telephone_number) " +
@@ -71,6 +88,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         return resId;
     }
 
+    /**
+
+     Updates the information for a specific user in the database.
+     @param entity The user object containing the updated information.
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public void update(User entity) throws DAOException {
         String sql = "UPDATE \"user\" u SET email=?, registration_date=?," +
@@ -109,6 +132,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     }
 
+    /**
+
+     Reads a list of all users from the database.
+     @return A list of all users in the database.
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<User> readAll() throws DAOException {
         List<User> users = new ArrayList<>();
@@ -128,6 +157,14 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         return users;
     }
 
+    /**
+
+     Reads a list of users from the database.
+     @param limit The maximum number of users to return.
+     @param offset The number of users to skip before returning the results.
+     @return A list of users.
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<User> readAll(int limit, int offset) throws DAOException {
         List<User> users = new ArrayList<>();
@@ -151,6 +188,13 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         return users;
     }
 
+    /**
+     * Determines if a user with the given login exists in the database.
+     *
+     * @param login the login of the user to check for
+     * @return 1 if a user with the given login exists in the database, 0 otherwise
+     * @throws DAOException if there is an error checking for the user in the database
+     */
     @Override
     public int isUserExist(String login) throws DAOException {
         String sql = "SELECT count(*) FROM \"user\" WHERE email=(?)";
@@ -177,6 +221,14 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * Reads a user from the database by login and password.
+     *
+     * @param login the user's login
+     * @param password the user's password
+     * @return the user with the specified login and password, or null if no such user exists
+     * @throws DAOException if there is an error reading the user from the database
+     */
     @Override
     public User readByLoginAndPassword(String login, String password) throws DAOException {
         String sql = "SELECT * FROM \"user\" u WHERE u.email = (?) AND u.pass=(?)";
@@ -204,6 +256,12 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * Returns the number of users in the database.
+     *
+     * @return the number of users in the database
+     * @throws DAOException if there is an error counting the number of users in the database
+     */
     @Override
     public Integer getNoOfRecords() throws DAOException {
         String sql = "SELECT count(*) AS count FROM \"user\" ";
@@ -222,6 +280,13 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         return res;
     }
 
+    /**
+
+     Fills a user object with information from a ResultSet.
+     @param rs The ResultSet to get the information from.
+     @return The user object with the information from the ResultSet.
+     @throws SQLException If there is an error getting the information from the ResultSet.
+     */
     private User fillUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getLong("user_id"));
@@ -235,13 +300,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         user.setTelephoneNumber(rs.getString("telephone_number"));
 
         user.setRegistrationDate(rs.getDate("registration_date"));
-        //user.setRole(Enum.valueOf(Role.class, rs.getString("user_role").toUpperCase()));
         user.setUserRole(Role.fromString(rs.getString("user_role")));
-        /*String status = rs.getString("user_status");*/
-            /*if (status != null)
-                user.setUserStatus(Enum.valueOf(UserStatus.class, status.toUpperCase()));
-            else
-                user.setUserStatus(null);*/
         user.setUserStatus(UserStatus.fromString(rs.getString("user_status")));
         return user;
     }

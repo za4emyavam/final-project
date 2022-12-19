@@ -16,7 +16,7 @@ import java.util.List;
 @WebServlet(name = "HistoryServlet", value = "/cabinet/history")
 public class HistoryServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("currentUser");
         try {
             TransactionService transactionService = MainServiceFactoryImpl.getInstance().getTransactionService();
@@ -26,10 +26,5 @@ public class HistoryServlet extends HttpServlet {
             throw new ServletException(e);
         }
         request.getRequestDispatcher("history.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

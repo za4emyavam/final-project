@@ -21,7 +21,6 @@
         <h2>${title}</h2>
         <div class="w3-center">
             <c:if test="${sessionScope.currentUser != null}">
-                <%--<p class="w3-text-brown">Name of user: ${sessionScope.currentUser.email}</p>--%>
                 <button class="w3-button w3-round" onclick="location.href='logout'"><fmt:message key="main.blogout"
                                                                                                  bundle="${lang}"/></button>
                 <button class="w3-button w3-round" onclick="location.href='cabinet'"><fmt:message key="main.bcabinet"
@@ -40,18 +39,20 @@
                                                                                               bundle="${lang}"/></button>
         </div>
         <div class="w3-container">
-            <h3>Про нас</h3>
-            <p>
-                Компанія Fastest розпочала свою історію в 2006 році. Перший наш крок – надання послуг доступу до глобальної мережі за технологією Ethernet в одному лише районі міста Одеси, Малиновському.
-
-                Вже через 2 роки ми змогли, побудувавши оптичну магістраль, запропонувати нашим клієнтам високошвидкісний Інтернет з безперервним з’єднанням. Ми почали розширювати межі і охопили інші райони міста, підключаючи наших абонентів за технологією FTTH.
-
-                Ще через 2 роки ми змонтували і запустили в експлуатацію власну серверну технічний майданчик. У нас з’явилися нові можливості, і ми оновили обладнання, вибравши продукти відомого американського бренду, компанії Juniper Networks.
-
-                Тоді і з’явилася вперше в Одесі технологія xPON, оптична мережа, яка дозволила нам забезпечити наших абонентів якісним Інтернетом на ще більш високих швидкостях. У 2015 році ми знову оновили обладнання, вибравши на цей раз найбільший бренд на ринку телекомунікацій, компанію Huawei Technologies.
-
-                У своїй роботі ми використовуємо тільки сертифіковане обладнання та комплектуючі від світових брендів. Це дає нам можливість надавати своїм клієнтам цілодобовий доступ до мережі Інтернет на високих швидкостях. І ми не зупиняємося на досягнутому і продовжуємо розвиватися.
-            </p>
+            <%--<h3 class="w3-center"><fmt:message key="main.about" bundle="${lang}"/></h3>--%>
+            <div style="display: flex">
+                <div style="width: 50%;">
+                    <img src="img/index_photo_1.jpg" style="position: relative; top: 30px; width: 90%; height: 90%; object-fit: cover;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                </div>
+                <div style="width: 50%;">
+                    <h3><fmt:message key="main.about" bundle="${lang}"/></h3>
+                    <p style="text-align: justify">
+                        <fmt:message key="main.text.about" bundle="${lang}"/>
+                    </p>
+                </div>
+            </div>
         </div>
+
     </div>
 </u:html>
