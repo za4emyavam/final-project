@@ -6,6 +6,9 @@ import com.myfp.fp.entities.User;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.UserService;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -36,8 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long create(User entity) throws ServiceException {
         try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(entity.getPass().getBytes());
+            entity.setPass(Base64.getEncoder().encodeToString(hash));
             return userDAO.create(entity);
-        } catch (DAOException e) {
+        } catch (DAOException | NoSuchAlgorithmException e) {
             throw new ServiceException(e);
         }
     }
@@ -45,8 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByLoginAndPassword(String login, String password) throws ServiceException {
         try {
-            return userDAO.readByLoginAndPassword(login, password);
-        } catch (DAOException e) {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            String hashPass = Base64.getEncoder().encodeToString(hash);
+            return userDAO.readByLoginAndPassword(login, hashPass);
+        } catch (DAOException | NoSuchAlgorithmException e) {
             throw new ServiceException(e);
         }
     }

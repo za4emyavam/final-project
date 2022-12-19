@@ -299,17 +299,17 @@ VALUES (ARRAY ['Простий IP-TV', 'Basic IP-TV'], ARRAY ['звичайни�
 INSERT INTO "user" (email, pass, registration_date, user_role, user_status, user_balance, firstname,
                     middle_name,
                     surname, telephone_number)
-VALUES ('example@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin',
+VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin',
         '+380634325657'),
-       ('manager@gmail.com', 12345, CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
+       ('manager@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
         '+380634325657'),
-       ('admin@gmail.com', 12345, CURRENT_DATE, 'main_admin', DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
+       ('admin@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'main_admin', DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
         '+380764325621'),
-       ('example2@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin',
+       ('example2@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin',
         '+380634978657'),
-       ('example3@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin',
+       ('example3@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin',
         '+380634343657'),
-       ('example4@gmail.com', 12345, CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin',
+       ('example4@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin',
         '+380634325617');
 
 
