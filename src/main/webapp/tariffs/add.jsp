@@ -12,7 +12,7 @@
 <u:html title="${title}">
     <div class="w3-container">
         <h2>${title}</h2>
-        <form action="/tariffs/add" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
+        <form action="${pageContext.request.contextPath}/tariffs/add" method="post" style="margin-left: auto; margin-right: auto; width: 300px">
             <div class="w3-inline-input-group">
                 <fmt:message key="tariffs.add.name.ua" var="nameUA"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="nameUA" name="nameUA"
@@ -32,12 +32,12 @@
                 <br><br>
                 <fmt:message key="tariffs.add.cost" var="cost"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="cost" name="cost"
-                       placeholder="${cost}">
+                       placeholder="${cost}" type="number">
                 <br><br>
                 <fmt:message key="tariffs.add.frequency" var="frequency"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px"
                        id="frequency_of_payment"
-                       name="frequency_of_payment" placeholder="${frequency}">
+                       name="frequency_of_payment" placeholder="${frequency}" type="number">
                 <br><br>
                 <select class="w3-select w3-border w3-col w3-input-group-addon" style="width: 300px" id="service"
                         name="service">

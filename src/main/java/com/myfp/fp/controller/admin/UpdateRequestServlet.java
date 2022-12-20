@@ -45,12 +45,13 @@ public class UpdateRequestServlet extends HttpServlet {
             if (status != null && !status.equals("")) {
                 switch (status) {
                     case "approved":
-                        System.out.println(status);
                         connectionRequest.setStatus(RequestStatus.APPROVED);
                         connectionRequestService.update(connectionRequest);
-                        System.out.println("??");
                         response.sendRedirect("/admin/requests");
                     case "reject":
+                        connectionRequest.setStatus(RequestStatus.REJECTED);
+                        connectionRequestService.update(connectionRequest);
+                        response.sendRedirect("/admin/requests");
                     default:
                         break;
                 }

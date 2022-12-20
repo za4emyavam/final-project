@@ -1,16 +1,12 @@
 DROP FUNCTION if exists f_check_payment(integer);
-DROP TABLE if exists request_additional_services;
 DROP TABLE if exists connection_request;
 DROP TABLE if exists user_tariffs;
 DROP TABLE if exists tariff;
 DROP TABLE if exists transaction;
-DROP TABLE if exists user_info;
 DROP TABLE if exists service;
-DROP TABLE if exists additional_service;
 DROP TABLE if exists "user";
 DROP TYPE if exists role_type;
 DROP TYPE if exists user_status_type;
-DROP TYPE if exists tariff_status_type;
 DROP TYPE if exists request_status_type;
 DROP TYPE if exists transaction_type;
 DROP TYPE if exists transaction_status_type;
@@ -48,16 +44,6 @@ CREATE TABLE transaction
     transaction_status transaction_status_type NULL,
     FOREIGN KEY (balance_id) REFERENCES "user" (user_id) ON DELETE CASCADE
 );
-
-/*CREATE TABLE balance_transactions
-(
-    balance_transactions_id SERIAL PRIMARY KEY,
-    balance_id              INTEGER NOT NULL,
-    transaction_id          INTEGER NOT NULL,
-    transaction_status      transaction_status_type,
-    FOREIGN KEY (balance_id) REFERENCES user_balance (user_balance_id) ON DELETE CASCADE,
-    FOREIGN KEY (transaction_id) REFERENCES transaction (transaction_id) ON DELETE CASCADE
-);*/
 
 CREATE OR REPLACE FUNCTION add(DECIMAL, DECIMAL) RETURNS DECIMAL
 AS
@@ -122,7 +108,6 @@ CREATE TABLE tariff
     service              INTEGER,
     cost                 DECIMAL(8, 2)        NOT NULL,
     frequency_of_payment INTEGER              NOT NULL,
-    /*status               tariff_status_type DEFAULT 'active',*/
     FOREIGN KEY (service) REFERENCES service (service_id) ON DELETE CASCADE
 );
 
@@ -135,16 +120,6 @@ CREATE TABLE user_tariffs
     date_of_last_payment DATE    NULL,
     FOREIGN KEY (user_id) REFERENCES "user" (user_id) ON DELETE CASCADE,
     FOREIGN KEY (tariff_id) REFERENCES tariff (tariff_id) ON DELETE CASCADE
-);
-
-/*CREATE TRIGGER t_user_tariffs();*/
-
-CREATE TABLE additional_service
-(
-    additional_service_id SERIAL PRIMARY KEY,
-    name                  VARCHAR(40)   NOT NULL UNIQUE,
-    description           TEXT          NOT NULL,
-    cost                  DECIMAL(8, 2) NOT NULL
 );
 
 CREATE TABLE connection_request
@@ -192,15 +167,6 @@ CREATE OR REPLACE TRIGGER t_con_request_change_status
     ON connection_request
     FOR EACH ROW
 EXECUTE FUNCTION f_t_update_request_status();
-
-CREATE TABLE request_additional_services
-(
-    request_additional_services_id SERIAL PRIMARY KEY,
-    request_id                     INTEGER NOT NULL,
-    services_id                    INTEGER,
-    FOREIGN KEY (request_id) REFERENCES connection_request (connection_request_id) ON DELETE CASCADE,
-    FOREIGN KEY (services_id) REFERENCES additional_service (additional_service_id) ON DELETE CASCADE
-);
 
 CREATE OR REPLACE FUNCTION datediff(type VARCHAR, date_from DATE, date_to DATE) RETURNS INTEGER
     LANGUAGE plpgsql
@@ -312,17 +278,8 @@ VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CUR
        ('example4@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin',
         '+380634325617');
 
-
-INSERT INTO additional_service (name, description, cost)
-VALUES ('Podkluchenie', 'viezd i ustanovka oborudovaniya', 200),
-       ('Router', 'router', 100);
-
 INSERT INTO connection_request (subscriber, city, address, tariff)
 VALUES (1, 'Odessa', 'Bocharova 45 214', 2);
 
 INSERT INTO user_tariffs(user_id, tariff_id, date_of_start, date_of_last_payment)
 VALUES (1, 2, '2022-09-19'::DATE, '2022-09-19'::DATE);
-
-INSERT INTO request_additional_services (request_id, services_id)
-VALUES (1, 1),
-       (1, 2);

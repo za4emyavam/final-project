@@ -33,11 +33,11 @@
                 <br><br>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="cost"
                        name="cost"
-                       value="${requestScope.currentTariff.cost}">
+                       value="${requestScope.currentTariff.cost}" type="number">
                 <br><br>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px"
                        id="frequency_of_payment" name="frequency_of_payment"
-                       value="${requestScope.currentTariff.frequencyOfPayment}">
+                       value="${requestScope.currentTariff.frequencyOfPayment}" type="number">
                 <br><br>
                 <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:300px" id="service"
                         name="service" required>
