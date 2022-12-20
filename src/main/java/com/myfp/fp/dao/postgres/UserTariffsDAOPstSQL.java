@@ -100,18 +100,25 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
     }
 
     @Override
-    public void checkPaymentOfAllUsers() throws DAOException {
-        String sql = "SELECT f_check_payment()";
+    public List<Integer> checkPaymentOfAllUsers(Long userId) throws DAOException {
+        List<Integer> res = new ArrayList<>();
+        String sql = "SELECT * FROM f_check_payment(?);";
         Connection con = getConnection();
-        try (Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(sql)) {
-
+        try(PreparedStatement preparedStatement = con.prepareStatement(sql)) {
+            preparedStatement.setInt(1, Math.toIntExact(userId));
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+                while(rs.next()) {
+                    res.add(rs.getInt(1));
+                    res.add(rs.getInt(2));
+                }
+            }
         } catch (SQLException e) {
             LOG4J.error(e.getMessage(), e);
             throw new DAOException(e);
         } finally {
             closeConnection(con);
         }
+        return res;
     }
 
     private UserTariffs fillUserTariffs(ResultSet rs) throws DAOException {

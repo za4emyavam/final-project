@@ -25,6 +25,13 @@
             <form action="/admin/check_payment" method="post">
                 <button class="w3-btn w3-teal" type="submit"><fmt:message key="admin.button.checkpayment"/></button>
             </form>
+            <c:if test="${requestScope.check != null}">
+                <p><fmt:message key="admin.text.last"/> ${requestScope.check.checkerId.email}
+                    <fmt:formatDate value="${requestScope.check.dateOfCheck}" pattern="yyyy-MM-dd HH:mm:ss"/> <br>
+                    <fmt:message key="admin.text.users"/>: ${requestScope.check.users}, <fmt:message
+                            key="admin.text.amount"/>: ${requestScope.check.amount}
+                </p>
+            </c:if>
         </div>
     </div>
 

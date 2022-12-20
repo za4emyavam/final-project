@@ -17,4 +17,6 @@ public interface ServiceFactory {
     ConnectionRequestDAO getConnectionRequestDAO() throws FactoryException;
     UserTariffsService getUserTariffsService() throws FactoryException;
     UserTariffsDAO getUserTariffsDAO() throws FactoryException;
+    CheckDAO getCheckDAO() throws FactoryException;
+    CheckService getCheckService() throws FactoryException;
 }

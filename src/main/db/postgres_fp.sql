@@ -1,4 +1,6 @@
-DROP FUNCTION if exists f_check_payment(integer);
+DROP FUNCTION if exists f_check_payment();
+DROP FUNCTION if exists f_check_payment_by_user_id(integer);
+DROP TABLE if exists checks;
 DROP TABLE if exists connection_request;
 DROP TABLE if exists user_tariffs;
 DROP TABLE if exists tariff;
@@ -184,7 +186,16 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION f_check_payment_by_user_id(integer) RETURNS INTEGER
+CREATE TABLE checks (
+                        check_id SERIAL PRIMARY KEY,
+                        checker_id integer,
+                        users integer,
+                        amount decimal,
+                        date_of_check timestamp,
+                        FOREIGN KEY (checker_id) REFERENCES "user" (user_id) ON DELETE CASCADE
+);
+
+CREATE OR REPLACE FUNCTION f_check_payment_by_user_id(integer) RETURNS DECIMAL
     LANGUAGE plpgsql AS
 $$
 DECLARE
@@ -194,12 +205,14 @@ DECLARE
     temp_tariff_cost          DECIMAL;
     temp_id                   integer;
     temp_status               transaction_status_type;
+    temp_sum                  DECIMAL;
 BEGIN
+    temp_sum = 0;
     temp_tariffs := ARRAY(
             SELECT tariff_id FROM user_tariffs ut WHERE user_id = $1
         );
     IF (array_length(temp_tariffs, 1) < 1) THEN
-        RETURN 1;
+        RETURN temp_sum;
     end if;
     FOR var in array_lower(temp_tariffs, 1)..array_upper(temp_tariffs, 1)
         loop
@@ -224,27 +237,44 @@ BEGIN
                     SET date_of_last_payment=CURRENT_DATE
                     WHERE user_id = $1
                       AND tariff_id = temp_tariffs[var];
+                    temp_sum = temp_sum + temp_tariff_cost;
                 end if;
             end if;
         end loop;
-    RETURN -1;
+    RETURN temp_sum;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION f_check_payment() RETURNS VOID
-    LANGUAGE plpgsql AS
+CREATE OR REPLACE FUNCTION f_check_payment(integer)
+    RETURNS TABLE
+            (
+                num_of_users  integer,
+                amount_of_all decimal
+            )
+    LANGUAGE plpgsql
+AS
 $$
 DECLARE
     temp_users_id integer[];
+    temp_amount   decimal;
+    num_of_users  integer;
+    amount_of_all decimal;
 BEGIN
+    num_of_users = 0;
+    amount_of_all = 0;
     temp_users_id := ARRAY(
             SELECT DISTINCT user_id FROM user_tariffs
         );
     FOR var in array_lower(temp_users_id, 1)..array_upper(temp_users_id, 1)
         loop
-            PERFORM f_check_payment_by_user_id(temp_users_id[var]);
+            SELECT INTO temp_amount f_check_payment_by_user_id(temp_users_id[var]);
+            IF (temp_amount > 0) THEN
+                num_of_users = num_of_users + 1;
+                amount_of_all = amount_of_all + temp_amount;
+            end if;
         end loop;
-    RETURN;
+    INSERT INTO checks VALUES (DEFAULT, $1, num_of_users, amount_of_all, NOW());
+    RETURN QUERY SELECT num_of_users, amount_of_all;
 END;
 $$;
 
@@ -265,17 +295,23 @@ VALUES (ARRAY ['Простий IP-TV', 'Basic IP-TV'], ARRAY ['звичайни�
 INSERT INTO "user" (email, pass, registration_date, user_role, user_status, user_balance, firstname,
                     middle_name,
                     surname, telephone_number)
-VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, 500, 'Vasya', 'Ivanovich', 'Pupkin',
+VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, 500,
+        'Vasya', 'Ivanovich', 'Pupkin',
         '+380634325657'),
-       ('manager@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'admin', DEFAULT, DEFAULT, 'Kiriil', 'Bubenovich', 'Karapuzin',
+       ('manager@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'admin', DEFAULT, DEFAULT,
+        'Kiriil', 'Bubenovich', 'Karapuzin',
         '+380634325657'),
-       ('admin@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'main_admin', DEFAULT, DEFAULT, 'Ivan', 'Kulebovich', 'Antonov',
+       ('admin@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'main_admin', DEFAULT, DEFAULT,
+        'Ivan', 'Kulebovich', 'Antonov',
         '+380764325621'),
-       ('example2@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Danya', 'Ivanovich', 'Pupkin',
+       ('example2@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
+        'Danya', 'Ivanovich', 'Pupkin',
         '+380634978657'),
-       ('example3@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'Maxim', 'Ivanovich', 'Pupkin',
+       ('example3@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
+        'Maxim', 'Ivanovich', 'Pupkin',
         '+380634343657'),
-       ('example4@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT, 'John', 'Ivanovich', 'Pupkin',
+       ('example4@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
+        'John', 'Ivanovich', 'Pupkin',
         '+380634325617');
 
 INSERT INTO connection_request (subscriber, city, address, tariff)

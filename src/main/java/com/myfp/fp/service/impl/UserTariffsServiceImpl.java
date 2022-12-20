@@ -35,9 +35,9 @@ public class UserTariffsServiceImpl implements UserTariffsService {
     }
 
     @Override
-    public void checkPaymentOfAllUsers() throws ServiceException {
+    public List<Integer> checkPaymentOfAllUsers(Long userId) throws ServiceException {
         try {
-            userTariffsDAO.checkPaymentOfAllUsers();
+            return userTariffsDAO.checkPaymentOfAllUsers(userId);
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

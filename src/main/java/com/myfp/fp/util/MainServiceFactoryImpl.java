@@ -92,4 +92,17 @@ public class MainServiceFactoryImpl implements ServiceFactory {
         UserTariffsDAOPstSQL userTariffsDAO = new UserTariffsDAOPstSQL();
         return userTariffsDAO;
     }
+
+    @Override
+    public CheckDAO getCheckDAO() throws FactoryException {
+        CheckDAOPstSQL checkDAO = new CheckDAOPstSQL();
+        return checkDAO;
+    }
+
+    @Override
+    public CheckService getCheckService() throws FactoryException {
+        CheckServiceImpl checkService = new CheckServiceImpl();
+        checkService.setCheckDAO(getCheckDAO());
+        return checkService;
+    }
 }
