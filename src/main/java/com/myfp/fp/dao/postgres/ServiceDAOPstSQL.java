@@ -35,6 +35,12 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
 
     }
 
+    /**
+
+     Retrieves a list of all services from the database.
+     @return a list of services
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<Service> readAll() throws DAOException {
         List<Service> services = new ArrayList<>();
@@ -56,6 +62,13 @@ public class ServiceDAOPstSQL extends BaseDAOImpl implements ServiceDAO {
         return services;
     }
 
+    /**
+
+     Retrieves a service from the database by service type.
+     @param str the type of the service to retrieve
+     @return the service with the given type, or {@code null} if no service is found
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public Service readByType(String str) throws DAOException {
         String sql = "SELECT s.service_id FROM service s WHERE s.service_type=?";

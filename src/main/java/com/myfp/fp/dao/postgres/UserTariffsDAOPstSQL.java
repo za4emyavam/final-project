@@ -37,6 +37,13 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
         return null;
     }
 
+    /**
+
+     Retrieves a list of all tariffs for a given user.
+     @param id the id of the user to retrieve tariffs for
+     @return a list of user tariffs
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<UserTariffs> readAllByUser(Long id) throws DAOException {
         List<UserTariffs> list = new ArrayList<>();
@@ -64,6 +71,12 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
         return list;
     }
 
+    /**
+
+     Retrieves a list of all user tariff ids from the database.
+     @return a list of user tariff ids
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<Integer> getAllId() throws DAOException {
         List<Integer> list = new ArrayList<>();
@@ -83,6 +96,13 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
         return list;
     }
 
+    /**
+
+     Deletes a user tariff from the database by user id and tariff id.
+     @param userId the id of the user to delete the tariff for
+     @param tariffId the id of the tariff to delete
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public void deleteByUserIdTariffId(Long userId, Long tariffId) throws DAOException {
         String sql = "DELETE FROM user_tariffs ut WHERE user_id=? AND tariff_id=?";
@@ -99,6 +119,17 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
         }
     }
 
+
+    /**
+     * Checks each user who is subscribed to the rates whether the frequencyOfPayment has passed since the last payment.
+     * If yes, if possible, debits funds from the account or changes the user's status to blocked.
+     * After the check, a new tuple is added to the check table, in which the id of the user who launched the check,
+     * the number of users from whom funds were debited, the amount of funds debited, and the date of the check.
+     *
+     * @param userId the user id of the person requesting the payment status of all users
+     * @return the number of users from whom funds were debited and the amount of funds debited
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<Integer> checkPaymentOfAllUsers(Long userId) throws DAOException {
         List<Integer> res = new ArrayList<>();

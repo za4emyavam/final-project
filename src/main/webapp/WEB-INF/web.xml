@@ -41,6 +41,11 @@
         <filter-name>SecurityFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <listener>
+        <listener-class>com.myfp.fp.controller.ConnectionListener</listener-class>
+    </listener>
+
     <error-page>
         <location>/error.jsp</location>
     </error-page>

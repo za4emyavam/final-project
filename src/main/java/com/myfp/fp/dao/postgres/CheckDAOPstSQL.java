@@ -13,6 +13,12 @@ import java.sql.*;
 
 public class CheckDAOPstSQL extends BaseDAOImpl implements CheckDAO {
     private static final Logger LOG4J = LogManager.getLogger(CheckDAOPstSQL.class);
+    /**
+
+     Retrieves the most recent check from the database.
+     @return the most recent check or {@code null} if no checks are found
+     @throws DAOException if there is an error executing the query
+     */
     @Override
     public Check readLast() throws DAOException {
         Check res = null;

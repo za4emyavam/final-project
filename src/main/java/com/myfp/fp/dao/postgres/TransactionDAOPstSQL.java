@@ -19,6 +19,13 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
         return null;
     }
 
+    /**
+
+     Creates a new transaction in the database.
+     @param entity the transaction to be created
+     @return the id of the created transaction
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public Long create(Transaction entity) throws DAOException {
         String sql = "INSERT INTO transaction" +
@@ -62,6 +69,13 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
 
     }
 
+    /**
+
+     Retrieves a list of {@link Transaction} objects associated with a specific balance identified by the given ID.
+     @param id the ID of the balance to retrieve transactions for
+     @return a list of {@link Transaction} objects associated with the balance
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<Transaction> readAllByUserBalanceId(Long id) throws DAOException {
         List<Transaction> transactions = new ArrayList<>();

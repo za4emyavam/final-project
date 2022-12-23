@@ -13,6 +13,13 @@ import java.util.List;
 public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements ConnectionRequestDAO {
     private static final Logger LOG4J = LogManager.getLogger(ConnectionRequestDAOPstSQL.class);
 
+    /**
+     * Retrieves a connection request from the database by id.
+     *
+     * @param id the id of the connection request to retrieve
+     * @return the connection request with the given id, or {@code null} if no connection request is found
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public ConnectionRequest read(Long id) throws DAOException {
         ConnectionRequest connectionRequest = null;
@@ -40,6 +47,13 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         return connectionRequest;
     }
 
+    /**
+     * Creates a new connection request in the database.
+     *
+     * @param entity the connection request to create
+     * @return the id of the created connection request
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public Long create(ConnectionRequest entity) throws DAOException {
         String sql = "INSERT INTO connection_request(subscriber, city, address, tariff, date_of_change, status)" +
@@ -73,10 +87,16 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         return resId;
     }
 
+    /**
+     * Updates the status of a connection request in the database.
+     *
+     * @param entity the connection request to update
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public void update(ConnectionRequest entity) throws DAOException {
-        String sql = "UPDATE connection_request cr SET status=?::request_status_type WHERE cr.connection_request_id=" + entity.getId();
-        //Connection con = getConnection();
+        String sql = "UPDATE connection_request cr SET status=?::request_status_type " +
+                "WHERE cr.connection_request_id=" + entity.getId();
         Connection con = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -105,6 +125,12 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
 
     }
 
+    /**
+
+     Retrieves a list of all connection requests stored in the database.
+     @return a list of connection requests
+     @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<ConnectionRequest> readAll() throws DAOException {
         List<ConnectionRequest> requests = new ArrayList<>();
@@ -125,6 +151,12 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         return requests;
     }
 
+    /**
+     * Reads all connection requests from the database.
+     *
+     * @return a list of connection requests
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public List<ConnectionRequest> readAll(int limit, int offset) throws DAOException {
         List<ConnectionRequest> requests = new ArrayList<>();
@@ -148,6 +180,12 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         return requests;
     }
 
+    /**
+     * Gets the total number of connection requests in the database.
+     *
+     * @return the number of connection requests
+     * @throws DAOException If there is an error executing the SQL statement.
+     */
     @Override
     public Integer getNoOfRecords() throws DAOException {
         int res = -1;
@@ -155,7 +193,7 @@ public class ConnectionRequestDAOPstSQL extends BaseDAOImpl implements Connectio
         Connection con = getConnection();
         try (Statement statement = con.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
-            while(rs.next())
+            while (rs.next())
                 res = rs.getInt(1);
         } catch (SQLException e) {
             LOG4J.error(e.getMessage(), e);

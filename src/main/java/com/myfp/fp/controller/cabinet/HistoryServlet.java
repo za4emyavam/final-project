@@ -20,7 +20,7 @@ public class HistoryServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("currentUser");
         try {
             TransactionService transactionService = MainServiceFactoryImpl.getInstance().getTransactionService();
-            List<Transaction> transactions = transactionService.readAllTransactionsByUserBalance(user.getId());
+            List<Transaction> transactions = transactionService.readAllTransactionsByUserID(user.getId());
             request.setAttribute("transactions", transactions);
         } catch (FactoryException | ServiceException e) {
             throw new ServletException(e);

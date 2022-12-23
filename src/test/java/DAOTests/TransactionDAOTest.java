@@ -99,7 +99,7 @@ public class TransactionDAOTest {
             expected.add(secondTransaction);
 
             TransactionService service = MainServiceFactoryImpl.getInstance().getTransactionService();
-            List<Transaction> actual = service.readAllTransactionsByUserBalance(12L);
+            List<Transaction> actual = service.readAllTransactionsByUserID(12L);
 
             //first transaction
             Assertions.assertTrue(new ReflectionEquals(actual.get(0)).matches(expected.get(0)));

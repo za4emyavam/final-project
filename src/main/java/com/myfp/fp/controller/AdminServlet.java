@@ -20,7 +20,6 @@ public class AdminServlet extends HttpServlet {
         try {
             CheckService checkService = MainServiceFactoryImpl.getInstance().getCheckService();
             Check check = checkService.readLast();
-            System.out.println(check.getDateOfCheck());
             request.setAttribute("check", check);
         } catch (ServiceException | FactoryException e) {
             throw new ServletException(e);

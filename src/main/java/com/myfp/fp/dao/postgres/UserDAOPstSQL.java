@@ -21,7 +21,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
      Reads the information for a specific user from the database.
      @param id The ID of user to be read.
-     @return The user object from the database.
+     @return The {@link User} object from the database.
      @throws DAOException If there is an error executing the SQL statement.
      */
     @Override
@@ -53,7 +53,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     /**
 
      Creates a new user in the database.
-     @param entity The user object to be created.
+     @param entity The {@link User} object to be created.
      @return The ID of the newly created user.
      @throws DAOException If there is an error executing the SQL statement.
      */
@@ -91,7 +91,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
     /**
 
      Updates the information for a specific user in the database.
-     @param entity The user object containing the updated information.
+     @param entity The {@link User} object containing the updated information.
      @throws DAOException If there is an error executing the SQL statement.
      */
     @Override
@@ -193,7 +193,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
      *
      * @param login the login of the user to check for
      * @return 1 if a user with the given login exists in the database, 0 otherwise
-     * @throws DAOException if there is an error checking for the user in the database
+     * @throws DAOException If there is an error executing the SQL statement.
      */
     @Override
     public int isUserExist(String login) throws DAOException {
@@ -227,7 +227,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
      * @param login the user's login
      * @param password the user's password
      * @return the user with the specified login and password, or null if no such user exists
-     * @throws DAOException if there is an error reading the user from the database
+     * @throws DAOException If there is an error executing the SQL statement.
      */
     @Override
     public User readByLoginAndPassword(String login, String password) throws DAOException {
@@ -260,7 +260,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
      * Returns the number of users in the database.
      *
      * @return the number of users in the database
-     * @throws DAOException if there is an error counting the number of users in the database
+     * @throws DAOException If there is an error executing the SQL statement.
      */
     @Override
     public Integer getNoOfRecords() throws DAOException {
@@ -282,7 +282,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
 
     /**
 
-     Fills a user object with information from a ResultSet.
+     Fills a {@link User} object with information from a ResultSet.
      @param rs The ResultSet to get the information from.
      @return The user object with the information from the ResultSet.
      @throws SQLException If there is an error getting the information from the ResultSet.
