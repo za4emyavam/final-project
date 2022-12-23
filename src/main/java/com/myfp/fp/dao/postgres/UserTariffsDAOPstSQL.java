@@ -161,7 +161,7 @@ public class UserTariffsDAOPstSQL extends BaseDAOImpl implements UserTariffsDAO 
             user.setId(rs.getLong("user_id"));
             user.setEmail(rs.getString("email"));
             user.setPass(rs.getString("pass"));
-            user.setUserBalance(rs.getInt("user_balance"));
+            user.setUserBalance(rs.getDouble("user_balance"));
             user.setFirstname(rs.getString("firstname"));
             user.setMiddleName(rs.getString("middle_name"));
             user.setSurname(rs.getString("surname"));

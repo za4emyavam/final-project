@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
+<%@ taglib prefix="custom" uri="https://journaldev.com/jsp/tlds/mytags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -16,8 +17,11 @@
         <h2>${title}</h2>
         <p class="w3-text-brown"><fmt:message key="cabinet.hello"
                                               bundle="${lang}"/> ${sessionScope.currentUser.firstname}!</p>
+        <%--<p class="w3-text-brown"><fmt:message key="cabinet.bank"
+                                              bundle="${lang}"/> ${sessionScope.currentUser.userBalance}</p>--%>
         <p class="w3-text-brown"><fmt:message key="cabinet.bank"
-                                              bundle="${lang}"/> ${sessionScope.currentUser.userBalance}</p>
+                                              bundle="${lang}"/>
+            <custom:numberFormat lang="${language}" number="${sessionScope.currentUser.userBalance}"/> </p>
         <p class="w3-text-brown"><fmt:message key="cabinet.status"
                                               bundle="${lang}"/>
             <c:choose>

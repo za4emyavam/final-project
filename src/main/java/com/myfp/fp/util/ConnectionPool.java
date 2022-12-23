@@ -10,10 +10,17 @@ import java.sql.SQLException;
 public class ConnectionPool {
     private static ConnectionPool instance;
 
+    /**
+     * Private constructor to prevent instantiation from outside
+     */
     private ConnectionPool() {
-
     }
 
+    /**
+     * Public method to get the singleton instance of the {@link ConnectionPool} class
+     *
+     * @return the singleton instance of the {@link ConnectionPool} class
+     */
     public static ConnectionPool getInstance() {
         if (instance == null)
             instance = new ConnectionPool();

@@ -54,6 +54,6 @@ public class RegistrationUserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String firstname = request.getParameter("firstname");
         String pass = request.getParameter("password");
-        MailReport.registrationMail(email, firstname, pass);
+        MailReport.getInstance().registrationMail(email, firstname, pass);
     }
 }

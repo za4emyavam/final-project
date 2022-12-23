@@ -27,6 +27,13 @@
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>-->
 
+    <jsp-config>
+        <taglib>
+            <taglib-uri>https://journaldev.com/jsp/tlds/mytags</taglib-uri>
+            <taglib-location>/WEB-INF/numFormat.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
     <context-param>
         <param-name>jakarta.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>messages</param-value>
@@ -61,5 +68,6 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
 
 </web-app>

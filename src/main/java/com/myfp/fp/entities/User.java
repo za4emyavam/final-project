@@ -12,7 +12,7 @@ public class User extends Entity {
     private Date registrationDate;
     private Role userRole;
     private UserStatus userStatus;
-    private Integer userBalance;
+    private Double userBalance;
 
     public String getFirstname() {
         return firstname;
@@ -46,11 +46,11 @@ public class User extends Entity {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public Integer getUserBalance() {
+    public Double getUserBalance() {
         return userBalance;
     }
 
-    public void setUserBalance(Integer userBalance) {
+    public void setUserBalance(Double userBalance) {
         this.userBalance = userBalance;
     }
 

@@ -110,7 +110,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
             preparedStatement.setDate(k++, entity.getRegistrationDate());
             preparedStatement.setString(k++, entity.getUserRole().getName());
             preparedStatement.setString(k++, entity.getUserStatus().getName());
-            preparedStatement.setInt(k++, entity.getUserBalance());
+            preparedStatement.setDouble(k++, entity.getUserBalance());
             preparedStatement.setString(k++, entity.getFirstname());
             preparedStatement.setString(k++, entity.getMiddleName());
             preparedStatement.setString(k++, entity.getSurname());
@@ -292,7 +292,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         user.setId(rs.getLong("user_id"));
         user.setEmail(rs.getString("email"));
         user.setPass(rs.getString("pass"));
-        user.setUserBalance(rs.getInt("user_balance"));
+        user.setUserBalance(rs.getDouble("user_balance"));
 
         user.setFirstname(rs.getString("firstname"));
         user.setMiddleName(rs.getString("middle_name"));

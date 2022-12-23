@@ -53,6 +53,6 @@ public class ReplenishServlet extends HttpServlet {
         String email = currentUser.getEmail();
         String firstname = currentUser.getFirstname();
         String amount = request.getParameter("amount");
-        MailReport.replenishMail(email, firstname, amount);
+        MailReport.getInstance().replenishMail(email, firstname, amount);
     }
 }

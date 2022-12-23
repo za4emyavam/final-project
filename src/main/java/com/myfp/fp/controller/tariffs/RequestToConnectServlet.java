@@ -64,6 +64,6 @@ public class RequestToConnectServlet extends HttpServlet {
     private void sendEmail(User user, String tariffName) {
         String email = user.getEmail();
         String firstname = user.getFirstname();
-        MailReport.requestMail(email, firstname, tariffName);
+        MailReport.getInstance().requestMail(email, firstname, tariffName);
     }
 }

@@ -312,7 +312,10 @@ VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CUR
         '+380634343657'),
        ('example4@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
         'John', 'Ivanovich', 'Pupkin',
-        '+380634325617');
+        '+380634325617'),
+       ('example5@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
+        'John', 'Ivanovich', 'Pupkin',
+        '+380634325627');
 
 INSERT INTO connection_request (subscriber, city, address, tariff)
 VALUES (1, 'Odessa', 'Bocharova 45 214', 2);

@@ -8,12 +8,5 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/fpsql/fp_schema</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="fp_test@localhost" uuid="2219eb9d-173f-414c-808b-e80dfd975ca9">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/fp_test</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
   </component>
 </project>
