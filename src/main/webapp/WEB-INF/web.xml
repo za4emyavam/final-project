@@ -29,7 +29,7 @@
 
     <jsp-config>
         <taglib>
-            <taglib-uri>https://journaldev.com/jsp/tlds/mytags</taglib-uri>
+            <taglib-uri>https://myfp.com/jsp/tlds/mytags</taglib-uri>
             <taglib-location>/WEB-INF/numFormat.tld</taglib-location>
         </taglib>
     </jsp-config>

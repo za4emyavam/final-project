@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
+<%@ taglib prefix="custom" uri="https://myfp.com/jsp/tlds/mytags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page isELIgnored="false" %>
@@ -20,7 +21,8 @@
         <p><fmt:message key="admin.users.user_info.surname"/>: ${requestScope.user.surname}</p>
         <p><fmt:message key="admin.users.user_info.email"/>: ${requestScope.user.email}</p>
         <p><fmt:message key="admin.users.user_info.telephone"/>: ${requestScope.user.telephoneNumber}</p>
-        <p><fmt:message key="admin.users.user_info.balance"/>: ${requestScope.user.userBalance}</p>
+        <p><fmt:message key="admin.users.user_info.balance"/>:
+            <custom:numberFormat lang="${language}" number="${requestScope.user.userBalance}"/></p>
         <p><fmt:message key="admin.users.user_info.date"/>: <fmt:formatDate
                 value="${requestScope.user.registrationDate}"/></p>
         <p><fmt:message key="admin.users.user_info.role"/>:

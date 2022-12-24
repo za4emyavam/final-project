@@ -7,7 +7,7 @@
 
     <tlib-version>2.1</tlib-version>
     <short-name>mytags</short-name>
-    <uri>https://journaldev.com/jsp/tlds/mytags</uri>
+    <uri>https://myfp.com/jsp/tlds/mytags</uri>
 
     <tag>
         <description>Number Format Custom Tag</description>

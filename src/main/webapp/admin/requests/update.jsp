@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
+<%@ taglib prefix="custom" uri="https://myfp.com/jsp/tlds/mytags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -34,9 +35,12 @@
                 </c:choose>
             </p>
             <p><fmt:message
-                    key="admin.requests.update.balance"/>: ${requestScope.connectionRequest.subscriber.userBalance}</p>
+                    key="admin.requests.update.balance"/>:
+                <custom:numberFormat lang="${language}"
+                                     number="${requestScope.connectionRequest.subscriber.userBalance}"/></p>
             <p><fmt:message
-                    key="admin.requests.update.phonenumber"/>: ${requestScope.connectionRequest.subscriber.telephoneNumber}</p>
+                    key="admin.requests.update.phonenumber"/>:
+                    ${requestScope.connectionRequest.subscriber.telephoneNumber}</p>
             <p><fmt:message key="admin.requests.update.regdate"/>: <fmt:formatDate
                     value="${requestScope.connectionRequest.subscriber.registrationDate}"/></p>
             <p><fmt:message key="admin.requests.update.city"/>: ${requestScope.connectionRequest.city}</p>

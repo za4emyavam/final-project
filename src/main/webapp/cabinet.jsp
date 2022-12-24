@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
-<%@ taglib prefix="custom" uri="https://journaldev.com/jsp/tlds/mytags" %>
+<%@ taglib prefix="custom" uri="https://myfp.com/jsp/tlds/mytags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

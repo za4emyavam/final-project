@@ -17,11 +17,11 @@
             <div class="w3-inline-input-group">
                 <fmt:message key="tariffs.request.city" var="city"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="city" name="city"
-                       placeholder="${city}">
+                       placeholder="${city}*" type="text" required="required">
                 <br><br>
                 <fmt:message key="tariffs.request.address" var="address"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="address"
-                       name="address" placeholder="${address}">
+                       name="address" placeholder="${address}*" type="text" required="required">
                 <br><br>
                 <button class="w3-btn w3-teal w3-input-group-addon w3-col" style="width:300px" type="submit">
                     <fmt:message key="tariffs.request.button.request"/>

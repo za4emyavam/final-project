@@ -48,10 +48,12 @@ public class UpdateRequestServlet extends HttpServlet {
                         connectionRequest.setStatus(RequestStatus.APPROVED);
                         connectionRequestService.update(connectionRequest);
                         response.sendRedirect("/admin/requests");
+                        break;
                     case "reject":
                         connectionRequest.setStatus(RequestStatus.REJECTED);
                         connectionRequestService.update(connectionRequest);
                         response.sendRedirect("/admin/requests");
+                        break;
                     default:
                         break;
                 }
