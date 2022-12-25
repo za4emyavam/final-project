@@ -60,8 +60,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public UserDAO getUserDAO() throws FactoryException {
-        UserDAO userDAO = new UserDAOPstSQL();
-        return userDAO;
+        return new UserDAOPstSQL();
     }
 
     /**
@@ -86,8 +85,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public TariffDAO getTariffDAO() throws FactoryException {
-        TariffDAO tariffDAO = new TariffDAOPstSQL();
-        return tariffDAO;
+        return new TariffDAOPstSQL();
     }
 
     /**
@@ -112,8 +110,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public ServiceDAO getServiceDAO() throws FactoryException {
-        ServiceDAO serviceDAO = new ServiceDAOPstSQL();
-        return serviceDAO;
+        return new ServiceDAOPstSQL();
     }
 
     /**
@@ -138,8 +135,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public TransactionDAO getTransactionDAO() throws FactoryException {
-        TransactionDAO transactionDAO = new TransactionDAOPstSQL();
-        return transactionDAO;
+        return new TransactionDAOPstSQL();
     }
 
     /**
@@ -164,8 +160,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public ConnectionRequestDAO getConnectionRequestDAO() throws FactoryException {
-        ConnectionRequestDAO connectionRequestDAO = new ConnectionRequestDAOPstSQL();
-        return connectionRequestDAO;
+        return new ConnectionRequestDAOPstSQL();
     }
 
     /**
@@ -190,8 +185,7 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public UserTariffsDAO getUserTariffsDAO() throws FactoryException {
-        UserTariffsDAO userTariffsDAO = new UserTariffsDAOPstSQL();
-        return userTariffsDAO;
+        return new UserTariffsDAOPstSQL();
     }
 
     /**
@@ -216,7 +210,6 @@ public class MainServiceFactoryImpl implements ServiceFactory {
      */
     @Override
     public CheckDAO getCheckDAO() throws FactoryException {
-        CheckDAO checkDAO = new CheckDAOPstSQL();
-        return checkDAO;
+        return new CheckDAOPstSQL();
     }
 }

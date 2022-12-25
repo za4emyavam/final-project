@@ -1,7 +1,6 @@
 package com.myfp.fp.service.impl;
 
 import com.myfp.fp.dao.DAOException;
-import com.myfp.fp.dao.UserDAO;
 import com.myfp.fp.dao.UserTariffsDAO;
 import com.myfp.fp.entities.UserTariffs;
 import com.myfp.fp.service.ServiceException;

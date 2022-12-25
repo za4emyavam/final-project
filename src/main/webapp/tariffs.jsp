@@ -7,21 +7,6 @@
 
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : 'ua'}"
        scope="session"/>
-<%--<c:choose>
-    <c:when test="${not empty param.language}">
-        <c:choose>
-            <c:when test="${param.language eq 'en'}">
-                <c:set var="language" value="en" scope="session"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="language" value="ua" scope="session"/>
-            </c:otherwise>
-        </c:choose>
-    </c:when>
-    <c:otherwise>
-        <c:set var="language" value="ua" scope="session"/>
-    </c:otherwise>
-</c:choose>--%>
 <fmt:setLocale value="${language}"/>
 
 <fmt:setBundle basename="messages" var="lang"/>
@@ -33,17 +18,6 @@
             <button class="w3-btn w3-teal" onclick="location.href='/tariffs/add'"><fmt:message
                     key="tariffs.button.add"/></button>
         </c:if>
-            <%--<form name="tariffs" method="get">
-                <div class="w3-container w3-inline-input-group">
-                    <p>Change order by</p>
-                    <select class="w3-select w3-border w3-col w3-input-group-addon" style="width:150px" id="order" name="order">
-                        <option value="t.id">id</option>
-                        <option value="cost">cost</option>
-                        <option value="name">name</option>
-                    </select>
-                    <button class="w3-btn w3-teal w3-input-group-addon" style="width:150px" type="submit">verdict</button>
-                </div>
-            </form>--%>
         <table class="w3-table w3-bordered">
             <tr>
                 <fmt:message var="id" key="tariffs.id"/>

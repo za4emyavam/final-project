@@ -12,11 +12,6 @@
 <fmt:setBundle basename="messages" var="lang"/>
 <fmt:message var="title" key="main.title"/>
 <u:html title="${title}">
-
-    <%--<div class="w3-container w3-blue-grey w3-opacity w3-right-align">
-        <h1>"Hello World!"</h1>
-    </div>--%>
-
     <div class="w3-container">
         <h2>${title}</h2>
         <div class="w3-center">
@@ -39,7 +34,6 @@
                                                                                               bundle="${lang}"/></button>
         </div>
         <div class="w3-container">
-            <%--<h3 class="w3-center"><fmt:message key="main.about" bundle="${lang}"/></h3>--%>
             <div style="display: flex">
                 <div style="width: 50%;">
                     <img src="img/index_photo_1.jpg" style="position: relative; top: 30px; width: 90%; height: 90%; object-fit: cover;

@@ -33,7 +33,7 @@
                         </c:choose>
                     </td>
                     <td><c:out value="${t.transactionAmount}"/></td>
-                    <td><fmt:formatDate value="${t.transactionDate}"/></td>
+                    <td><fmt:formatDate value="${t.transactionDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 </tr>
 
             </c:forEach>

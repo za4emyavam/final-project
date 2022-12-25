@@ -2,7 +2,6 @@ package com.myfp.fp.controller;
 
 import jakarta.servlet.jsp.tagext.SimpleTagSupport;
 
-import java.io.IOException;
 
 public class NumberFormatTag extends SimpleTagSupport {
 
@@ -18,7 +17,7 @@ public class NumberFormatTag extends SimpleTagSupport {
     }
 
     @Override
-    public void doTag() throws IOException {
+    public void doTag() {
         try {
             if (!lang.equals("en")) {
                 number = number.replace(".", ",");

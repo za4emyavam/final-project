@@ -1,10 +1,8 @@
 package com.myfp.fp.service.impl;
 
-import com.myfp.fp.dao.ConnectionRequestDAO;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.ServiceDAO;
 import com.myfp.fp.entities.Service;
-import com.myfp.fp.service.ConnectionRequestService;
 import com.myfp.fp.service.ServiceException;
 import com.myfp.fp.service.ServiceService;
 

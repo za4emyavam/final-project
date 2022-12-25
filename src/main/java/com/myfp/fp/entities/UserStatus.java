@@ -4,7 +4,7 @@ public enum UserStatus {
     SUBSCRIBED("subscribed"),
     BLOCKED("blocked");
 
-    private String name;
+    private final String name;
 
     UserStatus(String name) {
         this.name = name;

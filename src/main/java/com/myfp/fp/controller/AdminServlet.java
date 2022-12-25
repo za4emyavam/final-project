@@ -1,10 +1,8 @@
 package com.myfp.fp.controller;
 
 import com.myfp.fp.entities.Check;
-import com.myfp.fp.entities.User;
 import com.myfp.fp.service.CheckService;
 import com.myfp.fp.service.ServiceException;
-import com.myfp.fp.service.UserTariffsService;
 import com.myfp.fp.util.FactoryException;
 import com.myfp.fp.util.MainServiceFactoryImpl;
 import jakarta.servlet.*;

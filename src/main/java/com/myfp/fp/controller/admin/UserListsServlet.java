@@ -36,9 +36,4 @@ public class UserListsServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
-
-    /*@Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }*/
 }

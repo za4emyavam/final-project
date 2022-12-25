@@ -1,6 +1,5 @@
 package com.myfp.fp.controller.tariffs;
 
-import com.myfp.fp.controller.Forward;
 import com.myfp.fp.entities.Service;
 import com.myfp.fp.entities.Tariff;
 import com.myfp.fp.service.ServiceException;

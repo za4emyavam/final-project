@@ -20,7 +20,7 @@ public class RequestsServlet extends HttpServlet {
         int recordsPerPage = 5;
         if (request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
-        List<ConnectionRequest> requests = null;
+        List<ConnectionRequest> requests;
         try {
             ConnectionRequestService connectionRequestService = MainServiceFactoryImpl.getInstance().getConnectionRequestService();
             requests = connectionRequestService.readAll(recordsPerPage,(page - 1) * recordsPerPage);

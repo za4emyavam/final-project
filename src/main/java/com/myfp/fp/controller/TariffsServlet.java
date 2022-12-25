@@ -60,13 +60,4 @@ public class TariffsServlet extends HttpServlet {
         else
             return "desc";
     }
-
-    private int getSessionLanguage(HttpServletRequest request) {
-        switch(request.getSession(false).getAttribute("language").toString()){
-            case "en":
-                return 1;
-            default:
-                return 0;
-        }
-    }
 }

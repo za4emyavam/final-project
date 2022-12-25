@@ -17,8 +17,6 @@
         <h2>${title}</h2>
         <p class="w3-text-brown"><fmt:message key="cabinet.hello"
                                               bundle="${lang}"/> ${sessionScope.currentUser.firstname}!</p>
-        <%--<p class="w3-text-brown"><fmt:message key="cabinet.bank"
-                                              bundle="${lang}"/> ${sessionScope.currentUser.userBalance}</p>--%>
         <p class="w3-text-brown"><fmt:message key="cabinet.bank"
                                               bundle="${lang}"/>
             <custom:numberFormat lang="${language}" number="${sessionScope.currentUser.userBalance}"/> </p>

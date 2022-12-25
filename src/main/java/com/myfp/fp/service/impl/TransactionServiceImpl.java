@@ -1,12 +1,9 @@
 package com.myfp.fp.service.impl;
 
 import com.myfp.fp.dao.DAOException;
-import com.myfp.fp.dao.TariffDAO;
 import com.myfp.fp.dao.TransactionDAO;
-import com.myfp.fp.entities.Tariff;
 import com.myfp.fp.entities.Transaction;
 import com.myfp.fp.service.ServiceException;
-import com.myfp.fp.service.TariffService;
 import com.myfp.fp.service.TransactionService;
 
 import java.util.List;

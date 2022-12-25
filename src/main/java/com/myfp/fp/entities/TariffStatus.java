@@ -4,7 +4,7 @@ public enum TariffStatus {
     DISABLED("disabled"),
     ACTIVE("active");
 
-    private String name;
+    private final String name;
 
     TariffStatus(String name) {
         this.name = name;

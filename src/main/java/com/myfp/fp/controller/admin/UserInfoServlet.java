@@ -15,13 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(name = "UserInfoServlet", value = "/admin/users/user_info")
 public class UserInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = getId(req, resp);
+        int id = getId(req);
         if (id == -1)
             resp.sendRedirect("/index");
         try {
@@ -45,7 +44,7 @@ public class UserInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = getId(req, resp);
+        int id = getId(req);
         if (id == -1)
             resp.sendRedirect("/index");
         String command = req.getParameter("command");
@@ -93,11 +92,9 @@ public class UserInfoServlet extends HttpServlet {
                 resp.sendRedirect("/admin/users/user_info?id=" + id);
                 break;
         }
-
-        /*resp.sendRedirect("/admin/users/user_info?id=" + id);*/
     }
 
-    private int getId(HttpServletRequest request, HttpServletResponse response) {
+    private int getId(HttpServletRequest request) {
         String sId = request.getParameter("id");
         int id = -1;
         if (sId != null && !sId.equals("")) {

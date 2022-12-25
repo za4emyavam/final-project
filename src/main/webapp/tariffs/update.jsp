@@ -49,11 +49,6 @@
                     </c:forEach>
                 </select>
                 <br><br>
-                    <%--<select class="w3-select w3-border w3-input-group-addon" id="status" name="status">
-                        <option value="" disabled selected>Was: ${requestScope.currentTariff.tariffStatus.name} </option>
-                        <option value="disabled">disabled</option>
-                        <option value="active">active</option>
-                    </select>--%>
                 <button class="w3-btn w3-teal w3-input-group-addon" style="width:300px" type="submit"><fmt:message
                         key="tariffs.update.button.change"/>
                 </button>

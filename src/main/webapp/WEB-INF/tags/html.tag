@@ -36,11 +36,23 @@
                 </p>
             </c:if>
         </div>
-        <div class="w3-container" style="display: inline-block; position: absolute; top: 20px; right: 0px">
-            <button class="w3-button" onclick="location.href='?language=ua&${pageContext.request.queryString}'">UA
-            </button>
-            <button class="w3-button" onclick="location.href='?language=en&${pageContext.request.queryString}'">EN
-            </button>
+        <div class="w3-container" style="display: inline-block; position: absolute; top: 20px; right: 0">
+            <script>
+                function changeLang(lang) {
+                    let currentUrl = new URL(location.href);
+                    let searchParams = new URLSearchParams(location.search);
+                    let language = searchParams.get('language');
+                    if (language) {
+                        searchParams.set('language', lang);
+                    } else {
+                        searchParams.append('language', lang);
+                    }
+                    currentUrl.search = searchParams.toString();
+                    location.replace(currentUrl.href);
+                }
+            </script>
+            <button class="w3-button" onclick="changeLang('ua')">UA</button>
+            <button class="w3-button" onclick="changeLang('en')">EN</button>
         </div>
     </header>
 </div>

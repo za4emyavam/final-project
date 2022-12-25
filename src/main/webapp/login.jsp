@@ -18,7 +18,7 @@
             <c:if test="${not empty param.message}">
                 <p class="error"><fmt:message key="${param.message}"/></p>
             </c:if>
-            <form action="/login" <%--action="/login.html"--%> method="post"
+            <form action="/login" method="post"
                   style="margin-left: auto; margin-right: auto; width: 300px">
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width:300px" id="login"
                        name="login">
@@ -29,12 +29,6 @@
                 <button class="w3-btn w3-teal w3-input-group-addon" style="width:300px"><fmt:message key="login.button.login"
                                                                                        bundle="${lang}"/></button>
             </form>
-                <%--<form action="controller" method="post">
-                  <input name="command" value="login" type="hidden">
-                  <input name="login"><br>
-                  <input name="password" type="password"><br>
-                  <input value="Login" type="submit">
-                </form>--%>
         </div>
     </div>
 </u:html>

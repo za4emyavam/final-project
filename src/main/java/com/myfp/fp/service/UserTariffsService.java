@@ -1,6 +1,5 @@
 package com.myfp.fp.service;
 
-import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.entities.UserTariffs;
 
 import java.util.List;

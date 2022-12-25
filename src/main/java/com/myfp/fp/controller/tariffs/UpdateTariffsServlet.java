@@ -19,7 +19,7 @@ public class UpdateTariffsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = getId(request, response);
+        int id = getId(request);
         if (id == -1)
             response.sendRedirect("/index");
         try {
@@ -43,7 +43,7 @@ public class UpdateTariffsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = getId(request, response);
+        int id = getId(request);
         if (id == -1)
             response.sendRedirect("/index");
         String[] names = new String[]{request.getParameter("nameUA"), request.getParameter("nameEN")};
@@ -55,7 +55,6 @@ public class UpdateTariffsServlet extends HttpServlet {
         try {
             ServiceService serviceService = MainServiceFactoryImpl.getInstance().getServiceService();
             Service service = serviceService.findByType(type);
-            System.out.println("service type ->" + service.getServiceType());
 
             TariffService tariffService = MainServiceFactoryImpl.getInstance().getTariffService();
             Tariff oldTariff = tariffService.findById((long) id);
@@ -73,9 +72,8 @@ public class UpdateTariffsServlet extends HttpServlet {
         }
     }
 
-    private int getId(HttpServletRequest request, HttpServletResponse response) {
+    private int getId(HttpServletRequest request) {
         String sId = request.getParameter("id");
-        System.out.println(sId);
         int id = -1;
         if (sId != null && !sId.equals("")) {
             id = Integer.parseInt(sId);

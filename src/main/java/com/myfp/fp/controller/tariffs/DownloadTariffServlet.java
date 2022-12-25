@@ -1,7 +1,6 @@
 package com.myfp.fp.controller.tariffs;
 
 
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.BaseFont;
@@ -19,14 +18,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 @WebServlet(name = "DownloadTariffServlet", value = "/tariffs/download")
 public class DownloadTariffServlet extends HttpServlet {
@@ -46,14 +40,12 @@ public class DownloadTariffServlet extends HttpServlet {
 
         int language = getLanguage(req);
         Document document = new Document();
-        /*File file = new File("C:\\PRJ\\FinalProject\\final-project\\tariffs.pdf");
-        file.createNewFile();*/
         resp.setContentType("application/pdf");
         resp.setHeader("Content-disposition", "attachment; filename=tariffs.pdf");
         try {
             PdfWriter.getInstance(document, resp.getOutputStream());
-            BaseFont bf=BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            fontF = new Font(bf,16, Font.NORMAL, BaseColor.BLACK);
+            BaseFont bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            fontF = new Font(bf, 16, Font.NORMAL, BaseColor.BLACK);
             document.open();
             String title;
             switch (language) {
@@ -95,14 +87,13 @@ public class DownloadTariffServlet extends HttpServlet {
                 list = Arrays.asList("ID", "Назва", "Опис", "Вартість", "Періодичність виплат (днів)", "Сервіс");
                 break;
         }
-        list.stream()
-                .forEach(columnTitle -> {
-                    PdfPCell header = new PdfPCell();
-                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                    header.setBorderWidth(2);
-                    header.setPhrase(new Phrase(columnTitle, fontF));
-                    table.addCell(header);
-                });
+        list.forEach(columnTitle -> {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(columnTitle, fontF));
+            table.addCell(header);
+        });
     }
 
     private void addRows(PdfPTable table, List<Tariff> tariffList, int language) {
@@ -120,7 +111,7 @@ public class DownloadTariffServlet extends HttpServlet {
     private int getLanguage(HttpServletRequest request) {
         if (request.getSession(false).getAttribute("language") == null)
             return 0;
-        switch(request.getSession(false).getAttribute("language").toString()) {
+        switch (request.getSession(false).getAttribute("language").toString()) {
             case "en":
                 return 1;
             default:

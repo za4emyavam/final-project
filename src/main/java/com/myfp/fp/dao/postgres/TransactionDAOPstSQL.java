@@ -79,7 +79,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
     @Override
     public List<Transaction> readAllByUserBalanceId(Long id) throws DAOException {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transaction t WHERE t.balance_id=(?)";
+        String sql = "SELECT * FROM transaction t WHERE t.balance_id=(?) ORDER BY t.transaction_date DESC";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -93,7 +93,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
                     transaction.setBalanceId(rs.getInt("balance_id"));
                     transaction.setType(TransactionType.fromString(rs.getString("type")));
                     transaction.setTransactionAmount(rs.getInt("transaction_amount"));
-                    transaction.setTransactionDate(rs.getDate("transaction_date"));
+                    transaction.setTransactionDate(new Date(rs.getTimestamp("transaction_date").getTime()));
                     transactions.add(transaction);
                 }
             }

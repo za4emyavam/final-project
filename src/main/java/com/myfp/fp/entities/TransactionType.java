@@ -4,7 +4,7 @@ public enum TransactionType {
     DEBIT("debit"),
     REFILL("refill");
 
-    String value;
+    private final String value;
 
     TransactionType(String value) {
         this.value = value;

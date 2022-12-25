@@ -1,7 +1,5 @@
 package com.myfp.fp.entities;
 
-import java.util.List;
-
 public class Tariff extends Entity {
     private String[] name;
     private String[] description;

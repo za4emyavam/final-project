@@ -12,13 +12,22 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The SecurityFilter is a filter class that is used to implement access control in a JakartaEE web application.
+ * <p>
+ * It checks if a user has the required role to access a particular URL in the application. If the user does not have
+ * <p>
+ * the required role, they are redirected to the index page.
+ */
 public class SecurityFilter implements Filter {
     private static final Logger LOG4J = LogManager.getLogger(SecurityFilter.class);
     private static final Map<String, Set<Role>> permissions = new HashMap<>();
 
+    /*
+     Static block to initialize the permissions map with the required roles for each URL in the application.
+     */
     static {
-        Set<Role> user = new HashSet<>();
-        user.addAll(Arrays.asList(Role.values()));
+        Set<Role> user = new HashSet<>(Arrays.asList(Role.values()));
         Set<Role> manager = new HashSet<>();
         manager.add(Role.ADMIN);
         manager.add(Role.MAIN_ADMIN);
@@ -40,10 +49,26 @@ public class SecurityFilter implements Filter {
         permissions.put("/admin/registration", manager);
     }
 
+    /**
+
+     Initializes the filter.
+     @param filterConfig the filter configuration
+     @throws ServletException if an exception occurs while initializing the filter
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * Filters incoming requests to check if the user has permission to access the requested URL.
+     * If the user has permission, the request is passed through the filter chain.
+     * If the user does not have permission, they are redirected to the index page.
+     * @param request the servlet request
+     * @param response the servlet response
+     * @param chain the filter chain
+     * @throws IOException if there is an I/O error
+     * @throws ServletException if there is a servlet error
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         LOG4J.info("SecurityFilter");
@@ -53,16 +78,14 @@ public class SecurityFilter implements Filter {
         Set<Role> role = permissions.get(url);
         if (role != null) {
             HttpSession session = httpServletRequest.getSession(false);
-            if(session != null) {
+            if (session != null) {
                 User user = (User) session.getAttribute("currentUser");
-                if(user != null && role.contains(user.getUserRole())) {
-                    LOG4J.info("SecurityFilter: has permission to AdminPage");
+                if (user != null && role.contains(user.getUserRole())) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
         } else {
-            LOG4J.info("SecurityFilter: has permission");
             chain.doFilter(request, response);
             return;
         }

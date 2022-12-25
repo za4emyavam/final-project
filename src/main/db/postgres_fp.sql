@@ -118,8 +118,8 @@ CREATE TABLE user_tariffs
     user_tariffs_id      SERIAL PRIMARY KEY,
     user_id              INTEGER NOT NULL,
     tariff_id            INTEGER NOT NULL,
-    date_of_start        DATE DEFAULT CURRENT_DATE,
-    date_of_last_payment DATE    NULL,
+    date_of_start        timestamp DEFAULT now(),
+    date_of_last_payment timestamp    NULL,
     FOREIGN KEY (user_id) REFERENCES "user" (user_id) ON DELETE CASCADE,
     FOREIGN KEY (tariff_id) REFERENCES tariff (tariff_id) ON DELETE CASCADE
 );
@@ -150,14 +150,14 @@ BEGIN
     IF (NEW.status = 'approved') then
         SELECT INTO temp_tariff_cost cost FROM tariff t WHERE t.tariff_id = NEW.tariff;
         INSERT INTO transaction(balance_id, type, transaction_amount, transaction_date, transaction_status)
-        VALUES (NEW.subscriber, 'debit', temp_tariff_cost, CURRENT_DATE, NULL);
+        VALUES (NEW.subscriber, 'debit', temp_tariff_cost, now(), NULL);
         SELECT INTO temp_user_status user_status FROM "user" u WHERE NEW.subscriber = u.user_id;
         IF (temp_user_status = 'blocked') THEN
             INSERT INTO user_tariffs(user_id, tariff_id, date_of_start, date_of_last_payment)
-            VALUES (NEW.subscriber, NEW.tariff, CURRENT_DATE, NULL);
+            VALUES (NEW.subscriber, NEW.tariff, now(), NULL);
         ELSE
             INSERT INTO user_tariffs(user_id, tariff_id, date_of_start, date_of_last_payment)
-            VALUES (NEW.subscriber, NEW.tariff, CURRENT_DATE, CURRENT_DATE);
+            VALUES (NEW.subscriber, NEW.tariff, now(), now());
         END IF;
     end if;
     RETURN NEW;
@@ -200,7 +200,7 @@ CREATE OR REPLACE FUNCTION f_check_payment_by_user_id(integer) RETURNS DECIMAL
 $$
 DECLARE
     temp_tariffs              integer[];
-    temp_date_of_last_payment date;
+    temp_date_of_last_payment timestamp;
     temp_frequency_of_payment integer;
     temp_tariff_cost          DECIMAL;
     temp_id                   integer;
@@ -224,17 +224,17 @@ BEGIN
             WHERE user_id = $1
               AND tariff_id = temp_tariffs[var];
             IF (temp_date_of_last_payment IS NULL OR
-                datediff('day', temp_date_of_last_payment, NOW()::DATE) > temp_frequency_of_payment) THEN
+                datediff('day', temp_date_of_last_payment::DATE, NOW()::DATE) > temp_frequency_of_payment) THEN
                 SELECT INTO temp_tariff_cost cost
                 FROM tariff t
                 WHERE tariff_id = temp_tariffs[var];
                 INSERT INTO transaction(balance_id, type, transaction_amount, transaction_date, transaction_status)
-                VALUES ($1, 'debit', temp_tariff_cost, CURRENT_DATE, NULL)
+                VALUES ($1, 'debit', temp_tariff_cost, now(), NULL)
                 RETURNING transaction_id INTO temp_id;
                 SELECT INTO temp_status transaction_status FROM transaction t WHERE transaction_id = temp_id;
                 IF (temp_status = 'successful') THEN
                     UPDATE user_tariffs ut
-                    SET date_of_last_payment=CURRENT_DATE
+                    SET date_of_last_payment=now()
                     WHERE user_id = $1
                       AND tariff_id = temp_tariffs[var];
                     temp_sum = temp_sum + temp_tariff_cost;
