@@ -13,7 +13,7 @@
     <div class="w3-container">
         <h2>${title}</h2>
         <form action="replenish" method="post">
-            <input id="amount" name="amount" type="number">
+            <input id="amount" name="amount" type="number" required="required">
             <button class="w3-btn w3-teal w3-input-group-addon" style="width:150px" type="submit"><fmt:message
                     key="cabinet.replenish.breplenish" bundle="${lang}"/></button>
         </form>

@@ -291,7 +291,7 @@ public class UserDAOPstSQL extends BaseDAOImpl implements UserDAO {
         User user = new User();
         user.setId(rs.getLong("user_id"));
         user.setEmail(rs.getString("email"));
-        user.setPass(rs.getString("pass"));
+        /*user.setPass(rs.getString("pass"));*/
         user.setUserBalance(rs.getDouble("user_balance"));
 
         user.setFirstname(rs.getString("firstname"));
