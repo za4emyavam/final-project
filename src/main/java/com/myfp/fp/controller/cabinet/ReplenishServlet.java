@@ -1,6 +1,7 @@
 package com.myfp.fp.controller.cabinet;
 
 import com.myfp.fp.entities.Transaction;
+import com.myfp.fp.entities.TransactionStatus;
 import com.myfp.fp.entities.TransactionType;
 import com.myfp.fp.entities.User;
 import com.myfp.fp.service.ServiceException;
@@ -34,6 +35,7 @@ public class ReplenishServlet extends HttpServlet {
                 transaction.setBalanceId(Math.toIntExact(user.getId()));
                 transaction.setType(TransactionType.REFILL);
                 transaction.setTransactionAmount(Integer.parseInt(amount));
+                transaction.setStatus(TransactionStatus.SUCCESSFUL);
 
                 long id = transactionService.insertTransaction(transaction);
                 if (id != 0) {

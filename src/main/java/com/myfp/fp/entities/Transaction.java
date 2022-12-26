@@ -6,6 +6,8 @@ public class Transaction extends Entity {
     private Integer balanceId;
     private TransactionType type;
     private Integer transactionAmount;
+    private Date transactionDate;
+    private TransactionStatus status;
 
     public Date getTransactionDate() {
         return transactionDate;
@@ -14,8 +16,6 @@ public class Transaction extends Entity {
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
-
-    private Date transactionDate;
 
     public Integer getBalanceId() {
         return balanceId;
@@ -39,5 +39,13 @@ public class Transaction extends Entity {
 
     public void setTransactionAmount(Integer transactionAmount) {
         this.transactionAmount = transactionAmount;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
     }
 }

@@ -3,6 +3,7 @@ package com.myfp.fp.dao.postgres;
 import com.myfp.fp.dao.DAOException;
 import com.myfp.fp.dao.TransactionDAO;
 import com.myfp.fp.entities.Transaction;
+import com.myfp.fp.entities.TransactionStatus;
 import com.myfp.fp.entities.TransactionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
     public Long create(Transaction entity) throws DAOException {
         String sql = "INSERT INTO transaction" +
                 "(balance_id, type, transaction_amount, transaction_date) " +
-                "VALUES (?, ?::transaction_type, ?, DEFAULT);";
+                "VALUES (?, ?::transaction_type, ?, ?::transaction_status);";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         long resultId = -1;
@@ -40,7 +41,8 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
             int k = 1;
             preparedStatement.setInt(k++, entity.getBalanceId());
             preparedStatement.setString(k++, entity.getType().getValue());
-            preparedStatement.setInt(k, entity.getTransactionAmount());
+            preparedStatement.setInt(k++, entity.getTransactionAmount());
+            preparedStatement.setString(k, entity.getStatus().getValue());
             int count = preparedStatement.executeUpdate();
             if (count > 0) {
                 try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
@@ -94,6 +96,7 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
                     transaction.setType(TransactionType.fromString(rs.getString("type")));
                     transaction.setTransactionAmount(rs.getInt("transaction_amount"));
                     transaction.setTransactionDate(new Date(rs.getTimestamp("transaction_date").getTime()));
+                    transaction.setStatus(TransactionStatus.fromString(rs.getString("transaction_status")));
                     transactions.add(transaction);
                 }
             }

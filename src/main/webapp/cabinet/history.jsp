@@ -18,6 +18,7 @@
                 <th><fmt:message key="cabinet.history.type" bundle="${lang}"/></th>
                 <th><fmt:message key="cabinet.history.amount" bundle="${lang}"/></th>
                 <th><fmt:message key="cabinet.history.date" bundle="${lang}"/></th>
+                <th><fmt:message key="cabinet.history.status" bundle="${lang}"/></th>
             </tr>
             <c:forEach items="${requestScope.transactions}" var="t">
                 <tr>
@@ -34,8 +35,17 @@
                     </td>
                     <td><c:out value="${t.transactionAmount}"/></td>
                     <td><fmt:formatDate value="${t.transactionDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${t.status.value == 'successful'}">
+                                <fmt:message key="transaction.status.type.successful" bundle="${lang}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="transaction.status.type.denied" bundle="${lang}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
-
             </c:forEach>
         </table>
     </div>

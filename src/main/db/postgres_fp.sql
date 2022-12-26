@@ -42,7 +42,7 @@ CREATE TABLE transaction
     balance_id         INTEGER,
     type               transaction_type,
     transaction_amount DECIMAL(8, 2),
-    transaction_date   DATE DEFAULT CURRENT_DATE,
+    transaction_date   timestamp DEFAULT now(),
     transaction_status transaction_status_type NULL,
     FOREIGN KEY (balance_id) REFERENCES "user" (user_id) ON DELETE CASCADE
 );
@@ -295,7 +295,7 @@ VALUES (ARRAY ['Простий IP-TV', 'Basic IP-TV'], ARRAY ['звичайни�
 INSERT INTO "user" (email, pass, registration_date, user_role, user_status, user_balance, firstname,
                     middle_name,
                     surname, telephone_number)
-VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, 500,
+VALUES ('example@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, DEFAULT, DEFAULT, DEFAULT,
         'Vasya', 'Ivanovich', 'Pupkin',
         '+380634325657'),
        ('manager@gmail.com', 'WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=', CURRENT_DATE, 'admin', DEFAULT, DEFAULT,
@@ -322,3 +322,7 @@ VALUES (1, 'Odessa', 'Bocharova 45 214', 2);
 
 INSERT INTO user_tariffs(user_id, tariff_id, date_of_start, date_of_last_payment)
 VALUES (1, 2, '2022-09-19'::DATE, '2022-09-19'::DATE);
+
+INSERT INTO transaction(balance_id, type, transaction_amount, transaction_date, transaction_status)
+VALUES (1, 'refill', 500, '2022-09-19 13:55:10-0', 'successful'),
+       (1, 'debit', 150, '2022-09-19 14:01:10-0', 'successful');
