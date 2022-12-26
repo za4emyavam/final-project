@@ -30,8 +30,8 @@ public class TransactionDAOPstSQL extends BaseDAOImpl implements TransactionDAO 
     @Override
     public Long create(Transaction entity) throws DAOException {
         String sql = "INSERT INTO transaction" +
-                "(balance_id, type, transaction_amount, transaction_date) " +
-                "VALUES (?, ?::transaction_type, ?, ?::transaction_status);";
+                "(balance_id, type, transaction_amount, transaction_date, transaction_status) " +
+                "VALUES (?, ?::transaction_type, ?, DEFAULT, ?::transaction_status_type);";
         Connection con = null;
         PreparedStatement preparedStatement = null;
         long resultId = -1;

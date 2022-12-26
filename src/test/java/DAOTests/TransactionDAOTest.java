@@ -33,8 +33,8 @@ public class TransactionDAOTest {
 
         Connection con = mock(Connection.class);
         when(con.prepareStatement("INSERT INTO transaction" +
-                        "(balance_id, type, transaction_amount, transaction_date) " +
-                        "VALUES (?, ?::transaction_type, ?, ?::transaction_status);",
+                "(balance_id, type, transaction_amount, transaction_date, transaction_status) " +
+                        "VALUES (?, ?::transaction_type, ?, DEFAULT, ?::transaction_status_type);",
                 Statement.RETURN_GENERATED_KEYS
         )).thenReturn(statement);
 
