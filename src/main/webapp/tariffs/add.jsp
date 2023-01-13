@@ -32,12 +32,12 @@
                 <br><br>
                 <fmt:message key="tariffs.add.cost" var="cost"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px" id="cost" name="cost"
-                       placeholder="${cost}" type="number">
+                       placeholder="${cost}" type="number" min="1">
                 <br><br>
                 <fmt:message key="tariffs.add.frequency" var="frequency"/>
                 <input class="w3-input w3-border w3-input-group-addon w3-col" style="width: 300px"
                        id="frequency_of_payment"
-                       name="frequency_of_payment" placeholder="${frequency}" type="number">
+                       name="frequency_of_payment" placeholder="${frequency}" type="number" min="1">
                 <br><br>
                 <select class="w3-select w3-border w3-col w3-input-group-addon" style="width: 300px" id="service"
                         name="service">
